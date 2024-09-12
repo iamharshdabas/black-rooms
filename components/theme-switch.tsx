@@ -7,6 +7,8 @@ import clsx from "clsx"
 import { useTheme } from "next-themes"
 import { FC } from "react"
 
+import { CloudSunIcon, CloudyMoonIcon } from "./icon"
+
 export interface Props {
   className?: string
   classNames?: SwitchProps["classNames"]
@@ -58,7 +60,7 @@ export const ThemeSwitch: FC<Props> = ({ className, classNames }) => {
           ),
         })}
       >
-        {/* {!isSelected || isSSR ? <SunFilledIcon size={22} /> : <MoonFilledIcon size={22} />} */}
+        {!isSelected || isSSR ? <CloudSunIcon /> : <CloudyMoonIcon />}
       </div>
     </Component>
   )
