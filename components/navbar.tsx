@@ -1,5 +1,6 @@
 "use client"
 
+import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import {
   NavbarBrand,
   NavbarContent,
@@ -46,10 +47,26 @@ export const Navbar = () => {
         <NavbarItem>
           <ThemeSwitch />
         </NavbarItem>
+        <NavbarItem>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </NavbarItem>
       </NavbarContent>
 
       <NavbarContent className="sm:hidden" justify="end">
         <ThemeSwitch />
+        <NavbarItem>
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </NavbarItem>
         <NavbarMenuToggle />
       </NavbarContent>
 
