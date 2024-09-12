@@ -1,7 +1,7 @@
 import { tv } from "tailwind-variants"
 
 export const bg = tv({
-  base: "w-fit mx-auto",
+  base: "w-fit",
   variants: {
     color: {
       violet: "from-[#B249F8] via-[#FF1CF7] to-[#B249f8]",

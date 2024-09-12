@@ -12,9 +12,9 @@ export default function Error({ error, reset }: { error: Error; reset: () => voi
   }, [error])
 
   return (
-    <div>
+    <div className="flex flex-col items-center gap-4">
       <h1 className={title()}>Something went wrong!</h1>
-      <Button variant="bordered" onClick={() => reset()}>
+      <Button variant="ghost" onClick={() => reset()}>
         Try again
       </Button>
     </div>
