@@ -11,7 +11,7 @@ export const bg = tv({
       green: "from-[#17C964] via-[#6FEE8D] to-[#17C964]",
       pink: "from-[#F54C7A] via-[#FF72E1] to-[#F54C7A]",
       foreground:
-        " from-[#B4B4B4] via-[#000000] to-[#B4B4B4] dark:from-[#4B4B4B] dark:via-[#FFFFFF] dark:to-[#4B4B4B]",
+        "from-[#B4B4B4] via-[#000000] to-[#B4B4B4] dark:from-[#4B4B4B] dark:via-[#FFFFFF] dark:to-[#4B4B4B]",
     },
   },
   defaultVariants: {

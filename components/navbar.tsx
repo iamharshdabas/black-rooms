@@ -1,6 +1,6 @@
 "use client"
 
-import { SignInButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import {
   NavbarBrand,
   NavbarContent,
@@ -11,6 +11,8 @@ import {
 } from "@nextui-org/navbar"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+
+import { LogoIcon } from "./icon/logo"
 
 import { ThemeSwitch } from "@/components/theme-switch"
 import { subtitle } from "@/config/primitives"
@@ -25,6 +27,7 @@ export const Navbar = () => {
       <NavbarContent>
         <NavbarBrand as="li" className="max-w-fit gap-4">
           <Link className="flex items-center justify-start gap-1" color="foreground" href="/">
+            <LogoIcon width="4em" />
             <p className={subtitle({ class: "font-bold" })}>ROOMS</p>
           </Link>
         </NavbarBrand>
@@ -49,7 +52,7 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem>
           <SignedOut>
-            <SignInButton />
+            <SignUpButton />
           </SignedOut>
           <SignedIn>
             <UserButton />

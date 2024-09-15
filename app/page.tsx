@@ -4,7 +4,7 @@ import ProductShowcase from "./_components/product-showcase"
 
 import { bg, subtitle, title } from "@/config/primitives"
 
-export default function Home() {
+export default function Page() {
   return (
     <section className="flex flex-col items-center gap-16">
       <div className={bg({ className: "text-center" })}>
@@ -17,14 +17,12 @@ export default function Home() {
         </h2>
       </div>
 
-      <div className="max-w-xs">
-        <div className="flex w-full flex-col gap-4">
-          <Button fullWidth className="bg-foreground font-bold text-background" variant="shadow">
+      <div>
+        <div className="flex w-full flex-col gap-4 sm:flex-row">
+          <Button className="bg-foreground font-bold text-background" variant="shadow">
             Start Building Your Community
           </Button>
-          <Button fullWidth variant="ghost">
-            Watch Our Demo
-          </Button>
+          <Button variant="ghost">Watch Our Demo</Button>
         </div>
       </div>
 
