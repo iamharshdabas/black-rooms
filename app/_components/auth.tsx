@@ -16,7 +16,10 @@ export function AuthCard({ children }: { children: ReactNode }) {
       <div>
         <LogoIcon />
       </div>
-      <Card className="w-full max-w-md">{children}</Card>
+      <div className="absolute top-0 h-1/2 w-full bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-divider to-background to-[60%]" />
+      <Card isBlurred className="w-full max-w-md">
+        {children}
+      </Card>
     </div>
   )
 }
