@@ -8,7 +8,13 @@ export function LoginIcon(props: SVGProps<SVGSVGElement>) {
   const fill = useIconTheme()
 
   return (
-    <svg height="2em" viewBox="0 0 24 24" width="2em" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      height="1.5em"
+      viewBox="0 0 24 24"
+      width="1.5em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <path
         d="M16 2h-1c-2.829 0-4.242 0-5.121.879S9 5.172 9 8v8c0 2.829 0 4.243.879 5.122c.878.878 2.292.878 5.119.878H16c2.828 0 4.242 0 5.121-.879C22 20.243 22 18.828 22 16V8c0-2.828 0-4.243-.879-5.121S18.828 2 16 2"
         fill={fill}

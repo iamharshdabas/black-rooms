@@ -82,5 +82,5 @@ export const title = tv({
 })
 
 export const subtitle = tv({
-  base: "text-lg lg:text-xl",
+  base: "text-lg lg:text-xl pt-4",
 })

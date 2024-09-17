@@ -8,7 +8,13 @@ export function MailIcon(props: SVGProps<SVGSVGElement>) {
   const fill = useIconTheme()
 
   return (
-    <svg height="2em" viewBox="0 0 24 24" width="2em" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <svg
+      height="1.5em"
+      viewBox="0 0 24 24"
+      width="1.5em"
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
       <path
         d="M14.2 3H9.8C5.652 3 3.577 3 2.289 4.318S1 7.758 1 12s0 6.364 1.289 7.682S5.652 21 9.8 21h4.4c4.148 0 6.223 0 7.511-1.318S23 16.242 23 12s0-6.364-1.289-7.682S18.348 3 14.2 3"
         fill={fill}
