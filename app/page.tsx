@@ -1,13 +1,13 @@
 import { Button } from "@nextui-org/button"
 import Image from "next/image"
 
-import { bg, subtitle, title } from "@/config/primitives"
+import { textGradient, subtitle, title, bgGradient } from "@/config/primitives"
 import ShineBorder from "@/components/ui/shine-border"
 
 export default function Page() {
   return (
     <section className="flex flex-col items-center gap-16">
-      <div className={bg({ className: "text-center" })}>
+      <div className={textGradient({ className: "text-center" })}>
         <h1 className={title()}>Empower Your Connections with Black Rooms</h1>
         <br />
         <h1 className={title()}>Where Innovation Meets Engagement.</h1>
@@ -27,7 +27,7 @@ export default function Page() {
       </div>
 
       <div className="relative">
-        <div className="absolute z-10 h-full w-full bg-gradient-to-b from-transparent to-background" />
+        <div className={bgGradient({ color: "transparent" })} />
         <ShineBorder borderRadius={24} borderWidth={1} color="#888888">
           <Image
             alt="ProductShowcase"

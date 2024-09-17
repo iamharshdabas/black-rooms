@@ -1,6 +1,6 @@
 import { tv } from "tailwind-variants"
 
-export const bg = tv({
+export const textGradient = tv({
   base: "w-fit",
   variants: {
     color: {
@@ -21,6 +21,30 @@ export const bg = tv({
     {
       color: ["violet", "yellow", "blue", "cyan", "green", "pink", "foreground"],
       class: "bg-gradient-to-r bg-clip-text text-transparent",
+    },
+  ],
+})
+
+export const bgGradient = tv({
+  base: "absolute w-full ",
+  variants: {
+    color: {
+      divider: "from-divider to-background",
+      transparent: "from-transparent to-background",
+    },
+  },
+  defaultVariants: {
+    color: "divider",
+  },
+  compoundVariants: [
+    {
+      color: ["divider"],
+      class:
+        "top-0 h-1/2 to-[50%] bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))]",
+    },
+    {
+      color: ["transparent"],
+      class: "z-10 h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))]",
     },
   ],
 })
