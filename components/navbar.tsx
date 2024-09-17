@@ -1,6 +1,6 @@
 "use client"
 
-import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import {
   NavbarBrand,
   NavbarContent,
@@ -9,14 +9,25 @@ import {
   NavbarMenuToggle,
   Navbar as NextUINavbar,
 } from "@nextui-org/navbar"
+import { button } from "@nextui-org/theme"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
 import { LogoIcon } from "./icon/logo"
+import { LoginIcon } from "./icon"
 
 import { ThemeSwitch } from "@/components/theme-switch"
 import { subtitle } from "@/config/primitives"
 import { siteConfig } from "@/config/site"
+
+const SignInButton = () => {
+  return (
+    <Link className={button({ variant: "ghost" })} href="/sign-in">
+      <LoginIcon height="1.5em" width="1.5em" />
+      Sign In
+    </Link>
+  )
+}
 
 export const Navbar = () => {
   const pathname = usePathname()
@@ -35,7 +46,7 @@ export const Navbar = () => {
           {siteConfig.navItems.map((item) => (
             <NavbarItem
               key={item.href}
-              className="text-foreground data-[active=true]:font-bold data-[active=true]:text-primary"
+              className="text-foreground data-[active=true]:font-bold"
               isActive={item.href === pathname}
             >
               <Link className={subtitle()} href={item.href}>
@@ -52,7 +63,8 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem>
           <SignedOut>
-            <SignUpButton />
+            {pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL &&
+              pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL && <SignInButton />}
           </SignedOut>
           <SignedIn>
             <UserButton />
@@ -62,14 +74,6 @@ export const Navbar = () => {
 
       <NavbarContent className="sm:hidden" justify="end">
         <ThemeSwitch />
-        <NavbarItem>
-          <SignedOut>
-            <SignInButton />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-        </NavbarItem>
         <NavbarMenuToggle />
       </NavbarContent>
 
@@ -78,7 +82,7 @@ export const Navbar = () => {
           {siteConfig.navItems.map((item) => (
             <NavbarItem
               key={item.href}
-              className="text-foreground data-[active=true]:font-bold data-[active=true]:text-primary"
+              className="text-foreground data-[active=true]:font-bold"
               isActive={item.href === pathname}
             >
               <Link className={subtitle()} href={item.href}>
@@ -86,6 +90,15 @@ export const Navbar = () => {
               </Link>
             </NavbarItem>
           ))}
+          <NavbarItem>
+            <SignedOut>
+              {pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL &&
+                pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL && <SignInButton />}
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </NavbarItem>
         </div>
       </NavbarMenu>
     </NextUINavbar>

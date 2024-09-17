@@ -1,5 +1,6 @@
 export * from "./github"
 export * from "./google"
+export * from "./login"
 export * from "./mail"
 export * from "./moon"
 export * from "./sun"
