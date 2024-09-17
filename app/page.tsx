@@ -1,8 +1,8 @@
 import { Button } from "@nextui-org/button"
-
-import ProductShowcase from "./_components/product-showcase"
+import Image from "next/image"
 
 import { bg, subtitle, title } from "@/config/primitives"
+import ShineBorder from "@/components/ui/shine-border"
 
 export default function Page() {
   return (
@@ -26,7 +26,25 @@ export default function Page() {
         </div>
       </div>
 
-      <ProductShowcase />
+      <div className="relative">
+        <div className="absolute z-10 h-full w-full bg-gradient-to-b from-transparent to-background" />
+        <ShineBorder borderRadius={24} borderWidth={1} color="#888888">
+          <Image
+            alt="ProductShowcase"
+            className="hidden dark:block"
+            height="984"
+            src="/hero-dark.png"
+            width="1280"
+          />
+          <Image
+            alt="ProductShowcase"
+            className="opacity-95 dark:hidden"
+            height="984"
+            src="/hero-light.png"
+            width="1280"
+          />
+        </ShineBorder>
+      </div>
     </section>
   )
 }
