@@ -14,6 +14,7 @@ import { z } from "zod"
 
 import { SignUp, SignUpVerification } from "@/types/auth"
 import createUserAction from "@/server/action/user/create"
+import { siteConfig } from "@/config/site"
 
 type SignUpForm = z.infer<typeof SignUp>
 type SignUpVerificationForm = z.infer<typeof SignUpVerification>
@@ -71,7 +72,7 @@ export default function Page() {
           await createUserAction(completeSignUp.createdUserId)
         }
 
-        router.push("/")
+        router.push(siteConfig.redirect.signUp)
       } else {
         // TODO: handle errors gracefully
         // eslint-disable-next-line no-console

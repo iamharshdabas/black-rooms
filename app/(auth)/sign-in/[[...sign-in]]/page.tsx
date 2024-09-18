@@ -13,6 +13,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { SignIn } from "@/types/auth"
+import { siteConfig } from "@/config/site"
 
 type SignInForm = z.infer<typeof SignIn>
 
@@ -43,7 +44,7 @@ export default function SignInForm() {
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId })
 
-        router.push("/")
+        router.push(siteConfig.redirect.signIn)
       } else {
         // TODO: handle errors gracefully
         // eslint-disable-next-line no-console
@@ -95,4 +96,3 @@ export default function SignInForm() {
     </form>
   )
 }
-
