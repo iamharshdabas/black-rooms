@@ -6,15 +6,16 @@ import { Button } from "@nextui-org/button"
 import { CardBody, CardFooter, CardHeader } from "@nextui-org/card"
 import { Input } from "@nextui-org/input"
 import { Link } from "@nextui-org/link"
-import { Spacer } from "@nextui-org/spacer"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+import { Divider } from "@nextui-org/divider"
 
-import { SignUp, SignUpVerification } from "@/types/auth"
-import createUserAction from "@/server/action/user/create"
+import { subtitle } from "@/config/primitives"
 import { siteConfig } from "@/config/site"
+import createUserAction from "@/server/action/user/create"
+import { SignUp, SignUpVerification } from "@/types/auth"
 
 type SignUpForm = z.infer<typeof SignUp>
 type SignUpVerificationForm = z.infer<typeof SignUpVerification>
@@ -89,10 +90,12 @@ export default function Page() {
   if (verification) {
     return (
       <form onSubmit={verificationHandleSubmit(onVerification)}>
-        <CardHeader>
-          <h1>Verify your email</h1>
+        <CardHeader className="flex-col justify-center gap-4">
+          <h2 className={subtitle({ className: "font-bold" })}>Verify your email</h2>
+          <h3>Use the verification link sent to your email address.</h3>
         </CardHeader>
-        <CardBody>
+        <Divider />
+        <CardBody className="gap-4">
           <Input
             errorMessage={verificationErrors.code?.message}
             isInvalid={!!verificationErrors.code}
@@ -100,13 +103,19 @@ export default function Page() {
             type="number"
             {...verificationRegister("code")}
           />
-          <Spacer y={4} />
           {error && <div className="rounded-xl bg-danger-50 p-2 text-danger">{error}</div>}
-        </CardBody>
-        <CardFooter>
           <Button fullWidth color="primary" isDisabled={loading} isLoading={loading} type="submit">
             Verify
           </Button>
+        </CardBody>
+        <Divider />
+        <CardFooter className="justify-center">
+          <p>
+            Already have an account ?
+            <Link className="pl-2" href="/sign-in">
+              Sign In
+            </Link>
+          </p>
         </CardFooter>
       </form>
     )
@@ -114,10 +123,12 @@ export default function Page() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <CardHeader>
-        <h1>Sign up</h1>
+      <CardHeader className="flex-col justify-center gap-4">
+        <h2 className={subtitle({ className: "font-bold" })}>Create your account</h2>
+        <h3>Welcome! Please fill in the details to get started.</h3>
       </CardHeader>
-      <CardBody>
+      <Divider />
+      <CardBody className="gap-4">
         <Input
           errorMessage={errors?.email?.message}
           isInvalid={!!errors.email}
@@ -125,7 +136,6 @@ export default function Page() {
           type="email"
           {...register("email")}
         />
-        <Spacer y={4} />
         <Input
           errorMessage={errors?.password?.message}
           isInvalid={!!errors.password}
@@ -133,13 +143,13 @@ export default function Page() {
           type="password"
           {...register("password")}
         />
-        <Spacer y={4} />
         {error && <div className="rounded-xl bg-danger-50 p-2 text-danger">{error}</div>}
-      </CardBody>
-      <CardFooter className="flex-col justify-center gap-4">
         <Button fullWidth color="primary" isDisabled={loading} isLoading={loading} type="submit">
           Continue
         </Button>
+      </CardBody>
+      <Divider />
+      <CardFooter className="justify-center">
         <p>
           Already have an account ?
           <Link className="pl-2" href="/sign-in">

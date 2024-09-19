@@ -15,7 +15,7 @@ export default function Layout({ children }: Props) {
         <LogoIcon />
       </div>
       <div className={bgGradient()} />
-      <Card isBlurred className="w-full max-w-md">
+      <Card isBlurred className="w-full max-w-md border border-divider">
         {children}
       </Card>
     </div>
