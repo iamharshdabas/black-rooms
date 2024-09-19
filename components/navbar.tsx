@@ -77,29 +77,27 @@ export const Navbar = () => {
         <NavbarMenuToggle />
       </NavbarContent>
 
-      <NavbarMenu className="px-8">
-        <div className="flex flex-col gap-4 py-8">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem
-              key={item.href}
-              className="text-foreground data-[active=true]:font-bold"
-              isActive={item.href === pathname}
-            >
-              <Link className={subtitle()} href={item.href}>
-                {item.label}
-              </Link>
-            </NavbarItem>
-          ))}
-          <NavbarItem>
-            <SignedOut>
-              {pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL &&
-                pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL && <SignInButton />}
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
+      <NavbarMenu className="gap-8 p-8">
+        {siteConfig.navItems.map((item) => (
+          <NavbarItem
+            key={item.href}
+            className="text-foreground data-[active=true]:font-bold"
+            isActive={item.href === pathname}
+          >
+            <Link className={subtitle()} href={item.href}>
+              {item.label}
+            </Link>
           </NavbarItem>
-        </div>
+        ))}
+        <NavbarItem>
+          <SignedOut>
+            {pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL &&
+              pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL && <SignInButton />}
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </NavbarItem>
       </NavbarMenu>
     </NextUINavbar>
   )

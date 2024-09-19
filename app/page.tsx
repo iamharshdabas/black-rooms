@@ -2,6 +2,7 @@ import { Button } from "@nextui-org/button"
 import Image from "next/image"
 import { Card, CardBody, CardHeader } from "@nextui-org/card"
 import { Divider } from "@nextui-org/divider"
+import { Spacer } from "@nextui-org/spacer"
 
 import { textGradient, subtitle, title, bgGradient } from "@/config/primitives"
 import ShineBorder from "@/components/ui/shine-border"
@@ -15,6 +16,7 @@ export default function Page() {
           <h1 className={title()}>Empower Your Connections with Black Rooms</h1>
           <br />
           <h1 className={title()}>Where Innovation Meets Engagement.</h1>
+          <Spacer y={4} />
           <h2 className={subtitle()}>
             Transform your interaction landscape with custom-built communities designed to inspire
             and connect.
@@ -54,6 +56,7 @@ export default function Page() {
       <section className="flex flex-col items-center gap-16">
         <div className={textGradient({ className: "text-center" })}>
           <h1 className={title()}>Simple pricing</h1>
+          <Spacer y={4} />
           <h2 className={subtitle()}>1 plan with everything included. No hidden fees.</h2>
         </div>
 
@@ -70,7 +73,7 @@ export default function Page() {
               {priceConfig.benefits.map((benefit) => (
                 <div
                   key={benefit.title}
-                  className={subtitle({ className: "flex items-center gap-4 pt-0" })}
+                  className={subtitle({ className: "flex items-center gap-4" })}
                 >
                   {benefit.icon}
                   {benefit.title}
