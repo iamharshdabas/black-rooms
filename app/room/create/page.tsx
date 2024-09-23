@@ -41,7 +41,12 @@ export default function Page() {
     async function fetchCategories() {
       const result = await getRoomCategories()
 
+      result.sort((a, b) => a.name.localeCompare(b.name))
+
       const maincategories = result.map((item) => item.category)
+
+      // why sort here ? because we want to sort the main categories or maybe do this on the backend ?
+      maincategories.sort((a, b) => a.name.localeCompare(b.name))
       const mainCategoriesFiltered = maincategories.filter(
         (item, index, self) => index === self.findIndex((selfItem) => selfItem.id === item.id),
       )
