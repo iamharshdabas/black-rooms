@@ -4,18 +4,17 @@ import { useSignUp } from "@clerk/nextjs"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Button } from "@nextui-org/button"
 import { CardBody, CardFooter, CardHeader } from "@nextui-org/card"
-import { Input } from "@nextui-org/input"
+import { Divider } from "@nextui-org/divider"
 import { Link } from "@nextui-org/link"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
-import { useForm } from "react-hook-form"
+import { FormProvider, useForm } from "react-hook-form"
 import { z } from "zod"
-import { Divider } from "@nextui-org/divider"
 
-import { subtitle } from "@/config/primitives"
-import { siteConfig } from "@/config/site"
-import createUserAction from "@/server/action/user/create"
-import { SignUp, SignUpVerification } from "@/types/auth"
+import { AuthCode, AuthEmail, AuthPassword } from "@/components/form/auth"
+import { subtitle, url } from "@/config"
+import { createUserAction } from "@/server/action/user"
+import { SignUp, SignUpVerification } from "@/types"
 
 type SignUpForm = z.infer<typeof SignUp>
 type SignUpVerificationForm = z.infer<typeof SignUpVerification>
@@ -27,17 +26,11 @@ export default function Page() {
   const [verification, setVerification] = useState(false)
   const router = useRouter()
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignUpForm>({ resolver: zodResolver(SignUp) })
+  const form = useForm<SignUpForm>({ resolver: zodResolver(SignUp) })
 
-  const {
-    register: verificationRegister,
-    handleSubmit: verificationHandleSubmit,
-    formState: { errors: verificationErrors },
-  } = useForm<SignUpVerificationForm>({ resolver: zodResolver(SignUpVerification) })
+  const verificationForm = useForm<SignUpVerificationForm>({
+    resolver: zodResolver(SignUpVerification),
+  })
 
   const onSubmit = async (data: SignUpForm) => {
     if (!isLoaded) return
@@ -73,7 +66,7 @@ export default function Page() {
           await createUserAction(completeSignUp.createdUserId)
         }
 
-        router.push(siteConfig.redirect.signUp)
+        router.push(url.room.create)
       } else {
         // TODO: handle errors gracefully
         // eslint-disable-next-line no-console
@@ -89,74 +82,67 @@ export default function Page() {
 
   if (verification) {
     return (
-      <form onSubmit={verificationHandleSubmit(onVerification)}>
-        <CardHeader className="flex-col justify-center gap-4">
-          <h2 className={subtitle({ className: "font-bold" })}>Verify your email</h2>
-          <h3>Use the verification link sent to your email address.</h3>
-        </CardHeader>
-        <Divider />
-        <CardBody className="gap-4">
-          <Input
-            errorMessage={verificationErrors.code?.message}
-            isInvalid={!!verificationErrors.code}
-            label="Verification Code"
-            type="number"
-            {...verificationRegister("code")}
-          />
-          {error && <div className="rounded-xl bg-danger-50 p-2 text-danger">{error}</div>}
-          <Button fullWidth color="primary" isDisabled={loading} isLoading={loading} type="submit">
-            Verify
-          </Button>
-        </CardBody>
-        <Divider />
-        <CardFooter className="justify-center">
-          <p>
-            Already have an account ?
-            <Link className="pl-2" href="/sign-in">
-              Sign In
-            </Link>
-          </p>
-        </CardFooter>
-      </form>
+      <FormProvider {...verificationForm}>
+        <form onSubmit={verificationForm.handleSubmit(onVerification)}>
+          <CardHeader className="flex-col justify-center gap-4">
+            <h2 className={subtitle({ className: "font-bold" })}>Verify your email</h2>
+            <h3>Use the verification link sent to your email address.</h3>
+          </CardHeader>
+          <Divider />
+          <CardBody className="gap-4">
+            <AuthCode />
+            {error && <div className="rounded-xl bg-danger-50 p-2 text-danger">{error}</div>}
+            <Button
+              fullWidth
+              color="primary"
+              isDisabled={loading}
+              isLoading={loading}
+              type="submit"
+            >
+              Verify
+            </Button>
+          </CardBody>
+          <Divider />
+          <CardFooter className="justify-center">
+            <Footer />
+          </CardFooter>
+        </form>
+      </FormProvider>
     )
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <CardHeader className="flex-col justify-center gap-4">
-        <h2 className={subtitle({ className: "font-bold" })}>Create your account</h2>
-        <h3>Welcome! Please fill in the details to get started.</h3>
-      </CardHeader>
-      <Divider />
-      <CardBody className="gap-4">
-        <Input
-          errorMessage={errors?.email?.message}
-          isInvalid={!!errors.email}
-          label="Email"
-          type="email"
-          {...register("email")}
-        />
-        <Input
-          errorMessage={errors?.password?.message}
-          isInvalid={!!errors.password}
-          label="Password"
-          type="password"
-          {...register("password")}
-        />
-        {error && <div className="rounded-xl bg-danger-50 p-2 text-danger">{error}</div>}
-        <Button fullWidth color="primary" isDisabled={loading} isLoading={loading} type="submit">
-          Continue
-        </Button>
-      </CardBody>
-      <Divider />
-      <CardFooter className="justify-center">
-        <p>
-          Already have an account ?
-          <Link className="pl-2" href="/sign-in">
-            Sign In
-          </Link>
-        </p>
-      </CardFooter>
-    </form>
+    <FormProvider {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <CardHeader className="flex-col justify-center gap-4">
+          <h2 className={subtitle({ className: "font-bold" })}>Create your account</h2>
+          <h3>Welcome! Please fill in the details to get started.</h3>
+        </CardHeader>
+        <Divider />
+        <CardBody className="gap-4">
+          <AuthEmail />
+          <AuthPassword />
+          {error && <div className="rounded-xl bg-danger-50 p-2 text-danger">{error}</div>}
+          <Button fullWidth color="primary" isDisabled={loading} isLoading={loading} type="submit">
+            Continue
+          </Button>
+        </CardBody>
+        <Divider />
+        <CardFooter className="justify-center">
+          <Footer />
+        </CardFooter>
+      </form>
+    </FormProvider>
+  )
+}
+
+function Footer() {
+  return (
+    <p>
+      Already have an account ?
+      <Link className="pl-2" href={url.signIn}>
+        Sign In
+      </Link>
+    </p>
   )
 }

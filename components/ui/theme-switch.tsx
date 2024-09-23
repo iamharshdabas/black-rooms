@@ -7,7 +7,7 @@ import clsx from "clsx"
 import { useTheme } from "next-themes"
 import { FC } from "react"
 
-import { SunIcon, MoonIcon } from "./icon"
+import { MoonIcon, SunIcon } from "../icon"
 
 export interface Props {
   className?: string

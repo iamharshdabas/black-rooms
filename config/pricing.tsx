@@ -1,8 +1,6 @@
 import { CourseIcon, FeatureIcon, MoneyIcon, RoomIcon, UsersIcon } from "@/components/icon"
 
-export type PriceConfig = typeof priceConfig
-
-export const priceConfig = {
+export const pricing = {
   price: 99,
   benefits: [
     {

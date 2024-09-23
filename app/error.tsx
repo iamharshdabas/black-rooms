@@ -3,7 +3,7 @@
 import { Button } from "@nextui-org/button"
 import { useEffect } from "react"
 
-import { title } from "@/config/primitives"
+import { title } from "@/config"
 
 export default function Error({ error, reset }: { error: Error; reset: () => void }) {
   useEffect(() => {

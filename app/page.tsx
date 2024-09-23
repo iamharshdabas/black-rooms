@@ -1,12 +1,11 @@
 import { Button } from "@nextui-org/button"
-import Image from "next/image"
 import { Card, CardBody, CardHeader } from "@nextui-org/card"
 import { Divider } from "@nextui-org/divider"
 import { Spacer } from "@nextui-org/spacer"
+import Image from "next/image"
 
-import { textGradient, subtitle, title, bgGradient } from "@/config/primitives"
-import ShineBorder from "@/components/ui/shine-border"
-import { priceConfig } from "@/config/price"
+import { ShineBorder } from "@/components/ui"
+import { bgGradient, pricing, subtitle, textGradient, title } from "@/config"
 
 export default function Page() {
   return (
@@ -34,7 +33,7 @@ export default function Page() {
 
         <div className="relative">
           <div className={bgGradient({ color: "transparent" })} />
-          <ShineBorder borderRadius={24} borderWidth={1} color="#888888">
+          <ShineBorder borderRadius={24} borderWidth={2} color="#888888">
             <Image
               alt="ProductShowcase"
               className="hidden dark:block"
@@ -62,15 +61,15 @@ export default function Page() {
 
         <div className="relative flex w-full max-w-md justify-center">
           <div className={bgGradient()} />
-          <Card isBlurred className="w-full border border-divider">
+          <Card isBlurred className="w-full border-2 border-divider">
             <CardHeader className="p-8">
               <h1 className={title({ size: "sm" })}>
-                ${priceConfig.price}/<span className={title({ size: "sm" })}>month</span>
+                ${pricing.price}/<span className={title({ size: "sm" })}>month</span>
               </h1>
             </CardHeader>
             <Divider />
             <CardBody className="gap-4 p-8">
-              {priceConfig.benefits.map((benefit) => (
+              {pricing.benefits.map((benefit) => (
                 <div
                   key={benefit.title}
                   className={subtitle({ className: "flex items-center gap-4" })}

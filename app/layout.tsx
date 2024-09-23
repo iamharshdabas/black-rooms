@@ -5,15 +5,15 @@ import { ReactNode } from "react"
 
 import { Providers } from "./providers"
 
-import { Navbar } from "@/components/navbar"
-import { siteConfig } from "@/config/site"
+import { Navbar } from "@/components/ui"
+import { site } from "@/config"
 
 export const metadata: Metadata = {
   title: {
-    default: siteConfig.name,
-    template: `%s - ${siteConfig.name}`,
+    default: site.name,
+    template: `%s - ${site.name}`,
   },
-  description: siteConfig.description,
+  description: site.description,
   icons: {
     icon: "/favicon.ico",
   },

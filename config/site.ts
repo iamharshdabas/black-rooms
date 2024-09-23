@@ -1,16 +1,23 @@
-export type SiteConfig = typeof siteConfig
-
-export const siteConfig = {
+export const site = {
   name: "Black Rooms",
   description: "Rooms by BlackEmpyreal",
-  redirect: {
-    signIn: "/rooms/explore",
-    signUp: "/rooms/create",
-  },
-  navItems: [
-    {
-      label: "Home",
-      href: "/",
-    },
-  ],
 }
+
+export const url = {
+  home: "/",
+
+  signIn: "/sign-in",
+  signUp: "/sign-up",
+
+  room: {
+    create: "/rooms/create",
+    explore: "/rooms/explore",
+  },
+}
+
+export const navItems = [
+  {
+    label: "Home",
+    href: url.home,
+  },
+]

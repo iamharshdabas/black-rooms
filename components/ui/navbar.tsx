@@ -13,16 +13,15 @@ import { button } from "@nextui-org/theme"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { LogoIcon } from "./icon/logo"
-import { LoginIcon } from "./icon"
+import { LoginIcon, LogoIcon } from "../icon"
 
-import { ThemeSwitch } from "@/components/theme-switch"
-import { subtitle } from "@/config/primitives"
-import { siteConfig } from "@/config/site"
+import { ThemeSwitch } from "./theme-switch"
+
+import { navItems, subtitle, url } from "@/config"
 
 const SignInButton = () => {
   return (
-    <Link className={button({ variant: "ghost" })} href="/sign-in">
+    <Link className={button({ variant: "ghost" })} href={url.signIn}>
       <LoginIcon height="1.5em" width="1.5em" />
       Sign In
     </Link>
@@ -37,13 +36,17 @@ export const Navbar = () => {
     <NextUINavbar shouldHideOnScroll className="px-2" maxWidth="full" position="sticky">
       <NavbarContent>
         <NavbarBrand as="li" className="max-w-fit gap-4">
-          <Link className="flex items-center justify-start gap-1" color="foreground" href="/">
-            <LogoIcon width="4em" />
-            <p className="text-2xl font-bold">ROOMS</p>
+          <Link
+            className="flex items-center justify-start gap-1"
+            color="foreground"
+            href={url.home}
+          >
+            <LogoIcon width="3em" />
+            <p className="text-2xl">ROOMS</p>
           </Link>
         </NavbarBrand>
         <ul className="hidden justify-start gap-4 pl-2 sm:flex">
-          {siteConfig.navItems.map((item) => (
+          {navItems.map((item) => (
             <NavbarItem
               key={item.href}
               className="text-foreground data-[active=true]:font-bold"
@@ -63,8 +66,7 @@ export const Navbar = () => {
         </NavbarItem>
         <NavbarItem>
           <SignedOut>
-            {pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL &&
-              pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL && <SignInButton />}
+            {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
           </SignedOut>
           <SignedIn>
             <UserButton />
@@ -78,7 +80,7 @@ export const Navbar = () => {
       </NavbarContent>
 
       <NavbarMenu className="gap-8 p-8">
-        {siteConfig.navItems.map((item) => (
+        {navItems.map((item) => (
           <NavbarItem
             key={item.href}
             className="text-foreground data-[active=true]:font-bold"
@@ -91,8 +93,7 @@ export const Navbar = () => {
         ))}
         <NavbarItem>
           <SignedOut>
-            {pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL &&
-              pathname !== process.env.NEXT_PUBLIC_CLERK_SIGN_UP_URL && <SignInButton />}
+            {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
           </SignedOut>
           <SignedIn>
             <UserButton />
