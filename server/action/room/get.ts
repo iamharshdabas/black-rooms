@@ -1,11 +1,14 @@
 "use server"
 
+import { asc } from "drizzle-orm"
+
 import { db } from "@/server/db"
+import { room_categories, room_subcategories } from "@/server/schema"
 
 export async function getRoomCategories() {
-  return await db.query.room_subcategories.findMany({
-    with: {
-      category: true,
-    },
-  })
+  return await db.query.room_categories.findMany({ orderBy: [asc(room_categories.name)] })
+}
+
+export async function getRoomSubCategories() {
+  return await db.query.room_subcategories.findMany({ orderBy: [asc(room_subcategories.name)] })
 }

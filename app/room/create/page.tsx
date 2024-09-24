@@ -5,7 +5,7 @@ import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
 import { useEffect, useState } from "react"
 
-import { getRoomCategories } from "@/server/action/room/get"
+import { getRoomCategories, getRoomSubCategories } from "@/server/action/room/get"
 import { RoomSubcategory, RoomCategory } from "@/server/schema"
 
 type Props = {
@@ -34,19 +34,14 @@ export function Radio({ id, name, desc }: Props) {
 }
 
 export default function Page() {
-  const [categories, setCategories] = useState<(RoomSubcategory & { category: RoomCategory })[]>([])
+  const [categories, setCategories] = useState<RoomSubcategory[]>([])
   const [mainCategories, setMainCategories] = useState<RoomCategory[]>([])
 
   useEffect(() => {
     async function fetchCategories() {
-      const result = await getRoomCategories()
+      const result = await getRoomSubCategories()
 
-      result.sort((a, b) => a.name.localeCompare(b.name))
-
-      const maincategories = result.map((item) => item.category)
-
-      // why sort here ? because we want to sort the main categories or maybe do this on the backend ?
-      maincategories.sort((a, b) => a.name.localeCompare(b.name))
+      const maincategories = await getRoomCategories()
       const mainCategoriesFiltered = maincategories.filter(
         (item, index, self) => index === self.findIndex((selfItem) => selfItem.id === item.id),
       )
@@ -64,7 +59,7 @@ export default function Page() {
           {mainCategories.map((category) => (
             <AccordionItem key={category.id} title={category.name}>
               {categories
-                .filter((subcategory) => subcategory.category.id === category.id)
+                .filter((subcategory) => subcategory.category_id === category.id)
                 .map((subcategory) => (
                   <Radio
                     key={subcategory.id}
