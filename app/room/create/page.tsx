@@ -17,7 +17,7 @@ export default function Page() {
   return (
     <div className="flex w-full flex-col gap-16 lg:flex-row">
       <div className="flex w-full flex-col items-center">
-        <FeatureCard transparent feature={createRoomFeatures} />
+        <FeatureCard feature={createRoomFeatures} />
         <Spacer y={16} />
         <div className="w-full max-w-md space-y-2">
           <Input />

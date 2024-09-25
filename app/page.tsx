@@ -52,7 +52,7 @@ export default function Page() {
       </section>
 
       <section className="flex flex-col items-center">
-        <FeatureCard feature={pricingFeatures} />
+        <FeatureCard border feature={pricingFeatures} />
       </section>
     </div>
   )

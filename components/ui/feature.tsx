@@ -11,7 +11,7 @@ type Props = {
   feature: Feature
 }
 
-export default function FeatureCard({ border, transparent, feature }: Props) {
+export default function FeatureCard({ border, transparent = true, feature }: Props) {
   return (
     <>
       <div className={textGradient({ className: "text-center" })}>
@@ -22,7 +22,7 @@ export default function FeatureCard({ border, transparent, feature }: Props) {
 
       <div className="relative flex w-full max-w-md justify-center pt-16">
         {transparent && <div className={bgGradient()} />}
-        <Card className={cn("w-full", border && "border-2 border-divider")} isBlurred={transparent}>
+        <Card className={cn("w-full", border && "border border-divider")} isBlurred={transparent}>
           {feature.featureTitle && (
             <CardHeader className="p-8">
               <h1 className={title({ size: "sm" })}>{feature.featureTitle}</h1>
