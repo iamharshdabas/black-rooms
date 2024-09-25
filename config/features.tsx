@@ -1,8 +1,15 @@
-import { CourseIcon, FeatureIcon, MoneyIcon, RoomIcon, UsersIcon } from "@/components/icon"
-import { ChatIcon } from "@/components/icon/chat"
-import { GameIcon } from "@/components/icon/game"
-import { HandHeartIcon } from "@/components/icon/hand-heart"
-import { SettingsIcon } from "@/components/icon/settings"
+import {
+  ChatSquareIcon,
+  DollarIcon,
+  GamepadIcon,
+  HandHeartIcon,
+  Home2Icon,
+  SettingsIcon,
+  UsersGroupIcon,
+  UsersGroupIcon2,
+  VideoLibraryIcon,
+  Widget5Icon,
+} from "@/components/icon"
 
 export const price = 99
 
@@ -13,23 +20,23 @@ export const pricingFeatures: Feature = {
   features: [
     {
       title: "One Room",
-      icon: <RoomIcon />,
+      icon: <Home2Icon />,
     },
     {
       title: "All Features",
-      icon: <FeatureIcon />,
+      icon: <Widget5Icon />,
     },
     {
       title: "Unlimited courses",
-      icon: <CourseIcon />,
+      icon: <VideoLibraryIcon />,
     },
     {
       title: "Unlimited Members",
-      icon: <UsersIcon />,
+      icon: <UsersGroupIcon />,
     },
     {
       title: "2.9% Transaction Fee",
-      icon: <MoneyIcon />,
+      icon: <DollarIcon />,
     },
   ],
 }
@@ -48,19 +55,19 @@ export const createRoomFeatures: Feature = {
     },
     {
       title: "Group chat and posts",
-      icon: <ChatIcon />,
+      icon: <ChatSquareIcon />,
     },
     {
       title: "Create teams within Room",
-      icon: <UsersIcon />,
+      icon: <UsersGroupIcon2 />,
     },
     {
       title: "Gamification",
-      icon: <GameIcon />,
+      icon: <GamepadIcon />,
     },
     {
       title: "Host unlimited courses",
-      icon: <CourseIcon />,
+      icon: <VideoLibraryIcon />,
     },
   ],
 }

@@ -13,7 +13,7 @@ import { button } from "@nextui-org/theme"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { LoginIcon, LogoIcon } from "../icon"
+import { Login3Icon, LogoIcon } from "../icon"
 
 import { ThemeSwitch } from "./theme-switch"
 
@@ -22,7 +22,7 @@ import { navItems, subtitle, url } from "@/config"
 const SignInButton = () => {
   return (
     <Link className={button({ variant: "ghost" })} href={url.signIn}>
-      <LoginIcon height="1.5em" width="1.5em" />
+      <Login3Icon />
       Sign In
     </Link>
   )
