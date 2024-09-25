@@ -1,17 +1,18 @@
 import { Accordion, AccordionItem } from "@nextui-org/accordion"
-import { RadioGroup, Radio as NextUIRadio } from "@nextui-org/radio"
-import { useState, useEffect } from "react"
+import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
+import { useEffect, useState } from "react"
 
+import { getRoomCategories, getRoomSubCategories } from "@/server/action/room/get"
 import { RoomCategory as RoomCategorySchema, RoomSubcategory } from "@/server/schema"
-import { getRoomSubCategories, getRoomCategories } from "@/server/action/room/get"
-import { subtitle } from "@/config"
+import { title } from "@/config"
 
 type Props = {
-  selected: string
-  setSelected: (selected: string) => void
+  selected?: RoomSubcategory
+  setSelected: (selected: RoomSubcategory) => void
 }
 
+// PERF: use react query to support suspense
 export function RoomCategory({ selected, setSelected }: Props) {
   const [subcategories, setSubcategories] = useState<RoomSubcategory[]>([])
   const [categories, setCategories] = useState<RoomCategorySchema[]>([])
@@ -34,37 +35,44 @@ export function RoomCategory({ selected, setSelected }: Props) {
   }, [])
 
   useEffect(() => {
-    if (gernal) setSelected(gernal.id)
+    if (gernal) setSelected(gernal)
   }, [gernal])
 
-  const selectedCategory = subcategories.find((category) => category.id === selected)
+  function handleValueChange(id: string) {
+    const subcategory = subcategories.find((item) => item.id === id)
+
+    if (subcategory) setSelected(subcategory)
+  }
 
   return (
     <RadioGroup
       isRequired
       className="w-full max-w-md gap-4"
-      value={selected}
-      onValueChange={setSelected}
+      value={selected?.id}
+      onValueChange={handleValueChange}
     >
-      {selected && selectedCategory && (
-        <p className={subtitle()}>Selected category: {selectedCategory.name}</p>
+      <h1 className={title({ size: "sm", className: "pb-4" })}>Select a category</h1>
+      {gernal && (
+        <div className="px-2">
+          <Radio key={gernal.id} subcategory={gernal} />
+        </div>
       )}
 
-      {gernal && <Radio key={gernal.id} subcategory={gernal} />}
-
       <Accordion itemClasses={{ content: "flex flex-col gap-4" }} variant="splitted">
-        {categories.map((category) => (
-          <AccordionItem key={category.id} title={category.name}>
-            {subcategories
-              .filter(
-                (subcategory) =>
-                  subcategory.category_id === category.id && subcategory.name !== "Gernal",
-              )
-              .map((subcategory) => (
-                <Radio key={subcategory.id} subcategory={subcategory} />
-              ))}
-          </AccordionItem>
-        ))}
+        {categories
+          .filter((category) => category.id !== gernal?.category_id)
+          .map((category) => (
+            <AccordionItem key={category.id} title={category.name}>
+              {subcategories
+                .filter(
+                  (subcategory) =>
+                    subcategory.category_id === category.id && subcategory.name !== "Gernal",
+                )
+                .map((subcategory) => (
+                  <Radio key={subcategory.id} subcategory={subcategory} />
+                ))}
+            </AccordionItem>
+          ))}
       </Accordion>
     </RadioGroup>
   )

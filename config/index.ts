@@ -1,3 +1,3 @@
-export * from "./pricing"
+export * from "./features"
 export * from "./primitives"
 export * from "./site"
