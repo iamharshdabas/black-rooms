@@ -10,8 +10,8 @@ export const url = {
   signUp: "/sign-up",
 
   room: {
-    create: "/rooms/create",
-    explore: "/rooms/explore",
+    create: "/room/create",
+    explore: "/room/explore",
   },
 }
 
