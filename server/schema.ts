@@ -43,9 +43,9 @@ export const rooms = pgTable("rooms", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   create_at: timestamp("create_at").defaultNow().notNull(),
   name: varchar("name", { length: VARCHAR_LENGTH }).notNull(),
-  description: varchar("description", { length: VARCHAR_LENGTH }).notNull(),
-  owner_id: uuid("owner_id")
-    .references(() => users.id)
+  description: varchar("description", { length: VARCHAR_LENGTH }),
+  clerk_id: varchar("clerk_id", { length: VARCHAR_LENGTH })
+    .references(() => users.clerk_id)
     .notNull(),
   sub_category_id: uuid("sub_category_id")
     .references(() => room_subcategories.id)
