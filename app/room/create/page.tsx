@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { Spacer } from "@nextui-org/spacer"
 import { useCallback } from "react"
 import { useAuth } from "@clerk/nextjs"
+import { useRouter } from "next/navigation"
 
 import { RoomCategory } from "@/components/form/room"
 import FeatureCard from "@/components/ui/feature"
@@ -21,6 +22,7 @@ interface CreateRoomForm {
 
 export default function Page() {
   const { userId } = useAuth()
+  const router = useRouter()
   const { register, handleSubmit, setValue, watch } = useForm<CreateRoomForm>({
     defaultValues: {
       roomName: "",
@@ -33,11 +35,15 @@ export default function Page() {
   function onSubmit(data: CreateRoomForm) {
     async function create() {
       if (userId === null || userId === undefined) throw new Error("Auth is not loaded")
-      await createRoomAction({
+      const room = await createRoomAction({
         name: data.roomName,
         clerk_id: userId,
         sub_category_id: data.selected.id,
       })
+
+      if (room) {
+        router.push(`/room/${room[0].id}`)
+      }
     }
 
     create()
