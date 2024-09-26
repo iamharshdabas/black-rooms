@@ -1,14 +1,14 @@
 import { Accordion, AccordionItem } from "@nextui-org/accordion"
 import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useMemo, useCallback } from "react"
 
 import { getRoomCategories, getRoomSubCategories } from "@/server/action/room/get"
 import { RoomCategory as RoomCategorySchema, RoomSubcategory } from "@/server/schema"
 import { title } from "@/config"
 
 type Props = {
-  selected?: RoomSubcategory
+  selected: RoomSubcategory
   setSelected: (selected: RoomSubcategory) => void
 }
 
@@ -21,7 +21,6 @@ export function RoomCategory({ selected, setSelected }: Props) {
   useEffect(() => {
     async function fetchCategories() {
       const result = await getRoomSubCategories()
-
       const maincategories = await getRoomCategories()
       const mainCategoriesFiltered = maincategories.filter(
         (item, index, self) => index === self.findIndex((selfItem) => selfItem.id === item.id),
@@ -38,17 +37,30 @@ export function RoomCategory({ selected, setSelected }: Props) {
     if (gernal) setSelected(gernal)
   }, [gernal])
 
-  function handleValueChange(id: string) {
+  const handleValueChange = (id: string) => {
     const subcategory = subcategories.find((item) => item.id === id)
 
     if (subcategory) setSelected(subcategory)
   }
 
+  const filteredCategories = useMemo(
+    () => categories.filter((category) => category.id !== gernal?.category_id),
+    [categories, gernal],
+  )
+
+  const filteredSubcategories = useCallback(
+    (categoryId: string) =>
+      subcategories.filter(
+        (subcategory) => subcategory.category_id === categoryId && subcategory.name !== "Gernal",
+      ),
+    [subcategories],
+  )
+
   return (
     <RadioGroup
       isRequired
       className="w-full max-w-md gap-4"
-      value={selected?.id}
+      value={selected?.id || ""}
       onValueChange={handleValueChange}
     >
       <h1 className={title({ size: "sm", className: "pb-4" })}>Select a category</h1>
@@ -59,20 +71,13 @@ export function RoomCategory({ selected, setSelected }: Props) {
       )}
 
       <Accordion itemClasses={{ content: "flex flex-col gap-4" }} variant="splitted">
-        {categories
-          .filter((category) => category.id !== gernal?.category_id)
-          .map((category) => (
-            <AccordionItem key={category.id} title={category.name}>
-              {subcategories
-                .filter(
-                  (subcategory) =>
-                    subcategory.category_id === category.id && subcategory.name !== "Gernal",
-                )
-                .map((subcategory) => (
-                  <Radio key={subcategory.id} subcategory={subcategory} />
-                ))}
-            </AccordionItem>
-          ))}
+        {filteredCategories.map((category) => (
+          <AccordionItem key={category.id} title={category.name}>
+            {filteredSubcategories(category.id).map((subcategory) => (
+              <Radio key={subcategory.id} subcategory={subcategory} />
+            ))}
+          </AccordionItem>
+        ))}
       </Accordion>
     </RadioGroup>
   )
