@@ -3,7 +3,7 @@ import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
 import { useEffect, useState, useMemo, useCallback } from "react"
 
-import { getRoomCategories, getRoomSubCategories } from "@/server/action/room/get"
+import { getRoomCategoriesAction, getRoomSubCategoriesAction } from "@/server/action/room/get"
 import { RoomCategory as RoomCategorySchema, RoomSubcategory } from "@/server/schema"
 import { title } from "@/config"
 
@@ -20,8 +20,8 @@ export function RoomCategory({ selected, setSelected }: Props) {
 
   useEffect(() => {
     async function fetchCategories() {
-      const result = await getRoomSubCategories()
-      const maincategories = await getRoomCategories()
+      const result = await getRoomSubCategoriesAction()
+      const maincategories = await getRoomCategoriesAction()
       const mainCategoriesFiltered = maincategories.filter(
         (item, index, self) => index === self.findIndex((selfItem) => selfItem.id === item.id),
       )
