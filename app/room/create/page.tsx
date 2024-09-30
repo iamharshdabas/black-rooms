@@ -1,19 +1,19 @@
 "use client"
 
+import { useAuth } from "@clerk/nextjs"
 import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
-import { useForm } from "react-hook-form"
 import { Spacer } from "@nextui-org/spacer"
-import { useCallback } from "react"
-import { useAuth } from "@clerk/nextjs"
 import { useRouter } from "next/navigation"
+import { useCallback } from "react"
+import { useForm } from "react-hook-form"
 
 import { RoomCategory } from "@/components/form/room"
-import FeatureCard from "@/components/ui/feature"
-import { createRoomFeatures } from "@/config"
-import { RoomSubcategory } from "@/server/schema"
 import { Home2Icon } from "@/components/icon"
-import { createRoomAction } from "@/server/action/room/create"
+import { FeatureCard } from "@/components/ui"
+import { createRoomFeatures } from "@/config"
+import { createRoomAction } from "@/server/action/room"
+import { RoomSubcategory } from "@/server/schema"
 
 interface CreateRoomForm {
   roomName: string

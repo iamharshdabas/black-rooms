@@ -11,7 +11,7 @@ type Props = {
   feature: Feature
 }
 
-export default function FeatureCard({ border, transparent = true, feature }: Props) {
+export function FeatureCard({ border, transparent = true, feature }: Props) {
   return (
     <>
       <div className={textGradient({ className: "text-center" })}>

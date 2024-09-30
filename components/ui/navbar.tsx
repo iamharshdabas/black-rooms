@@ -19,7 +19,7 @@ import { ThemeSwitch } from "./theme-switch"
 
 import { navItems, subtitle, url } from "@/config"
 
-const SignInButton = () => {
+function SignInButton() {
   return (
     <Link className={button({ variant: "ghost" })} href={url.signIn}>
       <Login3Icon />
@@ -28,7 +28,7 @@ const SignInButton = () => {
   )
 }
 
-export const Navbar = () => {
+export function Navbar() {
   const pathname = usePathname()
 
   return (

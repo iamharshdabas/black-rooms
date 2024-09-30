@@ -2,8 +2,7 @@ import { Button } from "@nextui-org/button"
 import { Spacer } from "@nextui-org/spacer"
 import Image from "next/image"
 
-import { ShineBorder } from "@/components/ui"
-import FeatureCard from "@/components/ui/feature"
+import { FeatureCard, ShineBorder } from "@/components/ui"
 import { bgGradient, pricingFeatures, subtitle, textGradient, title } from "@/config"
 
 export default function Page() {

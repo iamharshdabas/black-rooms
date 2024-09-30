@@ -1,11 +1,11 @@
 import { Accordion, AccordionItem } from "@nextui-org/accordion"
 import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
-import { useEffect, useState, useMemo, useCallback } from "react"
+import { useCallback, useEffect, useMemo, useState } from "react"
 
-import { getRoomCategoriesAction, getRoomSubCategoriesAction } from "@/server/action/room/get"
-import { RoomCategory as RoomCategorySchema, RoomSubcategory } from "@/server/schema"
 import { title } from "@/config"
+import { getRoomCategoriesAction, getRoomSubCategoriesAction } from "@/server/action/room"
+import { RoomCategory as RoomCategorySchema, RoomSubcategory } from "@/server/schema"
 
 type Props = {
   selected: RoomSubcategory
