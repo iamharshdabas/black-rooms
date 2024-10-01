@@ -9,7 +9,7 @@ export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   create_at: timestamp("create_at").defaultNow().notNull(),
   user_type: userType("user_type").default("user").notNull(),
-  clerk_id: varchar("clerk_id", { length: VARCHAR_LENGTH }).notNull(),
+  clerk_id: varchar("clerk_id", { length: VARCHAR_LENGTH }).notNull().unique(),
 })
 
 export const room_categories = pgTable("room_categories", {
