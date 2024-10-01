@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm"
-import { pgEnum, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
+import { pgEnum, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 
 const VARCHAR_LENGTH = 255
 
@@ -39,11 +39,19 @@ export const room_subcategoriesRelations = relations(room_subcategories, ({ one 
   }),
 }))
 
+// using thumbnail instead
+// export const SHOWCASE_TYPE = ["image", "video"] as const
+// export type RoomShowcaseType = (typeof SHOWCASE_TYPE)[number]
+// export const roomShowcaseType = pgEnum("showcase_type", SHOWCASE_TYPE)
+// showcase: text("showcase").array(),
+// showcaseType: roomShowcaseType("showcase_type").array(),
+
 export const rooms = pgTable("rooms", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   create_at: timestamp("create_at").defaultNow().notNull(),
   name: varchar("name", { length: VARCHAR_LENGTH }).notNull(),
-  description: varchar("description", { length: VARCHAR_LENGTH }),
+  thumbnail: text("thumbnail"),
+  description: text("description"),
   clerk_id: varchar("clerk_id", { length: VARCHAR_LENGTH })
     .references(() => users.clerk_id)
     .notNull(),

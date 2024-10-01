@@ -12,3 +12,9 @@ export async function getRoomCategoriesAction() {
 export async function getRoomSubCategoriesAction() {
   return await db.query.room_subcategories.findMany({ orderBy: [asc(room_subcategories.name)] })
 }
+
+export async function getRoomAction(id: string) {
+  return await db.query.rooms.findMany({
+    where: (rooms, { eq }) => eq(rooms.id, id),
+  })
+}
