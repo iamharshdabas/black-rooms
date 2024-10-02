@@ -21,10 +21,21 @@ export async function createRoomAction({ name, clerk_id, sub_category_id }: Inse
   return await db.insert(rooms).values({ name, clerk_id, sub_category_id }).returning()
 }
 
-export async function updateRoomAction({ id, name, description, thumbnail }: Room) {
-  return await db
+export async function updateRoomAction({
+  id,
+  name,
+  description,
+  thumbnail,
+  sub_category_id,
+}: Room) {
+  await db
     .update(rooms)
-    .set({ name, description, thumbnail })
+    .set({
+      name,
+      description,
+      thumbnail,
+      sub_category_id,
+    })
     .where(eq(rooms.id, id))
     .execute()
 }

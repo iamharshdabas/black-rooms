@@ -8,8 +8,8 @@ import { getRoomCategoriesAction, getRoomSubCategoriesAction } from "@/server/ac
 import { RoomCategory as RoomCategorySchema, RoomSubcategory } from "@/server/schema"
 
 type Props = {
-  selected: RoomSubcategory
-  setSelected: (selected: RoomSubcategory) => void
+  selected: string
+  setSelected: (selected: string) => void
 }
 
 // PERF: use react query to support suspense
@@ -33,14 +33,10 @@ export function RoomCategory({ selected, setSelected }: Props) {
     fetchCategories()
   }, [])
 
-  useEffect(() => {
-    if (gernal) setSelected(gernal)
-  }, [gernal])
-
   const handleValueChange = (id: string) => {
     const subcategory = subcategories.find((item) => item.id === id)
 
-    if (subcategory) setSelected(subcategory)
+    if (subcategory) setSelected(subcategory.id)
   }
 
   const filteredCategories = useMemo(
@@ -56,14 +52,24 @@ export function RoomCategory({ selected, setSelected }: Props) {
     [subcategories],
   )
 
+  function selectedSubcategory() {
+    return subcategories.find((subcategory) => subcategory.id === selected)
+  }
+
   return (
     <RadioGroup
       isRequired
       className="w-full max-w-md gap-4"
-      value={selected?.id || ""}
+      value={selected}
       onValueChange={handleValueChange}
     >
-      <h1 className={title({ size: "sm", className: "pb-4" })}>Select a category</h1>
+      {selected ? (
+        <h1 className={title({ size: "sm", className: "pb-4" })}>
+          Selected category <span className="text-success">{selectedSubcategory()?.name}</span>
+        </h1>
+      ) : (
+        <h1 className={title({ size: "sm", className: "pb-4" })}>Select a category</h1>
+      )}
       {gernal && (
         <div className="px-2">
           <Radio key={gernal.id} subcategory={gernal} />

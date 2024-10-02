@@ -13,11 +13,10 @@ import { Home2Icon } from "@/components/icon"
 import { FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
 import { createRoomAction } from "@/server/action/room"
-import { RoomSubcategory } from "@/server/schema"
 
 interface CreateRoomForm {
   roomName: string
-  selected: RoomSubcategory
+  selected: string
 }
 
 export default function Page() {
@@ -38,7 +37,7 @@ export default function Page() {
       const room = await createRoomAction({
         name: data.roomName,
         clerk_id: userId,
-        sub_category_id: data.selected.id,
+        sub_category_id: data.selected,
       })
 
       if (room) {
@@ -50,7 +49,7 @@ export default function Page() {
   }
 
   const handleSetSelected = useCallback(
-    (subcategory: RoomSubcategory) => setValue("selected", subcategory),
+    (subcategory: string) => setValue("selected", subcategory),
     [setValue],
   )
 
@@ -67,10 +66,6 @@ export default function Page() {
             label="Room name"
             labelPlacement="outside"
           />
-          <p>
-            Selected room category{" "}
-            <span className="font-bold text-success">{selected?.name || "None"}</span>
-          </p>
           <p className="lg:hidden">You can select room category from below.</p>
           <Button fullWidth color="primary" type="submit">
             Create
