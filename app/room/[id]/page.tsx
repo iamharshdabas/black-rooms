@@ -1,8 +1,8 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useAuth } from "@clerk/nextjs"
 import { Snippet } from "@nextui-org/snippet"
+import { useEffect, useState } from "react"
 
 import { getRoomAction } from "@/server/action/room"
 import { Room } from "@/server/schema"

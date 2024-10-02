@@ -1,15 +1,15 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import { useAuth } from "@clerk/nextjs"
-import { useForm } from "react-hook-form"
+import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import Image from "next/image"
-import { Button } from "@nextui-org/button"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
 
+import { title } from "@/config"
 import { getRoomAction, updateRoomAction } from "@/server/action/room"
 import { Room } from "@/server/schema"
-import { title } from "@/config"
 
 type Props = {
   params: {
