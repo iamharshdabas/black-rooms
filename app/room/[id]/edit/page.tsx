@@ -3,9 +3,10 @@
 import { useAuth } from "@clerk/nextjs"
 import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
-import Image from "next/image"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
+import { Image } from "@nextui-org/image"
+import { Spacer } from "@nextui-org/spacer"
 
 import { title } from "@/config"
 import { getRoomAction, updateRoomAction } from "@/server/action/room"
@@ -73,25 +74,39 @@ export default function Page({ params }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex-grow">
-        {room?.thumbnail && <Image fill alt="Room Thumbnail" src={room.thumbnail} />}
+      <div className="flex gap-4">
+        <div className="flex flex-grow flex-col items-center gap-4">
+          <Image
+            alt="Room Thumbnail"
+            src={room?.thumbnail || "https://via.placeholder.com/1000x500"}
+          />
+          <Input
+            errorMessage={errors.thumbnail?.message}
+            isInvalid={!!errors.thumbnail}
+            label="Thumbnail"
+            {...register("thumbnail")}
+          />
+          <Input
+            errorMessage={errors.name?.message}
+            isInvalid={!!errors.name}
+            label="Name"
+            {...register("name")}
+          />
+          <Input
+            errorMessage={errors.description?.message}
+            isInvalid={!!errors.description}
+            label="Description"
+            {...register("description")}
+          />
+        </div>
+        <div>
+          <RoomCategory selected={subcategory} setSelected={handleSetSelected} />
+          <Spacer y={4} />
+          <Button fullWidth color="primary" type="submit">
+            Submit
+          </Button>
+        </div>
       </div>
-      <RoomCategory selected={subcategory} setSelected={handleSetSelected} />
-      <div className="flex flex-grow flex-col gap-4">
-        <Input
-          errorMessage={errors.name?.message}
-          isInvalid={!!errors.name}
-          label="Name"
-          {...register("name")}
-        />
-        <Input
-          errorMessage={errors.thumbnail?.message}
-          isInvalid={!!errors.thumbnail}
-          label="Thumbnail"
-          {...register("thumbnail")}
-        />
-      </div>
-      <Button type="submit">Submit</Button>
     </form>
   )
 }
