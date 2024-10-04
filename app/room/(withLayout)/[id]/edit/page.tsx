@@ -2,16 +2,16 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Button } from "@nextui-org/button"
+import { Image } from "@nextui-org/image"
 import { Input } from "@nextui-org/input"
+import { Spacer } from "@nextui-org/spacer"
 import { useCallback, useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
-import { Image } from "@nextui-org/image"
-import { Spacer } from "@nextui-org/spacer"
 
-import { title } from "@/config"
-import { getRoomAction, updateRoomAction } from "@/server/action/room"
-import { Room } from "@/server/schema"
 import { RoomCategory } from "@/components/form/room"
+import { title } from "@/config"
+import { getRoombyIdAction, updateRoomAction } from "@/server/action/room"
+import { Room } from "@/server/schema"
 
 type Props = {
   params: {
@@ -20,7 +20,7 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
-  const { userId } = useAuth()
+  const { userId: clerkId } = useAuth()
   const [room, setRoom] = useState<Room | undefined>()
   const {
     register,
@@ -36,7 +36,7 @@ export default function Page({ params }: Props) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await getRoomAction(params.id)
+        const res = await getRoombyIdAction(params.id)
 
         if (Array.isArray(res)) {
           if (res.length === 0) throw new Error("Room not found")
@@ -64,7 +64,7 @@ export default function Page({ params }: Props) {
     }
   }
 
-  if (room?.clerk_id !== userId) {
+  if (room?.user_id !== clerkId) {
     return (
       <div className="text-center">
         <h1 className={title({ className: "text-danger" })}>You are not the owner of the room</h1>

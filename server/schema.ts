@@ -52,8 +52,8 @@ export const rooms = pgTable("rooms", {
   name: varchar("name", { length: VARCHAR_LENGTH }).notNull(),
   thumbnail: text("thumbnail"),
   description: text("description"),
-  clerk_id: varchar("clerk_id", { length: VARCHAR_LENGTH })
-    .references(() => users.clerk_id)
+  user_id: uuid("user_id")
+    .references(() => users.id)
     .notNull(),
   sub_category_id: uuid("sub_category_id")
     .references(() => room_subcategories.id)

@@ -10,6 +10,7 @@ export const url = {
   signUp: "/sign-up",
 
   room: {
+    base: "/room",
     create: "/room/create",
     explore: "/room/explore",
   },

@@ -13,6 +13,7 @@ import { Home2Icon } from "@/components/icon"
 import { FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
 import { createRoomAction } from "@/server/action/room"
+import { getUserbyClerkIdAction } from "@/server/action/user"
 
 interface CreateRoomForm {
   roomName: string
@@ -20,7 +21,7 @@ interface CreateRoomForm {
 }
 
 export default function Page() {
-  const { userId } = useAuth()
+  const { userId: clerkId } = useAuth()
   const router = useRouter()
   const { register, handleSubmit, setValue, watch } = useForm<CreateRoomForm>({
     defaultValues: {
@@ -33,10 +34,11 @@ export default function Page() {
 
   function onSubmit(data: CreateRoomForm) {
     async function create() {
-      if (userId === null || userId === undefined) throw new Error("Auth is not loaded")
+      if (clerkId === null || clerkId === undefined) throw new Error("Auth is not loaded")
+      const user = await getUserbyClerkIdAction(clerkId)
       const room = await createRoomAction({
         name: data.roomName,
-        clerk_id: userId,
+        user_id: user[0].id,
         sub_category_id: data.selected,
       })
 

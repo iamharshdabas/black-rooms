@@ -5,7 +5,6 @@ import { ReactNode } from "react"
 
 import { Providers } from "./providers"
 
-import { Navbar } from "@/components/ui"
 import { site } from "@/config"
 
 export const metadata: Metadata = {
@@ -31,14 +30,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html suppressHydrationWarning lang="en">
       <head />
       <body className={clsx("min-h-screen bg-background font-sans antialiased")}>
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-          <div className="mx-auto max-w-screen-2xl">
-            <div className="relative flex h-screen flex-col">
-              <Navbar />
-              <main className="grow px-8 py-16">{children}</main>
-            </div>
-          </div>
-        </Providers>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>{children}</Providers>
       </body>
     </html>
   )
