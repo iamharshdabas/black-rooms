@@ -2,7 +2,7 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete"
-import { useParams, useRouter } from "next/navigation"
+import { useSearchParams, useRouter } from "next/navigation"
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { Divider } from "@nextui-org/divider"
 
@@ -17,13 +17,12 @@ type Props = {
 
 // TODO: get room if the user is a member of a room
 export default function Layout({ children }: Props) {
-  const params = useParams()
+  const searchParams = useSearchParams()
+  const idParam = searchParams.get("id")
   const router = useRouter()
   const { userId: clerkId } = useAuth()
   const [rooms, setRooms] = useState<Room[]>()
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(
-    Array.isArray(params.id) ? params.id[0] : params.id,
-  )
+  const [selectedRoom, setSelectedRoom] = useState<string | null>(idParam)
 
   useEffect(() => {
     async function getRoom() {
@@ -32,7 +31,7 @@ export default function Layout({ children }: Props) {
           const user = await getUserByClerkId(clerkId)
           const room = await getRoomByOwnerId(user[0].id)
 
-          if (!params.id && room.length > 0) {
+          if (!idParam && room.length > 0) {
             setSelectedRoom(room[0].id)
             router.push(`/room/${room[0].id}`)
           }
