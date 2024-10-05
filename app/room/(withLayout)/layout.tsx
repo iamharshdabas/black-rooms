@@ -6,7 +6,8 @@ import { useParams, useRouter } from "next/navigation"
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
 import { NoRoom } from "@/components/ui"
-import { getRoombyClerkIdAction } from "@/server/action/room"
+import { getRoomByOwnerId } from "@/server/action/room"
+import { getUserByClerkId } from "@/server/action/user"
 import { Room } from "@/server/schema"
 
 type Props = {
@@ -17,7 +18,7 @@ type Props = {
 export default function Layout({ children }: Props) {
   const params = useParams()
   const router = useRouter()
-  const { userId } = useAuth()
+  const { userId: clerkId } = useAuth()
   const [rooms, setRooms] = useState<Room[]>()
   const [selectedRoom, setSelectedRoom] = useState<string | null>(
     Array.isArray(params.id) ? params.id[0] : params.id,
@@ -25,11 +26,12 @@ export default function Layout({ children }: Props) {
 
   useEffect(() => {
     async function getRoom() {
-      if (userId) {
+      if (clerkId) {
         try {
-          const res = await getRoombyClerkIdAction(userId)
+          const user = await getUserByClerkId(clerkId)
+          const room = await getRoomByOwnerId(user[0].id)
 
-          setRooms(res)
+          setRooms(room)
         } catch (error) {
           console.error("Failed to fetch rooms:", error)
         }
@@ -37,7 +39,7 @@ export default function Layout({ children }: Props) {
     }
 
     getRoom()
-  }, [userId])
+  }, [clerkId])
 
   const handleSelectionChange = useCallback(
     (key: Key | null) => {

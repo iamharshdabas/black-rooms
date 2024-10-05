@@ -12,8 +12,8 @@ import { RoomCategory } from "@/components/form/room"
 import { Home2Icon } from "@/components/icon"
 import { FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
-import { createRoomAction } from "@/server/action/room"
-import { getUserbyClerkIdAction } from "@/server/action/user"
+import { createRoom } from "@/server/action/room"
+import { getUserByClerkId } from "@/server/action/user"
 
 interface CreateRoomForm {
   roomName: string
@@ -35,11 +35,11 @@ export default function Page() {
   function onSubmit(data: CreateRoomForm) {
     async function create() {
       if (clerkId === null || clerkId === undefined) throw new Error("Auth is not loaded")
-      const user = await getUserbyClerkIdAction(clerkId)
-      const room = await createRoomAction({
+      const user = await getUserByClerkId(clerkId)
+      const room = await createRoom({
         name: data.roomName,
-        user_id: user[0].id,
-        sub_category_id: data.selected,
+        ownerId: user[0].id,
+        subCategoryId: data.selected,
       })
 
       if (room) {

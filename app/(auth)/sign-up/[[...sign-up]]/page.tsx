@@ -13,7 +13,7 @@ import { z } from "zod"
 
 import { AuthCode, AuthEmail, AuthPassword } from "@/components/form/auth"
 import { subtitle, url } from "@/config"
-import { createUserAction } from "@/server/action/user"
+import { createUser } from "@/server/action/user"
 import { SignUp, SignUpVerification } from "@/types"
 
 type SignUpForm = z.infer<typeof SignUp>
@@ -63,7 +63,7 @@ export default function Page() {
         await setActive({ session: completeSignUp.createdSessionId })
 
         if (completeSignUp.createdUserId) {
-          await createUserAction(completeSignUp.createdUserId)
+          await createUser(completeSignUp.createdUserId)
         }
 
         router.push(url.room.create)

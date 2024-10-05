@@ -4,8 +4,9 @@ import { useAuth } from "@clerk/nextjs"
 import { Snippet } from "@nextui-org/snippet"
 import { useEffect, useState } from "react"
 
-import { getRoombyIdAction } from "@/server/action/room"
-import { Room } from "@/server/schema"
+import { getRoomByRoomId } from "@/server/action/room"
+import { getUserByClerkId } from "@/server/action/user"
+import { Room, User } from "@/server/schema"
 
 type Props = {
   params: {
@@ -15,16 +16,23 @@ type Props = {
 
 export default function Page({ params }: Props) {
   const [room, setRoom] = useState<Room | undefined>()
+  const [user, setUser] = useState<User>()
   const { userId: clerkId } = useAuth()
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await getRoombyIdAction(params.id)
+        const room = await getRoomByRoomId(params.id)
 
-        if (Array.isArray(res)) {
-          if (res.length === 0) throw new Error("Room not found")
-          setRoom(res[0])
+        if (clerkId) {
+          const user = await getUserByClerkId(clerkId)
+
+          setUser(user[0])
+        }
+
+        if (Array.isArray(room)) {
+          if (room.length === 0) throw new Error("Room not found")
+          setRoom(room[0])
         }
       } catch (err) {
         console.error(err)
@@ -34,7 +42,7 @@ export default function Page({ params }: Props) {
     fetchData()
   }, [params.id])
 
-  if (room?.user_id === clerkId) {
+  if (room?.ownerId === user?.id) {
     return (
       <>
         <div>Owner</div>

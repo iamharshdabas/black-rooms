@@ -10,8 +10,9 @@ import { useForm } from "react-hook-form"
 
 import { RoomCategory } from "@/components/form/room"
 import { title } from "@/config"
-import { getRoombyIdAction, updateRoomAction } from "@/server/action/room"
-import { Room } from "@/server/schema"
+import { getRoomByRoomId, updateRoomAction } from "@/server/action/room"
+import { getUserByClerkId } from "@/server/action/user"
+import { Room, User } from "@/server/schema"
 
 type Props = {
   params: {
@@ -22,6 +23,7 @@ type Props = {
 export default function Page({ params }: Props) {
   const { userId: clerkId } = useAuth()
   const [room, setRoom] = useState<Room | undefined>()
+  const [user, setUser] = useState<User>()
   const {
     register,
     handleSubmit,
@@ -31,17 +33,23 @@ export default function Page({ params }: Props) {
     formState: { errors },
   } = useForm<Room>()
 
-  const subcategory = watch("sub_category_id")
+  const subcategory = watch("subCategoryId")
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await getRoombyIdAction(params.id)
+        const rooms = await getRoomByRoomId(params.id)
 
-        if (Array.isArray(res)) {
-          if (res.length === 0) throw new Error("Room not found")
-          setRoom(res[0])
-          reset(res[0])
+        if (clerkId) {
+          const user = await getUserByClerkId(clerkId)
+
+          setUser(user[0])
+        }
+
+        if (Array.isArray(rooms)) {
+          if (rooms.length === 0) throw new Error("Room not found")
+          setRoom(rooms[0])
+          reset(rooms[0])
         }
       } catch (err) {
         console.error(err)
@@ -52,7 +60,7 @@ export default function Page({ params }: Props) {
   }, [params.id, reset])
 
   const handleSetSelected = useCallback(
-    (subcategory: string) => setValue("sub_category_id", subcategory),
+    (subcategory: string) => setValue("subCategoryId", subcategory),
     [setValue],
   )
 
@@ -64,7 +72,7 @@ export default function Page({ params }: Props) {
     }
   }
 
-  if (room?.user_id !== clerkId) {
+  if (room?.ownerId !== user?.id) {
     return (
       <div className="text-center">
         <h1 className={title({ className: "text-danger" })}>You are not the owner of the room</h1>

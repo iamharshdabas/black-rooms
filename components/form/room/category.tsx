@@ -4,8 +4,8 @@ import { cn } from "@nextui-org/theme"
 import { useCallback, useEffect, useMemo, useState } from "react"
 
 import { title } from "@/config"
-import { getRoomCategoriesAction, getRoomSubCategoriesAction } from "@/server/action/room"
-import { RoomCategory as RoomCategorySchema, RoomSubcategory } from "@/server/schema"
+import { getRoomCategories, getRoomSubCategories } from "@/server/action/room"
+import { RoomCategory as RoomCategorySchema, RoomSubCategory } from "@/server/schema"
 
 type Props = {
   selected: string
@@ -14,14 +14,14 @@ type Props = {
 
 // PERF: use react query to support suspense
 export function RoomCategory({ selected, setSelected }: Props) {
-  const [subcategories, setSubcategories] = useState<RoomSubcategory[]>([])
+  const [subcategories, setSubcategories] = useState<RoomSubCategory[]>([])
   const [categories, setCategories] = useState<RoomCategorySchema[]>([])
-  const [gernal, setGernal] = useState<RoomSubcategory>()
+  const [gernal, setGernal] = useState<RoomSubCategory>()
 
   useEffect(() => {
     async function fetchCategories() {
-      const result = await getRoomSubCategoriesAction()
-      const maincategories = await getRoomCategoriesAction()
+      const result = await getRoomSubCategories()
+      const maincategories = await getRoomCategories()
       const mainCategoriesFiltered = maincategories.filter(
         (item, index, self) => index === self.findIndex((selfItem) => selfItem.id === item.id),
       )
@@ -40,14 +40,14 @@ export function RoomCategory({ selected, setSelected }: Props) {
   }
 
   const filteredCategories = useMemo(
-    () => categories.filter((category) => category.id !== gernal?.category_id),
+    () => categories.filter((category) => category.id !== gernal?.categoryId),
     [categories, gernal],
   )
 
   const filteredSubcategories = useCallback(
     (categoryId: string) =>
       subcategories.filter(
-        (subcategory) => subcategory.category_id === categoryId && subcategory.name !== "Gernal",
+        (subcategory) => subcategory.categoryId === categoryId && subcategory.name !== "Gernal",
       ),
     [subcategories],
   )
@@ -89,7 +89,7 @@ export function RoomCategory({ selected, setSelected }: Props) {
   )
 }
 
-function Radio({ subcategory }: { subcategory: RoomSubcategory }) {
+function Radio({ subcategory }: { subcategory: RoomSubCategory }) {
   return (
     <NextUIRadio
       classNames={{
