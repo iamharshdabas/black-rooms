@@ -14,7 +14,7 @@ type Props = {
 
 // PERF: use react query to support suspense
 export function RoomCategory({ selected, setSelected }: Props) {
-  const [subcategories, setSubcategories] = useState<RoomSubCategory[]>([])
+  const [subCategories, setSubCategories] = useState<RoomSubCategory[]>([])
   const [categories, setCategories] = useState<RoomCategorySchema[]>([])
   const [gernal, setGernal] = useState<RoomSubCategory>()
 
@@ -26,7 +26,7 @@ export function RoomCategory({ selected, setSelected }: Props) {
         (item, index, self) => index === self.findIndex((selfItem) => selfItem.id === item.id),
       )
 
-      setSubcategories(result)
+      setSubCategories(result)
       setCategories(mainCategoriesFiltered)
       setGernal(result.find((subcategory) => subcategory.name === "Gernal"))
     }
@@ -34,7 +34,7 @@ export function RoomCategory({ selected, setSelected }: Props) {
   }, [])
 
   const handleValueChange = (id: string) => {
-    const subcategory = subcategories.find((item) => item.id === id)
+    const subcategory = subCategories.find((item) => item.id === id)
 
     if (subcategory) setSelected(subcategory.id)
   }
@@ -46,15 +46,18 @@ export function RoomCategory({ selected, setSelected }: Props) {
 
   const filteredSubcategories = useCallback(
     (categoryId: string) =>
-      subcategories.filter(
+      subCategories.filter(
         (subcategory) => subcategory.categoryId === categoryId && subcategory.name !== "Gernal",
       ),
-    [subcategories],
+    [subCategories],
   )
 
   function selectedSubcategory() {
-    return subcategories.find((subcategory) => subcategory.id === selected)
+    return subCategories.find((subcategory) => subcategory.id === selected)
   }
+
+  console.log(categories)
+  console.log(subCategories)
 
   return (
     <RadioGroup
