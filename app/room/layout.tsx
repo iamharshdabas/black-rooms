@@ -4,6 +4,7 @@ import { useAuth } from "@clerk/nextjs"
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete"
 import { useParams, useRouter } from "next/navigation"
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+import { Divider } from "@nextui-org/divider"
 
 import { NoRoom } from "@/components/ui"
 import { getRoomByOwnerId } from "@/server/action/room"
@@ -31,6 +32,10 @@ export default function Layout({ children }: Props) {
           const user = await getUserByClerkId(clerkId)
           const room = await getRoomByOwnerId(user[0].id)
 
+          if (!params.id && room.length > 0) {
+            setSelectedRoom(room[0].id)
+            router.push(`/room/${room[0].id}`)
+          }
           setRooms(room)
         } catch (error) {
           console.error("Failed to fetch rooms:", error)
@@ -62,7 +67,7 @@ export default function Layout({ children }: Props) {
   )
 
   return (
-    <div className="flex h-screen">
+    <div className="flex min-h-screen">
       <div className="w-full max-w-xs p-4">
         {rooms?.length !== 0 && rooms ? (
           <Autocomplete selectedKey={selectedRoom} onSelectionChange={handleSelectionChange}>
@@ -72,7 +77,8 @@ export default function Layout({ children }: Props) {
           <NoRoom compact />
         )}
       </div>
-      <div className="flex-grow">{children}</div>
+      <Divider orientation="vertical" />
+      <div className="flex-grow p-4">{children}</div>
     </div>
   )
 }

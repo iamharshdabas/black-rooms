@@ -56,7 +56,10 @@ export default function Page() {
   )
 
   return (
-    <form className="flex w-full flex-col gap-16 lg:flex-row" onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className="flex w-full flex-col gap-16 pt-24 lg:flex-row"
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className="flex w-full flex-col items-center">
         <FeatureCard feature={createRoomFeatures} />
         <Spacer y={8} />
