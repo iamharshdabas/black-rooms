@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form"
 
 import { RoomCategory } from "@/components/form/room"
 import { Home2Icon } from "@/components/icon"
-import { FeatureCard } from "@/components/ui"
+import { DisplayError, FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
 import { CreateRoom, useMutationCreateRoom } from "@/hooks/room/mutate"
 
@@ -23,10 +23,10 @@ export default function Page() {
   })
 
   const selected = watch("subCategoryId")
-  const mutation = useMutationCreateRoom(clerkId!)
+  const { mutate, isPending, isError, error } = useMutationCreateRoom(clerkId!)
 
   const onSubmit = (data: CreateRoom) => {
-    mutation.mutate({
+    mutate({
       name: data.name,
       subCategoryId: data.subCategoryId,
     })
@@ -54,7 +54,14 @@ export default function Page() {
             labelPlacement="outside"
           />
           <p className="lg:hidden">You can select room category from below.</p>
-          <Button fullWidth color="primary" type="submit">
+          {isError && <DisplayError error={error.message} />}
+          <Button
+            fullWidth
+            color="primary"
+            disabled={isPending}
+            isLoading={isPending}
+            type="submit"
+          >
             Create
           </Button>
         </div>

@@ -15,9 +15,5 @@ type ErrorProps = {
 }
 
 export function DisplayError({ error }: ErrorProps) {
-  return (
-    <div className="flex size-full items-center justify-center">
-      <h2 className={subtitle({ className: "text-danger" })}>{error}</h2>
-    </div>
-  )
+  return <h2 className={subtitle({ className: "text-danger" })}>{error}</h2>
 }
