@@ -3,10 +3,10 @@ import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
 import { useCallback, useMemo } from "react"
 
-import { title } from "@/config"
-import { RoomSubCategory } from "@/server/schema"
-import { useQueryRoomSubCategories } from "@/hooks/room/query"
 import { DisplayError, DisplayLoading } from "@/components/ui"
+import { title } from "@/config"
+import { useQueryRoomSubCategories } from "@/hooks/room/query"
+import { RoomSubCategory } from "@/server/schema"
 
 type Props = {
   selected: string
@@ -17,12 +17,6 @@ export function RoomCategory({ selected, setSelected }: Props) {
   const { data: categories, isLoading, isError, error } = useQueryRoomSubCategories()
 
   const gernal = categories?.find((subcategory) => subcategory.name === "Gernal")
-
-  const handleValueChange = (id: string) => {
-    const category = categories?.find((item) => item.id === id)
-
-    if (category) setSelected(category.id)
-  }
 
   const uniqueCategories = useMemo(() => {
     const uniqueCategories = categories?.map((category) => category.roomCategories)
@@ -37,6 +31,11 @@ export function RoomCategory({ selected, setSelected }: Props) {
     [uniqueCategories],
   )
 
+  const selectedSubcategory = useMemo(
+    () => categories?.find((subcategory) => subcategory.id === selected),
+    [categories, selected],
+  )
+
   const filteredSubcategories = useCallback(
     (categoryId: string) => {
       return (
@@ -48,17 +47,17 @@ export function RoomCategory({ selected, setSelected }: Props) {
     [categories],
   )
 
-  function selectedSubcategory() {
-    return categories?.find((subcategory) => subcategory.id === selected)
-  }
+  const handleValueChange = useCallback(
+    (id: string) => {
+      const category = categories?.find((item) => item.id === id)
 
-  if (isLoading) {
-    return <DisplayLoading />
-  }
+      if (category) setSelected(category.id)
+    },
+    [categories, setSelected],
+  )
 
-  if (isError) {
-    return <DisplayError error={error.message} />
-  }
+  if (isLoading) return <DisplayLoading />
+  if (isError) return <DisplayError error={error.message} />
 
   return (
     <RadioGroup
@@ -69,7 +68,7 @@ export function RoomCategory({ selected, setSelected }: Props) {
     >
       {selected && filteredCategories ? (
         <h1 className={title({ size: "sm", className: "pb-4" })}>
-          Selected category <span className="text-success">{selectedSubcategory()?.name}</span>
+          Selected category <span className="text-success">{selectedSubcategory?.name}</span>
         </h1>
       ) : (
         <h1 className={title({ size: "sm", className: "pb-4" })}>Select a category</h1>

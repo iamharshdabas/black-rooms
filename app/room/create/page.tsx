@@ -15,6 +15,7 @@ import { CreateRoom, useMutationCreateRoom } from "@/hooks/room/mutate"
 
 export default function Page() {
   const { userId: clerkId } = useAuth()
+  const { mutate, isPending, isError, error } = useMutationCreateRoom(clerkId!)
   const { register, handleSubmit, setValue, watch } = useForm<CreateRoom>({
     defaultValues: {
       name: "",
@@ -23,15 +24,8 @@ export default function Page() {
   })
 
   const selected = watch("subCategoryId")
-  const { mutate, isPending, isError, error } = useMutationCreateRoom(clerkId!)
 
-  const onSubmit = (data: CreateRoom) => {
-    mutate({
-      name: data.name,
-      subCategoryId: data.subCategoryId,
-    })
-  }
-
+  const onSubmit = (data: CreateRoom) => mutate(data)
   const handleSetSelected = useCallback(
     (subcategory: string) => setValue("subCategoryId", subcategory),
     [setValue],

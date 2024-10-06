@@ -17,12 +17,7 @@ export default function Layout({ children }: Props) {
   const router = useRouter()
   const pathname = usePathname()
   const { userId: clerkId } = useAuth()
-
-  // Extract room ID using a regular expression
-  // this will also extract 'create' and 'explore'
-  // due to 'room/create' and 'room/explore' paths
-  const roomIdFromPath = pathname.match(/room\/([^/]+)/)?.[1] || null
-
+  const roomIdFromPath = useMemo(() => pathname.match(/room\/([^/]+)/)?.[1] || null, [pathname])
   const [selectedRoom, setSelectedRoom] = useState<string | null>(roomIdFromPath)
   const { data: user, isLoading, isError, error } = useQueryUserByClerkId(clerkId!)
 
@@ -40,23 +35,8 @@ export default function Layout({ children }: Props) {
     [router],
   )
 
-  const roomItems = useMemo(
-    () =>
-      user?.roomMembers?.map((user) => (
-        <AutocompleteItem key={user.rooms.id} value={user.rooms.id}>
-          {user.rooms.name}
-        </AutocompleteItem>
-      )) || [],
-    [user],
-  )
-
-  if (isLoading) {
-    return <DisplayLoading />
-  }
-
-  if (isError) {
-    return <DisplayError error={error.message} />
-  }
+  if (isLoading) return <DisplayLoading />
+  if (isError) return <DisplayError error={error.message} />
 
   return (
     <div className="flex min-h-screen">
@@ -67,7 +47,11 @@ export default function Layout({ children }: Props) {
             selectedKey={selectedRoom}
             onSelectionChange={handleSelectionChange}
           >
-            {roomItems}
+            {user.roomMembers.map(({ rooms }) => (
+              <AutocompleteItem key={rooms.id} value={rooms.id}>
+                {rooms.name}
+              </AutocompleteItem>
+            ))}
           </Autocomplete>
         ) : (
           <NoRoom compact />
