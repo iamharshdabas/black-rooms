@@ -2,6 +2,8 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Snippet } from "@nextui-org/snippet"
+import { Button } from "@nextui-org/button"
+import { useRouter } from "next/navigation"
 
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { useQueryRoomByRoomId } from "@/hooks/room/query"
@@ -14,6 +16,7 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
+  const router = useRouter()
   const { userId: clerkId } = useAuth()
   const {
     data: user,
@@ -39,7 +42,7 @@ export default function Page({ params }: Props) {
   if (room?.ownerId === user?.id) {
     return (
       <>
-        <div>Owner</div>
+        <Button onPress={() => router.push(`/room/${params.id}/edit`)}>Edit</Button>
         <Snippet className="sm:hidden" size="sm" symbol="ID" variant="bordered">
           {room?.id}
         </Snippet>
