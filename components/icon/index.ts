@@ -1,5 +1,6 @@
 export * from "./arrows action/login-3"
 export * from "./electronic, devices/gamepad"
+export * from "./essentional, ui/add"
 export * from "./essentional, ui/home-2"
 export * from "./github"
 export * from "./google"

@@ -2,11 +2,14 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete"
-import { Divider } from "@nextui-org/divider"
+import { cn } from "@nextui-org/theme"
 import { usePathname, useRouter } from "next/navigation"
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
+import { Button } from "@nextui-org/button"
 
-import { DisplayError, DisplayLoading, NoRoom } from "@/components/ui"
+import { AddIcon, Home2Icon, Login3Icon } from "@/components/icon"
+import { DisplayError, DisplayLoading, DoubleDivider } from "@/components/ui"
+import { subtitle, url } from "@/config"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
 
 type Props = {
@@ -35,30 +38,58 @@ export default function Layout({ children }: Props) {
     [router],
   )
 
+  const noRooms = user?.roomMembers.length === 0
+
   if (isLoading) return <DisplayLoading />
   if (isError) return <DisplayError error={error.message} />
 
   return (
     <div className="flex min-h-screen">
       <div className="w-full max-w-xs p-4">
-        {user?.roomMembers ? (
-          <Autocomplete
-            label="Select room"
-            selectedKey={selectedRoom}
-            onSelectionChange={handleSelectionChange}
-          >
-            {user.roomMembers.map(({ rooms }) => (
-              <AutocompleteItem key={rooms.id} value={rooms.id}>
-                {rooms.name}
-              </AutocompleteItem>
-            ))}
-          </Autocomplete>
+        {noRooms ? (
+          <h2 className={subtitle({ className: "lg:text-lg" })}>
+            Looks like you don&apos;t have any room
+          </h2>
         ) : (
-          <NoRoom compact />
+          user && (
+            <Autocomplete
+              label="Select room"
+              labelPlacement="outside"
+              selectedKey={selectedRoom}
+              size="lg"
+              startContent={<Home2Icon />}
+              variant="bordered"
+              onSelectionChange={handleSelectionChange}
+            >
+              {user.roomMembers.map(({ rooms }) => (
+                <AutocompleteItem key={rooms.id} value={rooms.id}>
+                  {rooms.name}
+                </AutocompleteItem>
+              ))}
+            </Autocomplete>
+          )
         )}
+        <div className={cn("flex gap-1 py-2", noRooms && "flex-col")}>
+          <Button
+            fullWidth
+            startContent={<AddIcon />}
+            variant="ghost"
+            onPress={() => router.push(url.room.create)}
+          >
+            Create {noRooms && "your first room"}
+          </Button>
+          {noRooms && <DoubleDivider />}
+          <Button
+            fullWidth
+            startContent={<Login3Icon />}
+            variant="ghost"
+            onPress={() => router.push(url.room.explore)}
+          >
+            Join {noRooms && "your first room"}
+          </Button>
+        </div>
       </div>
-      <Divider orientation="vertical" />
-      <div className="flex-grow p-4">{children}</div>
+      <div className="flex-grow border-l border-divider p-4">{children}</div>
     </div>
   )
 }

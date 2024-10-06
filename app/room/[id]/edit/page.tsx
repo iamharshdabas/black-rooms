@@ -7,6 +7,7 @@ import { Input } from "@nextui-org/input"
 import { Spacer } from "@nextui-org/spacer"
 import { useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
+import { useRouter } from "next/navigation"
 
 import { RoomCategory } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
@@ -23,6 +24,7 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
+  const router = useRouter()
   const { userId: clerkId } = useAuth()
   const {
     data: user,
@@ -81,6 +83,7 @@ export default function Page({ params }: Props) {
           <Image
             alt="Room Thumbnail"
             src={room?.thumbnail || "https://via.placeholder.com/800x400"}
+            width={1024}
           />
           <Input
             errorMessage={errors.thumbnail?.message}
@@ -113,6 +116,10 @@ export default function Page({ params }: Props) {
             type="submit"
           >
             Submit
+          </Button>
+          <Spacer y={2} />
+          <Button fullWidth onPress={() => router.push(`/room/${params.id}`)}>
+            Back
           </Button>
         </div>
       </div>

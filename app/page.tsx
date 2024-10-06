@@ -16,7 +16,7 @@ export default function Page() {
 
   useEffect(() => {
     if (isSignedIn) {
-      router.push(url.room.base)
+      router.push(url.room.explore)
     }
   }, [isSignedIn])
 

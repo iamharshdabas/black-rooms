@@ -5,10 +5,13 @@ import { Button } from "@nextui-org/button"
 import { Snippet } from "@nextui-org/snippet"
 import { useRouter } from "next/navigation"
 import { useMemo } from "react"
+import { Image } from "@nextui-org/image"
+import { Chip } from "@nextui-org/chip"
 
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { useQueryRoomByRoomId } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
+import { subtitle, title } from "@/config"
 
 type Props = {
   params: {
@@ -41,14 +44,33 @@ export default function Page({ params }: Props) {
   if (isError) return <DisplayError error={errorMessage} />
 
   return (
-    <>
-      {isOwner && <Button onPress={() => router.push(`/room/${params.id}/edit`)}>Edit</Button>}
-      <Snippet className="sm:hidden" size="sm" symbol="ID" variant="bordered">
-        {room?.id}
-      </Snippet>
-      <Snippet className="hidden sm:inline-flex" symbol="ID" variant="bordered">
-        {room?.id}
-      </Snippet>
-    </>
+    <div className="flex flex-col gap-4">
+      {room?.thumbnail && (
+        <div className="flex justify-center">
+          <Image src={room?.thumbnail} width={1024} />
+        </div>
+      )}
+
+      <div className="flex flex-wrap items-center gap-4">
+        {isOwner && (
+          <Button color="primary" onPress={() => router.push(`/room/${params.id}/edit`)}>
+            Edit
+          </Button>
+        )}
+        <Snippet className="sm:hidden" size="sm" symbol="ID" variant="bordered">
+          {room?.id}
+        </Snippet>
+        <Snippet className="hidden sm:inline-flex" symbol="ID" variant="bordered">
+          {room?.id}
+        </Snippet>
+        <Chip className="py-6" radius="md" size="lg" variant="bordered">
+          <span className="font-medium uppercase">{room?.roomSubCategories.name}</span>
+          <span className="pl-2 font-light">{room?.roomSubCategories.description}</span>
+        </Chip>
+      </div>
+
+      <h1 className={title()}>{room?.name}</h1>
+      <h2 className={subtitle()}>{room?.description}</h2>
+    </div>
   )
 }
