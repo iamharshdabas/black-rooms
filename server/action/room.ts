@@ -2,12 +2,22 @@
 
 import { eq } from "drizzle-orm"
 
-import { Room, RoomInsert, roomSubCategories, rooms } from "../schema"
+import { Room, RoomInsert, roomMembers, roomSubCategories, rooms } from "../schema"
 
 import { db } from "@/server/db"
 
 export async function createRoomAction({ name, ownerId, subCategoryId }: RoomInsert) {
   return await db.insert(rooms).values({ name, ownerId, subCategoryId }).returning({ id: rooms.id })
+}
+
+export async function createRoomMemberAction({
+  roomId,
+  userId,
+}: {
+  roomId: string
+  userId: string
+}) {
+  await db.insert(roomMembers).values({ roomId, userId }).execute()
 }
 
 export async function updateRoomAction({ id, name, description, thumbnail, subCategoryId }: Room) {

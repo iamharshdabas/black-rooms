@@ -13,7 +13,6 @@ type Props = {
   children: ReactNode
 }
 
-// TODO: get room if the user is a member of a room
 export default function Layout({ children }: Props) {
   const router = useRouter()
   const pathname = usePathname()
@@ -43,9 +42,9 @@ export default function Layout({ children }: Props) {
 
   const roomItems = useMemo(
     () =>
-      user?.rooms?.map((room) => (
-        <AutocompleteItem key={room.id} value={room.id}>
-          {room.name}
+      user?.roomMembers?.map((user) => (
+        <AutocompleteItem key={user.rooms.id} value={user.rooms.id}>
+          {user.rooms.name}
         </AutocompleteItem>
       )) || [],
     [user],
@@ -62,7 +61,7 @@ export default function Layout({ children }: Props) {
   return (
     <div className="flex min-h-screen">
       <div className="w-full max-w-xs p-4">
-        {user?.rooms ? (
+        {user?.roomMembers ? (
           <Autocomplete
             label="Select room"
             selectedKey={selectedRoom}

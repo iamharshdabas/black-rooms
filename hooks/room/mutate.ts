@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 
 import { useQueryUserByClerkId } from "../user/query"
 
-import { createRoomAction, updateRoomAction } from "@/server/action/room"
+import { createRoomAction, createRoomMemberAction, updateRoomAction } from "@/server/action/room"
 import { Room } from "@/server/schema"
 
 export type CreateRoom = {
@@ -25,6 +25,8 @@ export const useMutationCreateRoom = (clerkId: string) => {
         ownerId: user?.id,
         subCategoryId: data.subCategoryId,
       })
+
+      await createRoomMemberAction({ roomId: room[0].id, userId: user.id })
 
       return room[0].id
     },

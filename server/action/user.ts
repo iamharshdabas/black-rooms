@@ -13,7 +13,11 @@ export async function getUserByClerkIdAction(clerkId: string) {
   return await db.query.users.findFirst({
     where: eq(users.clerkId, clerkId),
     with: {
-      rooms: true,
+      roomMembers: {
+        with: {
+          rooms: true,
+        },
+      },
     },
   })
 }
