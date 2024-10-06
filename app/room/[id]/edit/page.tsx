@@ -13,8 +13,8 @@ import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title } from "@/config"
 import { useQueryRoomByRoomId } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
-import { updateRoomAction } from "@/server/action/room"
 import { Room } from "@/server/schema"
+import { useMutationUpdateRoom } from "@/hooks/room/mutate"
 
 type Props = {
   params: {
@@ -44,6 +44,7 @@ export default function Page({ params }: Props) {
     watch,
     formState: { errors },
   } = useForm<Room>({ defaultValues: room })
+  const { mutate, isPending, isError, error } = useMutationUpdateRoom()
 
   const subcategory = watch("subCategoryId")
 
@@ -52,13 +53,8 @@ export default function Page({ params }: Props) {
     [setValue],
   )
 
-  // TODO: use mutation
-  async function onSubmit(data: Room) {
-    try {
-      await updateRoomAction(data)
-    } catch (err) {
-      console.error(err)
-    }
+  const onSubmit = (data: Room) => {
+    mutate(data)
   }
 
   if (isUserLoading || isRoomLoading) {
@@ -79,8 +75,8 @@ export default function Page({ params }: Props) {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex gap-4">
-        <div className="flex flex-grow flex-col items-center gap-4">
+      <div className="flex justify-around gap-4">
+        <div className="flex flex-col items-center gap-4">
           <Image
             alt="Room Thumbnail"
             src={room?.thumbnail || "https://via.placeholder.com/800x400"}
@@ -104,10 +100,17 @@ export default function Page({ params }: Props) {
             {...register("description")}
           />
         </div>
-        <div>
+        <div className="w-full max-w-sm">
           <RoomCategory selected={subcategory} setSelected={handleSetSelected} />
           <Spacer y={4} />
-          <Button fullWidth color="primary" type="submit">
+          {isError && <DisplayError error={error.message} />}
+          <Button
+            fullWidth
+            color="primary"
+            disabled={isPending}
+            isLoading={isPending}
+            type="submit"
+          >
             Submit
           </Button>
         </div>

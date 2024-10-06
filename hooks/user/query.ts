@@ -6,5 +6,6 @@ export function useQueryUserByClerkId(id: string) {
   return useQuery({
     queryKey: ["user", id],
     queryFn: async () => await getUserByClerkIdAction(id),
+    enabled: !!id,
   })
 }
