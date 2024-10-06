@@ -1,63 +1,64 @@
 import { Accordion, AccordionItem } from "@nextui-org/accordion"
 import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
-import { useCallback, useEffect, useMemo, useState } from "react"
+import { useCallback, useMemo } from "react"
 
 import { title } from "@/config"
-import { getRoomCategories, getRoomSubCategories } from "@/server/action/room"
-import { RoomCategory as RoomCategorySchema, RoomSubCategory } from "@/server/schema"
+import { RoomSubCategory } from "@/server/schema"
+import { useQueryRoomSubCategories } from "@/hooks/room/query"
+import { DisplayError, DisplayLoading } from "@/components/ui"
 
 type Props = {
   selected: string
   setSelected: (selected: string) => void
 }
 
-// PERF: use react query to support suspense
 export function RoomCategory({ selected, setSelected }: Props) {
-  const [subCategories, setSubCategories] = useState<RoomSubCategory[]>([])
-  const [categories, setCategories] = useState<RoomCategorySchema[]>([])
-  const [gernal, setGernal] = useState<RoomSubCategory>()
+  const { data: categories, isLoading, isError, error } = useQueryRoomSubCategories()
 
-  useEffect(() => {
-    async function fetchCategories() {
-      const result = await getRoomSubCategories()
-      const maincategories = await getRoomCategories()
-      const mainCategoriesFiltered = maincategories.filter(
-        (item, index, self) => index === self.findIndex((selfItem) => selfItem.id === item.id),
-      )
-
-      setSubCategories(result)
-      setCategories(mainCategoriesFiltered)
-      setGernal(result.find((subcategory) => subcategory.name === "Gernal"))
-    }
-    fetchCategories()
-  }, [])
+  const gernal = categories?.find((subcategory) => subcategory.name === "Gernal")
 
   const handleValueChange = (id: string) => {
-    const subcategory = subCategories.find((item) => item.id === id)
+    const category = categories?.find((item) => item.id === id)
 
-    if (subcategory) setSelected(subcategory.id)
+    if (category) setSelected(category.id)
   }
 
+  const uniqueCategories = useMemo(() => {
+    const uniqueCategories = categories?.map((category) => category.roomCategories)
+
+    return uniqueCategories?.filter(
+      (category, index) => uniqueCategories.findIndex((item) => item.id === category.id) === index,
+    )
+  }, [categories])
+
   const filteredCategories = useMemo(
-    () => categories.filter((category) => category.id !== gernal?.categoryId),
-    [categories, gernal],
+    () => uniqueCategories?.filter((category) => category.name !== "Gernal"),
+    [uniqueCategories],
   )
 
   const filteredSubcategories = useCallback(
-    (categoryId: string) =>
-      subCategories.filter(
-        (subcategory) => subcategory.categoryId === categoryId && subcategory.name !== "Gernal",
-      ),
-    [subCategories],
+    (categoryId: string) => {
+      return (
+        categories?.filter(
+          (subcategory) => subcategory.categoryId === categoryId && subcategory.name !== "Gernal",
+        ) || []
+      )
+    },
+    [categories],
   )
 
   function selectedSubcategory() {
-    return subCategories.find((subcategory) => subcategory.id === selected)
+    return categories?.find((subcategory) => subcategory.id === selected)
   }
 
-  console.log(categories)
-  console.log(subCategories)
+  if (isLoading) {
+    return <DisplayLoading />
+  }
+
+  if (isError) {
+    return <DisplayError error={error.message} />
+  }
 
   return (
     <RadioGroup
@@ -66,7 +67,7 @@ export function RoomCategory({ selected, setSelected }: Props) {
       value={selected}
       onValueChange={handleValueChange}
     >
-      {selected ? (
+      {selected && filteredCategories ? (
         <h1 className={title({ size: "sm", className: "pb-4" })}>
           Selected category <span className="text-success">{selectedSubcategory()?.name}</span>
         </h1>
@@ -80,7 +81,7 @@ export function RoomCategory({ selected, setSelected }: Props) {
       )}
 
       <Accordion itemClasses={{ content: "flex flex-col gap-4" }} variant="splitted">
-        {filteredCategories.map((category) => (
+        {(filteredCategories || []).map((category) => (
           <AccordionItem key={category.id} title={category.name}>
             {filteredSubcategories(category.id).map((subcategory) => (
               <Radio key={subcategory.id} subcategory={subcategory} />

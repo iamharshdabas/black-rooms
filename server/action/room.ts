@@ -2,12 +2,12 @@
 
 import { eq } from "drizzle-orm"
 
-import { Room, RoomInsert, roomCategories, roomSubCategories, rooms } from "../schema"
+import { Room, RoomInsert, roomSubCategories, rooms } from "../schema"
 
 import { db } from "@/server/db"
 
-export async function createRoom({ name, ownerId, subCategoryId }: RoomInsert) {
-  return await db.insert(rooms).values({ name, ownerId, subCategoryId }).returning()
+export async function createRoomAction({ name, ownerId, subCategoryId }: RoomInsert) {
+  return await db.insert(rooms).values({ name, ownerId, subCategoryId }).returning({ id: rooms.id })
 }
 
 export async function updateRoomAction({ id, name, description, thumbnail, subCategoryId }: Room) {
@@ -18,18 +18,19 @@ export async function updateRoomAction({ id, name, description, thumbnail, subCa
     .execute()
 }
 
-export async function getRoomCategories() {
-  return await db.select().from(roomCategories).orderBy(roomCategories.name)
+export async function getRoomSubCategoriesAction() {
+  return await db.query.roomSubCategories.findMany({
+    orderBy: roomSubCategories.name,
+    with: { roomCategories: true },
+  })
 }
 
-export async function getRoomSubCategories() {
-  return await db.select().from(roomSubCategories).orderBy(roomSubCategories.name)
-}
-
-export async function getRoomByRoomId(id: string) {
-  return await db.select().from(rooms).where(eq(rooms.id, id))
-}
-
-export async function getRoomByOwnerId(userId: string) {
-  return await db.select().from(rooms).where(eq(rooms.ownerId, userId))
+export async function getRoomByRoomIdAction(id: string) {
+  return await db.query.rooms.findFirst({
+    where: eq(rooms.id, id),
+    with: {
+      users: true,
+      roomSubCategories: true,
+    },
+  })
 }

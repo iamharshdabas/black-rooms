@@ -10,9 +10,9 @@ export const users = pgTable("users", {
   joinedAt: timestamp("joined_at").defaultNow().notNull(),
 })
 
-export const usersRelation = relations(users, ({ one }) => ({
-  rooms: one(rooms),
-  roomMembers: one(roomMembers),
+export const usersRelation = relations(users, ({ many }) => ({
+  rooms: many(rooms),
+  roomMembers: many(roomMembers),
 }))
 
 export type User = typeof users.$inferSelect

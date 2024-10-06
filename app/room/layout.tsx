@@ -2,14 +2,12 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete"
-import { useSearchParams, useRouter } from "next/navigation"
-import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 import { Divider } from "@nextui-org/divider"
+import { usePathname, useRouter } from "next/navigation"
+import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
-import { NoRoom } from "@/components/ui"
-import { getRoomByOwnerId } from "@/server/action/room"
-import { getUserByClerkId } from "@/server/action/user"
-import { Room } from "@/server/schema"
+import { DisplayError, DisplayLoading, NoRoom } from "@/components/ui"
+import { useQueryUserByClerkId } from "@/hooks/user/query"
 
 type Props = {
   children: ReactNode
@@ -17,33 +15,21 @@ type Props = {
 
 // TODO: get room if the user is a member of a room
 export default function Layout({ children }: Props) {
-  const searchParams = useSearchParams()
-  const idParam = searchParams.get("id")
   const router = useRouter()
+  const pathname = usePathname()
   const { userId: clerkId } = useAuth()
-  const [rooms, setRooms] = useState<Room[]>()
-  const [selectedRoom, setSelectedRoom] = useState<string | null>(idParam)
+
+  // Extract room ID using a regular expression
+  // this will also extract 'create' and 'explore'
+  // due to 'room/create' and 'room/explore' paths
+  const roomIdFromPath = pathname.match(/room\/([^/]+)/)?.[1] || null
+
+  const [selectedRoom, setSelectedRoom] = useState<string | null>(roomIdFromPath)
+  const { data: user, isLoading, isError, error } = useQueryUserByClerkId(clerkId!)
 
   useEffect(() => {
-    async function getRoom() {
-      if (clerkId) {
-        try {
-          const user = await getUserByClerkId(clerkId)
-          const room = await getRoomByOwnerId(user[0].id)
-
-          if (!idParam && room.length > 0) {
-            setSelectedRoom(room[0].id)
-            router.push(`/room/${room[0].id}`)
-          }
-          setRooms(room)
-        } catch (error) {
-          console.error("Failed to fetch rooms:", error)
-        }
-      }
-    }
-
-    getRoom()
-  }, [clerkId])
+    setSelectedRoom(roomIdFromPath)
+  }, [roomIdFromPath])
 
   const handleSelectionChange = useCallback(
     (key: Key | null) => {
@@ -57,19 +43,31 @@ export default function Layout({ children }: Props) {
 
   const roomItems = useMemo(
     () =>
-      rooms?.map((room) => (
+      user?.rooms?.map((room) => (
         <AutocompleteItem key={room.id} value={room.id}>
           {room.name}
         </AutocompleteItem>
       )) || [],
-    [rooms],
+    [user],
   )
+
+  if (isLoading) {
+    return <DisplayLoading />
+  }
+
+  if (isError) {
+    return <DisplayError error={error.message} />
+  }
 
   return (
     <div className="flex min-h-screen">
       <div className="w-full max-w-xs p-4">
-        {rooms?.length !== 0 && rooms ? (
-          <Autocomplete selectedKey={selectedRoom} onSelectionChange={handleSelectionChange}>
+        {user?.rooms ? (
+          <Autocomplete
+            label="Select room"
+            selectedKey={selectedRoom}
+            onSelectionChange={handleSelectionChange}
+          >
             {roomItems}
           </Autocomplete>
         ) : (

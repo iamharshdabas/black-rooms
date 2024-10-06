@@ -13,12 +13,13 @@ import { z } from "zod"
 
 import { AuthCode, AuthEmail, AuthPassword } from "@/components/form/auth"
 import { subtitle, url } from "@/config"
-import { createUser } from "@/server/action/user"
+import { createUserAction } from "@/server/action/user"
 import { SignUp, SignUpVerification } from "@/types"
 
 type SignUpForm = z.infer<typeof SignUp>
 type SignUpVerificationForm = z.infer<typeof SignUpVerification>
 
+// TODO: use mutation
 export default function Page() {
   const { isLoaded, signUp, setActive } = useSignUp()
   const [error, setError] = useState("")
@@ -63,7 +64,7 @@ export default function Page() {
         await setActive({ session: completeSignUp.createdSessionId })
 
         if (completeSignUp.createdUserId) {
-          await createUser(completeSignUp.createdUserId)
+          await createUserAction(completeSignUp.createdUserId)
         }
 
         router.push(url.room.create)

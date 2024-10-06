@@ -2,11 +2,10 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Snippet } from "@nextui-org/snippet"
-import { useEffect, useState } from "react"
 
-import { getRoomByRoomId } from "@/server/action/room"
-import { getUserByClerkId } from "@/server/action/user"
-import { Room, User } from "@/server/schema"
+import { DisplayError, DisplayLoading } from "@/components/ui"
+import { useQueryRoomByRoomId } from "@/hooks/room/query"
+import { useQueryUserByClerkId } from "@/hooks/user/query"
 
 type Props = {
   params: {
@@ -15,32 +14,27 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
-  const [room, setRoom] = useState<Room | undefined>()
-  const [user, setUser] = useState<User>()
   const { userId: clerkId } = useAuth()
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+    error: userError,
+  } = useQueryUserByClerkId(clerkId!)
+  const {
+    data: room,
+    isLoading: isRoomLoading,
+    isError: isRoomError,
+    error: roomError,
+  } = useQueryRoomByRoomId(params.id)
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const room = await getRoomByRoomId(params.id)
+  if (isUserLoading || isRoomLoading) {
+    return <DisplayLoading />
+  }
 
-        if (clerkId) {
-          const user = await getUserByClerkId(clerkId)
-
-          setUser(user[0])
-        }
-
-        if (Array.isArray(room)) {
-          if (room.length === 0) throw new Error("Room not found")
-          setRoom(room[0])
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    fetchData()
-  }, [params.id])
+  if (isUserError || isRoomError) {
+    return <DisplayError error={userError?.message + " " + roomError?.message} />
+  }
 
   if (room?.ownerId === user?.id) {
     return (

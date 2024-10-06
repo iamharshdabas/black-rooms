@@ -5,14 +5,16 @@ import { Button } from "@nextui-org/button"
 import { Image } from "@nextui-org/image"
 import { Input } from "@nextui-org/input"
 import { Spacer } from "@nextui-org/spacer"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 
 import { RoomCategory } from "@/components/form/room"
+import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title } from "@/config"
-import { getRoomByRoomId, updateRoomAction } from "@/server/action/room"
-import { getUserByClerkId } from "@/server/action/user"
-import { Room, User } from "@/server/schema"
+import { useQueryRoomByRoomId } from "@/hooks/room/query"
+import { useQueryUserByClerkId } from "@/hooks/user/query"
+import { updateRoomAction } from "@/server/action/room"
+import { Room } from "@/server/schema"
 
 type Props = {
   params: {
@@ -22,54 +24,49 @@ type Props = {
 
 export default function Page({ params }: Props) {
   const { userId: clerkId } = useAuth()
-  const [room, setRoom] = useState<Room | undefined>()
-  const [user, setUser] = useState<User>()
+  const {
+    data: user,
+    isLoading: isUserLoading,
+    isError: isUserError,
+    error: userError,
+  } = useQueryUserByClerkId(clerkId!)
+  const {
+    data: room,
+    isLoading: isRoomLoading,
+    isError: isRoomError,
+    error: roomError,
+  } = useQueryRoomByRoomId(params.id)
+
   const {
     register,
     handleSubmit,
     setValue,
-    reset,
     watch,
     formState: { errors },
-  } = useForm<Room>()
+  } = useForm<Room>({ defaultValues: room })
 
   const subcategory = watch("subCategoryId")
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const rooms = await getRoomByRoomId(params.id)
-
-        if (clerkId) {
-          const user = await getUserByClerkId(clerkId)
-
-          setUser(user[0])
-        }
-
-        if (Array.isArray(rooms)) {
-          if (rooms.length === 0) throw new Error("Room not found")
-          setRoom(rooms[0])
-          reset(rooms[0])
-        }
-      } catch (err) {
-        console.error(err)
-      }
-    }
-
-    fetchData()
-  }, [params.id, reset])
 
   const handleSetSelected = useCallback(
     (subcategory: string) => setValue("subCategoryId", subcategory),
     [setValue],
   )
 
+  // TODO: use mutation
   async function onSubmit(data: Room) {
     try {
       await updateRoomAction(data)
     } catch (err) {
       console.error(err)
     }
+  }
+
+  if (isUserLoading || isRoomLoading) {
+    return <DisplayLoading />
+  }
+
+  if (isUserError || isRoomError) {
+    return <DisplayError error={userError?.message + " " + roomError?.message} />
   }
 
   if (room?.ownerId !== user?.id) {
@@ -86,7 +83,7 @@ export default function Page({ params }: Props) {
         <div className="flex flex-grow flex-col items-center gap-4">
           <Image
             alt="Room Thumbnail"
-            src={room?.thumbnail || "https://via.placeholder.com/1000x500"}
+            src={room?.thumbnail || "https://via.placeholder.com/800x400"}
           />
           <Input
             errorMessage={errors.thumbnail?.message}

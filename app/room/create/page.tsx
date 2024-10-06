@@ -4,7 +4,6 @@ import { useAuth } from "@clerk/nextjs"
 import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { Spacer } from "@nextui-org/spacer"
-import { useRouter } from "next/navigation"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 
@@ -12,52 +11,35 @@ import { RoomCategory } from "@/components/form/room"
 import { Home2Icon } from "@/components/icon"
 import { FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
-import { createRoom } from "@/server/action/room"
-import { getUserByClerkId } from "@/server/action/user"
-
-interface CreateRoomForm {
-  roomName: string
-  selected: string
-}
+import { CreateRoom, useMutationCreateRoom } from "@/hooks/room/mutate"
 
 export default function Page() {
   const { userId: clerkId } = useAuth()
-  const router = useRouter()
-  const { register, handleSubmit, setValue, watch } = useForm<CreateRoomForm>({
+  const { register, handleSubmit, setValue, watch } = useForm<CreateRoom>({
     defaultValues: {
-      roomName: "",
-      selected: undefined,
+      name: "",
+      subCategoryId: undefined,
     },
   })
 
-  const selected = watch("selected")
+  const selected = watch("subCategoryId")
+  const mutation = useMutationCreateRoom(clerkId!)
 
-  function onSubmit(data: CreateRoomForm) {
-    async function create() {
-      if (clerkId === null || clerkId === undefined) throw new Error("Auth is not loaded")
-      const user = await getUserByClerkId(clerkId)
-      const room = await createRoom({
-        name: data.roomName,
-        ownerId: user[0].id,
-        subCategoryId: data.selected,
-      })
-
-      if (room) {
-        router.push(`/room/${room[0].id}`)
-      }
-    }
-
-    create()
+  const onSubmit = (data: CreateRoom) => {
+    mutation.mutate({
+      name: data.name,
+      subCategoryId: data.subCategoryId,
+    })
   }
 
   const handleSetSelected = useCallback(
-    (subcategory: string) => setValue("selected", subcategory),
+    (subcategory: string) => setValue("subCategoryId", subcategory),
     [setValue],
   )
 
   return (
     <form
-      className="flex w-full flex-col gap-16 pt-24 lg:flex-row"
+      className="flex w-full flex-col gap-16 pt-24 xl:flex-row"
       onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex w-full flex-col items-center">
@@ -65,7 +47,7 @@ export default function Page() {
         <Spacer y={8} />
         <div className="w-full max-w-md space-y-2">
           <Input
-            {...register("roomName", { required: true })}
+            {...register("name", { required: true })}
             isRequired
             endContent={<Home2Icon />}
             label="Room name"
@@ -77,7 +59,7 @@ export default function Page() {
           </Button>
         </div>
       </div>
-      <div className="flex w-full justify-center lg:max-w-lg xl:max-w-xl 2xl:max-w-2xl">
+      <div className="flex w-full justify-center xl:max-w-xl 2xl:max-w-2xl">
         <RoomCategory selected={selected} setSelected={handleSetSelected} />
       </div>
     </form>
