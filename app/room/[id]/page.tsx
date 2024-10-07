@@ -11,7 +11,8 @@ import { Chip } from "@nextui-org/chip"
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { useQueryRoomByRoomId } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
-import { subtitle, title } from "@/config"
+import { title } from "@/config"
+import { Editor } from "@/components/form/room"
 
 type Props = {
   params: {
@@ -70,7 +71,7 @@ export default function Page({ params }: Props) {
       </div>
 
       <h1 className={title()}>{room?.name}</h1>
-      <h2 className={subtitle()}>{room?.description}</h2>
+      {room?.description && <Editor content={room?.description} />}
     </div>
   )
 }

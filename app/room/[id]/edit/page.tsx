@@ -9,7 +9,7 @@ import { useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
 import { useRouter } from "next/navigation"
 
-import { RoomCategory } from "@/components/form/room"
+import { Editor, RoomCategory } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title } from "@/config"
 import { useMutationUpdateRoom } from "@/hooks/room/mutate"
@@ -54,6 +54,7 @@ export default function Page({ params }: Props) {
   } = useMutationUpdateRoom()
 
   const subcategory = watch("subCategoryId")
+  const description = watch("description") || ""
   const isLoading = isUserLoading || isRoomLoading
   const isError = isUserError || isRoomError
   const errorMessage = userError?.message + " " + roomError?.message
@@ -62,6 +63,10 @@ export default function Page({ params }: Props) {
   const onSubmit = (data: Room) => mutate(data)
   const handleSetSelected = useCallback(
     (subcategory: string) => setValue("subCategoryId", subcategory),
+    [setValue],
+  )
+  const handleSetDescription = useCallback(
+    (description: string) => setValue("description", description),
     [setValue],
   )
 
@@ -97,12 +102,7 @@ export default function Page({ params }: Props) {
             label="Name"
             {...register("name")}
           />
-          <Input
-            errorMessage={errors.description?.message}
-            isInvalid={!!errors.description}
-            label="Description"
-            {...register("description")}
-          />
+          <Editor content={description} onChange={handleSetDescription} />
         </div>
         <div className="w-full max-w-sm">
           <RoomCategory selected={subcategory} setSelected={handleSetSelected} />
