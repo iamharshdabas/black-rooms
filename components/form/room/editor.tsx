@@ -75,6 +75,16 @@ export function Editor({ content, onChange }: Props) {
       isActive: editor.isActive("orderedList"),
       toggle: () => editor.chain().focus().toggleOrderedList().run(),
     },
+    {
+      label: "Undo",
+      isActive: false,
+      toggle: () => editor.chain().focus().undo().run(),
+    },
+    {
+      label: "Redo",
+      isActive: false,
+      toggle: () => editor.chain().focus().redo().run(),
+    },
   ]
 
   return (
