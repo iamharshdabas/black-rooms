@@ -24,6 +24,7 @@ export function Editor({ content, onChange }: Props) {
       onUpdate: ({ editor }: { editor: EditorType }) => {
         if (onChange) onChange(editor.getHTML())
       },
+      editable: !!onChange,
       immediatelyRender: false,
     }),
     [content, onChange],
