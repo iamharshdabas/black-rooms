@@ -63,7 +63,7 @@ export function Navbar() {
 
       <NavbarContent className="hidden sm:flex" justify="end">
         <NavbarItem>
-          <ThemeSwitch />
+          <ThemeSwitch isIconOnly />
         </NavbarItem>
         <NavbarItem>
           <SignedOut>

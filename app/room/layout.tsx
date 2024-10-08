@@ -8,8 +8,9 @@ import { HouseIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
 
-import { DisplayError, DisplayLoading, DoubleDivider } from "@/components/ui"
-import { subtitle, url } from "@/config"
+import { LogoIcon } from "@/components/logo"
+import { DisplayError, DisplayLoading, DoubleDivider, ThemeSwitch } from "@/components/ui"
+import { site, subtitle, url } from "@/config"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
 
 type Props = {
@@ -44,8 +45,12 @@ export default function Layout({ children }: Props) {
   if (isError) return <DisplayError error={error.message} />
 
   return (
-    <div className="flex min-h-screen">
-      <div className="w-full max-w-xs p-4">
+    <div className="flex h-screen">
+      <div className="flex max-w-xs flex-col overflow-y-scroll p-4">
+        <div className="flex gap-2 pb-4">
+          <LogoIcon width="3em" />
+          <h2 className={subtitle()}>{site.name}</h2>
+        </div>
         {noRooms ? (
           <h2 className={subtitle({ className: "lg:text-lg" })}>
             Looks like you don&apos;t have any room
@@ -78,8 +83,12 @@ export default function Layout({ children }: Props) {
             Join {noRooms && "your first room"}
           </Button>
         </div>
+        <div className="flex-grow" />
+        <div>
+          <ThemeSwitch fullWidth />
+        </div>
       </div>
-      <div className="flex-grow border-l border-divider p-4">{children}</div>
+      <div className="flex-grow overflow-y-scroll border-l border-divider p-4">{children}</div>
     </div>
   )
 }
