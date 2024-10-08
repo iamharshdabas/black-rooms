@@ -4,6 +4,7 @@ import { Button } from "@nextui-org/button"
 import { Spacer } from "@nextui-org/spacer"
 import { useEditor, EditorContent, Editor as EditorType } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import Link from "@tiptap/extension-link"
 import { useMemo } from "react"
 
 type Props = {
@@ -14,7 +15,7 @@ type Props = {
 export function Editor({ content, onChange }: Props) {
   const editorConfig = useMemo(
     () => ({
-      extensions: [StarterKit],
+      extensions: [StarterKit, Link],
       editorProps: {
         attributes: {
           class: "rounded-2xl bg-content1 p-4 focus:outline-none focus:ring-2 focus:ring-divider",
@@ -49,6 +50,20 @@ export function Editor({ content, onChange }: Props) {
       label: "Strike",
       isActive: editor.isActive("strike"),
       toggle: () => editor.chain().focus().toggleStrike().run(),
+    },
+    {
+      label: "Link",
+      isActive: editor.isActive("link"),
+      toggle: () => {
+        let url = prompt("Enter the URL")
+
+        if (url) {
+          if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "https://" + url
+          }
+          editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run()
+        }
+      },
     },
     {
       label: "Code Block",
