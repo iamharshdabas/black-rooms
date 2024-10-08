@@ -4,10 +4,9 @@ import { SwitchProps, useSwitch } from "@nextui-org/switch"
 import { useIsSSR } from "@react-aria/ssr"
 import { VisuallyHidden } from "@react-aria/visually-hidden"
 import clsx from "clsx"
+import { MoonStarIcon, SunIcon } from "lucide-react"
 import { useTheme } from "next-themes"
 import { FC } from "react"
-
-import { CloudMoonIcon, CloudSunIcon } from "../icon"
 
 export interface Props {
   className?: string
@@ -60,7 +59,7 @@ export const ThemeSwitch: FC<Props> = ({ className, classNames }) => {
           ),
         })}
       >
-        {!isSelected || isSSR ? <CloudSunIcon /> : <CloudMoonIcon />}
+        {!isSelected || isSSR ? <MoonStarIcon /> : <SunIcon />}
       </div>
     </Component>
   )

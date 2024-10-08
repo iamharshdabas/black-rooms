@@ -10,10 +10,11 @@ import {
   Navbar as NextUINavbar,
 } from "@nextui-org/navbar"
 import { button } from "@nextui-org/theme"
+import { LogInIcon } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
-import { Login3Icon, LogoIcon } from "../icon"
+import { LogoIcon } from "../logo"
 
 import { ThemeSwitch } from "./theme-switch"
 
@@ -22,7 +23,7 @@ import { navItems, subtitle, url } from "@/config"
 function SignInButton() {
   return (
     <Link className={button({ variant: "ghost" })} href={url.signIn}>
-      <Login3Icon />
+      <LogInIcon />
       Sign In
     </Link>
   )

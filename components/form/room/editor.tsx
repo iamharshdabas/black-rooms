@@ -6,6 +6,19 @@ import { useEditor, EditorContent, Editor as EditorType } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import Link from "@tiptap/extension-link"
 import { useMemo } from "react"
+import {
+  BoldIcon,
+  CodeIcon,
+  Heading1Icon,
+  Heading2Icon,
+  ItalicIcon,
+  LinkIcon,
+  ListIcon,
+  ListOrderedIcon,
+  RedoIcon,
+  StrikethroughIcon,
+  UndoIcon,
+} from "lucide-react"
 
 type Props = {
   content?: string
@@ -38,21 +51,25 @@ export function Editor({ content, onChange }: Props) {
   const buttons = [
     {
       label: "Bold",
+      icon: <BoldIcon />,
       isActive: editor.isActive("bold"),
       toggle: () => editor.chain().focus().toggleBold().run(),
     },
     {
       label: "Italic",
+      icon: <ItalicIcon />,
       isActive: editor.isActive("italic"),
       toggle: () => editor.chain().focus().toggleItalic().run(),
     },
     {
       label: "Strike",
+      icon: <StrikethroughIcon />,
       isActive: editor.isActive("strike"),
       toggle: () => editor.chain().focus().toggleStrike().run(),
     },
     {
       label: "Link",
+      icon: <LinkIcon />,
       isActive: editor.isActive("link"),
       toggle: () => {
         let url = prompt("Enter the URL")
@@ -67,53 +84,61 @@ export function Editor({ content, onChange }: Props) {
     },
     {
       label: "Code Block",
+      icon: <CodeIcon />,
       isActive: editor.isActive("codeBlock"),
       toggle: () => editor.chain().focus().toggleCodeBlock().run(),
     },
     {
       label: "Heading 1",
+      icon: <Heading1Icon />,
       isActive: editor.isActive("heading", { level: 1 }),
       toggle: () => editor.chain().focus().toggleHeading({ level: 1 }).toggleBold().run(),
     },
     {
       label: "Heading 2",
+      icon: <Heading2Icon />,
       isActive: editor.isActive("heading", { level: 2 }),
       toggle: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
     },
     {
       label: "Unordered List",
+      icon: <ListIcon />,
       isActive: editor.isActive("bulletList"),
       toggle: () => editor.chain().focus().toggleBulletList().run(),
     },
     {
       label: "Ordered List",
+      icon: <ListOrderedIcon />,
       isActive: editor.isActive("orderedList"),
       toggle: () => editor.chain().focus().toggleOrderedList().run(),
     },
     {
       label: "Undo",
+      icon: <UndoIcon />,
       isActive: false,
       toggle: () => editor.chain().focus().undo().run(),
     },
     {
       label: "Redo",
+      icon: <RedoIcon />,
       isActive: false,
       toggle: () => editor.chain().focus().redo().run(),
     },
   ]
 
   return (
-    <div>
+    <div className="w-full">
       {onChange && (
         <div className="flex flex-wrap gap-2">
-          {buttons.map(({ label, isActive, toggle }) => (
+          {buttons.map(({ icon, isActive, label, toggle }) => (
             <Button
               key={label}
+              isIconOnly
               className={isActive ? "border-primary" : ""}
               variant="bordered"
               onPress={toggle}
             >
-              {label}
+              {icon}
             </Button>
           ))}
         </div>

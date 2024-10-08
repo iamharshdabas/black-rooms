@@ -2,12 +2,12 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete"
+import { Button } from "@nextui-org/button"
 import { cn } from "@nextui-org/theme"
+import { HouseIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { Key, ReactNode, useCallback, useEffect, useMemo, useState } from "react"
-import { Button } from "@nextui-org/button"
 
-import { AddIcon, Home2Icon, Login3Icon } from "@/components/icon"
 import { DisplayError, DisplayLoading, DoubleDivider } from "@/components/ui"
 import { subtitle, url } from "@/config"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
@@ -57,7 +57,7 @@ export default function Layout({ children }: Props) {
               labelPlacement="outside"
               selectedKey={selectedRoom}
               size="lg"
-              startContent={<Home2Icon />}
+              startContent={<HouseIcon />}
               variant="bordered"
               onSelectionChange={handleSelectionChange}
             >
@@ -70,21 +70,11 @@ export default function Layout({ children }: Props) {
           )
         )}
         <div className={cn("flex gap-1 py-2", noRooms && "flex-col")}>
-          <Button
-            fullWidth
-            startContent={<AddIcon />}
-            variant="ghost"
-            onPress={() => router.push(url.room.create)}
-          >
+          <Button fullWidth variant="ghost" onPress={() => router.push(url.room.create)}>
             Create {noRooms && "your first room"}
           </Button>
           {noRooms && <DoubleDivider />}
-          <Button
-            fullWidth
-            startContent={<Login3Icon />}
-            variant="ghost"
-            onPress={() => router.push(url.room.explore)}
-          >
+          <Button fullWidth variant="ghost" onPress={() => router.push(url.room.explore)}>
             Join {noRooms && "your first room"}
           </Button>
         </div>

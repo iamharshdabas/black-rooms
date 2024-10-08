@@ -1,15 +1,14 @@
 import {
-  ChatSquareIcon,
-  DollarIcon,
-  GamepadIcon,
-  HandHeartIcon,
-  Home2Icon,
-  SettingsIcon,
-  UsersGroupIcon,
-  UsersGroupIcon2,
-  VideoLibraryIcon,
-  Widget5Icon,
-} from "@/components/icon"
+  Gamepad2Icon,
+  HandshakeIcon,
+  HouseIcon,
+  IndianRupeeIcon,
+  LayoutDashboardIcon,
+  MessageCircleIcon,
+  TvMinimalPlayIcon,
+  UsersRoundIcon,
+  WrenchIcon,
+} from "lucide-react"
 
 export const price = 99
 
@@ -20,23 +19,23 @@ export const pricingFeatures: Feature = {
   features: [
     {
       title: "One Room",
-      icon: <Home2Icon />,
+      icon: <HouseIcon />,
     },
     {
       title: "All Features",
-      icon: <Widget5Icon />,
+      icon: <LayoutDashboardIcon />,
     },
     {
       title: "Unlimited courses",
-      icon: <VideoLibraryIcon />,
+      icon: <TvMinimalPlayIcon />,
     },
     {
       title: "Unlimited Members",
-      icon: <UsersGroupIcon />,
+      icon: <UsersRoundIcon />,
     },
     {
       title: "2.9% Transaction Fee",
-      icon: <DollarIcon />,
+      icon: <IndianRupeeIcon />,
     },
   ],
 }
@@ -47,27 +46,27 @@ export const createRoomFeatures: Feature = {
   features: [
     {
       title: "Highly engaging",
-      icon: <HandHeartIcon />,
+      icon: <HandshakeIcon />,
     },
     {
       title: "Easy to setup",
-      icon: <SettingsIcon />,
+      icon: <WrenchIcon />,
     },
     {
       title: "Group chat and posts",
-      icon: <ChatSquareIcon />,
+      icon: <MessageCircleIcon />,
     },
     {
       title: "Create teams within Room",
-      icon: <UsersGroupIcon2 />,
+      icon: <UsersRoundIcon />,
     },
     {
       title: "Gamification",
-      icon: <GamepadIcon />,
+      icon: <Gamepad2Icon />,
     },
     {
       title: "Host unlimited courses",
-      icon: <VideoLibraryIcon />,
+      icon: <TvMinimalPlayIcon />,
     },
   ],
 }

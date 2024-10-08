@@ -4,11 +4,11 @@ import { useAuth } from "@clerk/nextjs"
 import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { Spacer } from "@nextui-org/spacer"
+import { HouseIcon } from "lucide-react"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 
 import { RoomCategory } from "@/components/form/room"
-import { Home2Icon } from "@/components/icon"
 import { DisplayError, FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
 import { CreateRoom, useMutationCreateRoom } from "@/hooks/room/mutate"
@@ -43,7 +43,7 @@ export default function Page() {
           <Input
             {...register("name", { required: true })}
             isRequired
-            endContent={<Home2Icon />}
+            endContent={<HouseIcon />}
             label="Room name"
             labelPlacement="outside"
           />
