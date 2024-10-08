@@ -2,17 +2,17 @@
 
 import { useAuth } from "@clerk/nextjs"
 import { Button } from "@nextui-org/button"
+import { Chip } from "@nextui-org/chip"
+import { Image } from "@nextui-org/image"
 import { Snippet } from "@nextui-org/snippet"
 import { useRouter } from "next/navigation"
 import { useMemo } from "react"
-import { Image } from "@nextui-org/image"
-import { Chip } from "@nextui-org/chip"
 
+import { Editor } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
+import { title } from "@/config"
 import { useQueryRoomByRoomId } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
-import { title } from "@/config"
-import { Editor } from "@/components/form/room"
 
 type Props = {
   params: {
@@ -48,7 +48,7 @@ export default function Page({ params }: Props) {
     <div className="flex flex-col gap-4">
       {room?.thumbnail && (
         <div className="flex justify-center">
-          <Image src={room?.thumbnail} width={1024} />
+          <Image isZoomed src={room?.thumbnail} width={1024} />
         </div>
       )}
 

@@ -5,9 +5,9 @@ import { Button } from "@nextui-org/button"
 import { Image } from "@nextui-org/image"
 import { Input } from "@nextui-org/input"
 import { Spacer } from "@nextui-org/spacer"
+import { useRouter } from "next/navigation"
 import { useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
-import { useRouter } from "next/navigation"
 
 import { Editor, RoomCategory } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
@@ -86,6 +86,7 @@ export default function Page({ params }: Props) {
       <div className="flex justify-around gap-4">
         <div className="flex flex-col items-center gap-4">
           <Image
+            isZoomed
             alt="Room Thumbnail"
             src={room?.thumbnail || "https://via.placeholder.com/800x400"}
             width={1024}
