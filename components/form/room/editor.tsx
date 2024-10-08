@@ -103,7 +103,7 @@ export function Editor({ content, onChange }: Props) {
   ]
 
   return (
-    <div className="w-full max-w-6xl">
+    <div>
       {onChange && (
         <div className="flex flex-wrap gap-2">
           {buttons.map(({ label, isActive, toggle }) => (
