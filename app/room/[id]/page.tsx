@@ -11,7 +11,7 @@ import { useMemo } from "react"
 import { Editor } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title } from "@/config"
-import { useQueryRoomByRoomId } from "@/hooks/room/query"
+import { useQueryRoomById } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
 
 type Props = {
@@ -34,11 +34,11 @@ export default function Page({ params }: Props) {
     isLoading: isRoomLoading,
     isError: isRoomError,
     error: roomError,
-  } = useQueryRoomByRoomId(params.id)
+  } = useQueryRoomById(params.id)
 
   const isLoading = isUserLoading || isRoomLoading
   const isError = isUserError || isRoomError
-  const errorMessage = userError?.message + " " + roomError?.message
+  const errorMessage = `${userError?.message ?? ""} ${roomError?.message ?? ""}`
   const isOwner = useMemo(() => room?.ownerId === user?.id, [room?.ownerId, user?.id])
 
   if (isLoading) return <DisplayLoading />

@@ -13,7 +13,7 @@ import { Editor, RoomCategory } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title } from "@/config"
 import { useMutationUpdateRoom } from "@/hooks/room/mutate"
-import { useQueryRoomByRoomId } from "@/hooks/room/query"
+import { useQueryRoomById } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
 import { Room } from "@/server/schema"
 
@@ -37,7 +37,7 @@ export default function Page({ params }: Props) {
     isLoading: isRoomLoading,
     isError: isRoomError,
     error: roomError,
-  } = useQueryRoomByRoomId(params.id)
+  } = useQueryRoomById(params.id)
 
   const {
     register,
@@ -57,7 +57,7 @@ export default function Page({ params }: Props) {
   const description = watch("description") || ""
   const isLoading = isUserLoading || isRoomLoading
   const isError = isUserError || isRoomError
-  const errorMessage = userError?.message + " " + roomError?.message
+  const errorMessage = `${userError?.message ?? ""} ${roomError?.message ?? ""}`
   const isOwner = useMemo(() => room?.ownerId === user?.id, [room?.ownerId, user?.id])
 
   const onSubmit = (data: Room) => mutate(data)

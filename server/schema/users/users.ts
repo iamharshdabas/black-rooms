@@ -1,8 +1,8 @@
-import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm"
+import { pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 
-import { rooms } from "./rooms"
-import { roomMembers } from "./room-members"
+import { roomMembers } from "../rooms/members/room_members"
+import { rooms } from "../rooms/rooms"
 
 export const users = pgTable("users", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),

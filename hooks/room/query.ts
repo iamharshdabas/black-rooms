@@ -1,11 +1,16 @@
 import { useQuery } from "@tanstack/react-query"
 
-import { getRoomByRoomIdAction, getRoomSubCategoriesAction } from "@/server/action/room"
+import {
+  getRoomByIdAction,
+  getRoomCourseByIdAction,
+  getRoomSubCategoriesAction,
+} from "@/server/action/room"
 
-export function useQueryRoomByRoomId(id: string) {
+export function useQueryRoomById(id: string) {
   return useQuery({
     queryKey: ["room", id],
-    queryFn: async () => await getRoomByRoomIdAction(id),
+    queryFn: async () => await getRoomByIdAction(id),
+    enabled: !!id,
   })
 }
 
@@ -13,5 +18,12 @@ export function useQueryRoomSubCategories() {
   return useQuery({
     queryKey: ["roomSubCategories"],
     queryFn: async () => await getRoomSubCategoriesAction(),
+  })
+}
+
+export function useQueryRoomCourseById(id: string) {
+  return useQuery({
+    queryKey: ["roomCourse", id],
+    queryFn: async () => await getRoomCourseByIdAction(id),
   })
 }

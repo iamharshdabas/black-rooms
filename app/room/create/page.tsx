@@ -11,12 +11,12 @@ import { useForm } from "react-hook-form"
 import { RoomCategory } from "@/components/form/room"
 import { DisplayError, FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
-import { CreateRoom, useMutationCreateRoom } from "@/hooks/room/mutate"
+import { CreateRoomData, useMutationCreateRoom } from "@/hooks/room/mutate"
 
 export default function Page() {
   const { userId: clerkId } = useAuth()
   const { mutate, isPending, isError, error } = useMutationCreateRoom(clerkId!)
-  const { register, handleSubmit, setValue, watch } = useForm<CreateRoom>({
+  const { register, handleSubmit, setValue, watch } = useForm<CreateRoomData>({
     defaultValues: {
       name: "",
       subCategoryId: undefined,
@@ -25,7 +25,7 @@ export default function Page() {
 
   const selected = watch("subCategoryId")
 
-  const onSubmit = (data: CreateRoom) => mutate(data)
+  const onSubmit = (data: CreateRoomData) => mutate(data)
   const handleSetSelected = useCallback(
     (subcategory: string) => setValue("subCategoryId", subcategory),
     [setValue],

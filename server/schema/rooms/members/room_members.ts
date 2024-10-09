@@ -1,7 +1,8 @@
-import { pgTable, primaryKey, timestamp, uuid } from "drizzle-orm/pg-core"
 import { relations } from "drizzle-orm"
+import { pgTable, primaryKey, timestamp, uuid } from "drizzle-orm/pg-core"
 
-import { rooms, users } from "./index"
+import { users } from "../../users/users"
+import { rooms } from "../rooms"
 
 export const roomMembers = pgTable(
   "room_members",
