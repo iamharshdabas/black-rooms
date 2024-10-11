@@ -30,6 +30,33 @@ function SignInButton() {
   )
 }
 
+function AuthButtons({ pathname }: { pathname: string }) {
+  return (
+    <>
+      <SignedOut>
+        {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
+      </SignedOut>
+      <SignedIn>
+        <UserButton />
+      </SignedIn>
+    </>
+  )
+}
+
+function NavItem({ item, pathname }: { item: { href: string; label: string }; pathname: string }) {
+  return (
+    <NavbarItem
+      key={item.href}
+      className="text-foreground data-[active=true]:font-bold"
+      isActive={item.href === pathname}
+    >
+      <Link className={subtitle()} href={item.href}>
+        {item.label}
+      </Link>
+    </NavbarItem>
+  )
+}
+
 type Props = {
   isRoomRoute: boolean
 }
@@ -55,15 +82,7 @@ export function Navbar({ isRoomRoute }: Props) {
       <NavbarContent justify="center">
         <ul className="hidden gap-4 lg:flex">
           {navItems.map((item) => (
-            <NavbarItem
-              key={item.href}
-              className="text-foreground data-[active=true]:font-bold"
-              isActive={item.href === pathname}
-            >
-              <Link className="text-xl" href={item.href}>
-                {item.label}
-              </Link>
-            </NavbarItem>
+            <NavItem key={item.href} item={item} pathname={pathname} />
           ))}
         </ul>
       </NavbarContent>
@@ -73,12 +92,7 @@ export function Navbar({ isRoomRoute }: Props) {
           <ThemeSwitch isIconOnly />
         </NavbarItem>
         <NavbarItem className="pt-2">
-          <SignedOut>
-            {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          <AuthButtons pathname={pathname} />
         </NavbarItem>
       </NavbarContent>
 
@@ -89,24 +103,11 @@ export function Navbar({ isRoomRoute }: Props) {
 
       <NavbarMenu className="gap-8 p-6">
         {navItems.map((item) => (
-          <NavbarItem
-            key={item.href}
-            className="text-foreground data-[active=true]:font-bold"
-            isActive={item.href === pathname}
-          >
-            <Link className={subtitle()} href={item.href}>
-              {item.label}
-            </Link>
-          </NavbarItem>
+          <NavItem key={item.href} item={item} pathname={pathname} />
         ))}
 
         <NavbarItem>
-          <SignedOut>
-            {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
+          <AuthButtons pathname={pathname} />
         </NavbarItem>
 
         {isRoomRoute && (
