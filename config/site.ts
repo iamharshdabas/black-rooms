@@ -9,8 +9,8 @@ export const url = {
   signIn: "/sign-in",
   signUp: "/sign-up",
 
-  create: "/room/create",
-  explore: "/room/explore",
+  create: "/create",
+  explore: "/explore",
 
   room: {
     room: (roomId: string) => `/room/${roomId}`,
