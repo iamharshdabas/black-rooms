@@ -67,7 +67,7 @@ export default function Page() {
           await createUserAction(completeSignUp.createdUserId)
         }
 
-        router.push(url.room.create)
+        router.push(url.create)
       } else {
         // TODO: handle errors gracefully
         // eslint-disable-next-line no-console

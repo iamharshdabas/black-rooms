@@ -2,10 +2,9 @@
 
 import { Button } from "@nextui-org/button"
 import { Spacer } from "@nextui-org/spacer"
-import { useEditor, EditorContent, Editor as EditorType } from "@tiptap/react"
-import StarterKit from "@tiptap/starter-kit"
 import Link from "@tiptap/extension-link"
-import { useMemo } from "react"
+import { EditorContent, Editor as EditorType, useEditor } from "@tiptap/react"
+import StarterKit from "@tiptap/starter-kit"
 import {
   BoldIcon,
   CodeIcon,
@@ -19,6 +18,7 @@ import {
   StrikethroughIcon,
   UndoIcon,
 } from "lucide-react"
+import { useMemo } from "react"
 
 type Props = {
   content?: string

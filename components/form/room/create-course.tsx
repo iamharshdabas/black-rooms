@@ -1,4 +1,5 @@
 import { Button, ButtonProps } from "@nextui-org/button"
+import { Input } from "@nextui-org/input"
 import {
   Modal,
   ModalBody,
@@ -9,11 +10,10 @@ import {
 } from "@nextui-org/modal"
 import { PlusIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
-import { Input } from "@nextui-org/input"
 
-import { RoomCoursesInsert } from "@/server/schema"
-import { useMutationCreateRoomCourse } from "@/hooks/room/mutate"
 import { DisplayError } from "@/components/ui"
+import { useMutationCreateRoomCourse } from "@/hooks/room/mutate"
+import { RoomCoursesInsert } from "@/server/schema"
 
 type Props = {
   roomId: string

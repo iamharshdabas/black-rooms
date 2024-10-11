@@ -6,4 +6,3 @@ export * from "./rooms/courses/room_courses"
 export * from "./rooms/members/room_members"
 export * from "./rooms/rooms"
 export * from "./users/users"
-

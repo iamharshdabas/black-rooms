@@ -9,9 +9,13 @@ export const url = {
   signIn: "/sign-in",
   signUp: "/sign-up",
 
+  create: "/room/create",
+  explore: "/room/explore",
+
   room: {
-    create: "/room/create",
-    explore: "/room/explore",
+    room: (roomId: string) => `/room/${roomId}`,
+    edit: (roomId: string) => `/room/${roomId}/edit`,
+    course: (roomId: string, courseId: string) => `/room/${roomId}/course/${courseId}`,
   },
 }
 
@@ -19,5 +23,9 @@ export const navItems = [
   {
     label: "Home",
     href: url.home,
+  },
+  {
+    label: "Explore",
+    href: url.explore,
   },
 ]

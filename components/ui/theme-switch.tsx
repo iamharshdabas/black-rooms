@@ -17,7 +17,7 @@ export const ThemeSwitch = ({ ...props }: ButtonProps) => {
   if (isSSR) return null
 
   return (
-    <Button variant="ghost" onPress={onChange} {...props}>
+    <Button variant="light" onPress={onChange} {...props}>
       {isDark ? <MoonStarIcon /> : <SunIcon />}
     </Button>
   )

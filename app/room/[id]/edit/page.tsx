@@ -11,7 +11,7 @@ import { useForm } from "react-hook-form"
 
 import { Editor, RoomCategory } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
-import { title } from "@/config"
+import { title, url } from "@/config"
 import { useMutationUpdateRoom } from "@/hooks/room/mutate"
 import { useQueryRoomById } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
@@ -119,7 +119,7 @@ export default function Page({ params }: Props) {
             Submit
           </Button>
           <Spacer y={2} />
-          <Button fullWidth onPress={() => router.push(`/room/${params.id}`)}>
+          <Button fullWidth onPress={() => router.push(url.room.room(params.id))}>
             Back
           </Button>
         </div>

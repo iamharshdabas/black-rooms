@@ -16,6 +16,7 @@ import { usePathname } from "next/navigation"
 
 import { LogoIcon } from "../logo"
 
+import { Sidebar } from "./sidebar"
 import { ThemeSwitch } from "./theme-switch"
 
 import { navItems, subtitle, url } from "@/config"
@@ -29,14 +30,17 @@ function SignInButton() {
   )
 }
 
-export function Navbar() {
+type Props = {
+  isRoomRoute: boolean
+}
+
+export function Navbar({ isRoomRoute }: Props) {
   const pathname = usePathname()
 
   return (
-    // here px-6 is applied internally and to increase it to px-8, i added pl-2
-    <NextUINavbar shouldHideOnScroll className="px-2" maxWidth="full" position="sticky">
+    <NextUINavbar shouldHideOnScroll maxWidth="full" position="sticky">
       <NavbarContent>
-        <NavbarBrand as="li" className="max-w-fit gap-4">
+        <NavbarBrand as="li" className="max-w-fit">
           <Link
             className="flex items-center justify-start gap-1"
             color="foreground"
@@ -46,7 +50,10 @@ export function Navbar() {
             <p className="text-2xl">ROOMS</p>
           </Link>
         </NavbarBrand>
-        <ul className="hidden justify-start gap-4 pl-2 sm:flex">
+      </NavbarContent>
+
+      <NavbarContent justify="center">
+        <ul className="hidden gap-4 lg:flex">
           {navItems.map((item) => (
             <NavbarItem
               key={item.href}
@@ -61,11 +68,11 @@ export function Navbar() {
         </ul>
       </NavbarContent>
 
-      <NavbarContent className="hidden sm:flex" justify="end">
+      <NavbarContent className="hidden lg:flex" justify="end">
         <NavbarItem>
           <ThemeSwitch isIconOnly />
         </NavbarItem>
-        <NavbarItem>
+        <NavbarItem className="pt-2">
           <SignedOut>
             {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
           </SignedOut>
@@ -75,12 +82,12 @@ export function Navbar() {
         </NavbarItem>
       </NavbarContent>
 
-      <NavbarContent className="sm:hidden" justify="end">
-        <ThemeSwitch />
+      <NavbarContent className="lg:hidden" justify="end">
+        <ThemeSwitch isIconOnly />
         <NavbarMenuToggle />
       </NavbarContent>
 
-      <NavbarMenu className="gap-8 p-8">
+      <NavbarMenu className="gap-8 p-6">
         {navItems.map((item) => (
           <NavbarItem
             key={item.href}
@@ -92,6 +99,7 @@ export function Navbar() {
             </Link>
           </NavbarItem>
         ))}
+
         <NavbarItem>
           <SignedOut>
             {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
@@ -100,6 +108,12 @@ export function Navbar() {
             <UserButton />
           </SignedIn>
         </NavbarItem>
+
+        {isRoomRoute && (
+          <NavbarItem>
+            <Sidebar />
+          </NavbarItem>
+        )}
       </NavbarMenu>
     </NextUINavbar>
   )

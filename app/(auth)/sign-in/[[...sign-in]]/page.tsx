@@ -41,7 +41,7 @@ export default function SignInForm() {
       if (signInAttempt.status === "complete") {
         await setActive({ session: signInAttempt.createdSessionId })
 
-        router.push(url.room.explore)
+        router.push(url.explore)
       } else {
         // TODO: handle errors gracefully
         // eslint-disable-next-line no-console

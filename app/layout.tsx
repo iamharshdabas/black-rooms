@@ -3,6 +3,7 @@ import clsx from "clsx"
 import { Metadata, Viewport } from "next"
 import { ReactNode } from "react"
 
+import BaseLayout from "./base-layout"
 import { Providers } from "./providers"
 
 import { site } from "@/config"
@@ -29,8 +30,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html suppressHydrationWarning lang="en">
       <head />
-      <body className={clsx("min-h-screen bg-background font-sans antialiased")}>
-        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>{children}</Providers>
+      <body className={clsx("bg-background font-sans antialiased")}>
+        <Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
+          <BaseLayout>{children}</BaseLayout>
+        </Providers>
       </body>
     </html>
   )

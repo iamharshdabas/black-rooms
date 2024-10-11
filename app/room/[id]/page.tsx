@@ -10,7 +10,7 @@ import { useMemo } from "react"
 
 import { Editor } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
-import { title } from "@/config"
+import { title, url } from "@/config"
 import { useQueryRoomById } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
 
@@ -54,7 +54,7 @@ export default function Page({ params }: Props) {
 
       <div className="flex flex-wrap items-center gap-4">
         {isOwner && (
-          <Button color="primary" onPress={() => router.push(`/room/${params.id}/edit`)}>
+          <Button color="primary" onPress={() => router.push(url.room.edit(params.id))}>
             Edit
           </Button>
         )}

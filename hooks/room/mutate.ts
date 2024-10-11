@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation"
 
 import { useQueryUserByClerkId } from "../user/query"
 
+import { url } from "@/config"
 import {
   createRoomAction,
   createRoomCourseAction,
@@ -50,7 +51,7 @@ export const useMutationCreateRoom = (clerkId: string) => {
 
     onSuccess: (id: string) => {
       if (id) {
-        router.push(`/room/${id}`)
+        router.push(url.room.room(id))
       }
     },
   })
@@ -87,7 +88,7 @@ export const useMutationCreateRoomCourse = () => {
     onSuccess: ({ roomId, courseId }: RoomCourseData) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", courseId] })
       if (roomId && courseId) {
-        router.push(`/room/${roomId}/${courseId}`)
+        router.push(url.room.course(roomId, courseId))
       }
     },
   })
