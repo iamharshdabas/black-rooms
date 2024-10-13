@@ -41,11 +41,11 @@ export default function Page() {
         <Spacer y={8} />
         <div className="w-full max-w-md space-y-2">
           <Input
-            {...register("name", { required: true })}
             isRequired
             endContent={<HouseIcon />}
             label="Room name"
             labelPlacement="outside"
+            {...register("name", { required: true })}
           />
           <p className="lg:hidden">You can select room category from below.</p>
           {isError && <DisplayError error={error.message} />}
