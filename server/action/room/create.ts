@@ -36,7 +36,7 @@ export async function createRoomCourseFolderAction({
   name,
   order,
 }: RoomCourseFoldersInsert) {
-  return await db.insert(roomCourseFolders).values({ courseId, name, order }).execute()
+  await db.insert(roomCourseFolders).values({ courseId, name, order }).execute()
 }
 
 export async function createRoomCourseFolderVideoAction({
@@ -45,5 +45,5 @@ export async function createRoomCourseFolderVideoAction({
   url,
   order,
 }: RoomCourseVideosInsert) {
-  return await db.insert(roomCourseVideos).values({ folderId, name, url, order }).execute()
+  await db.insert(roomCourseVideos).values({ folderId, name, url, order }).execute()
 }

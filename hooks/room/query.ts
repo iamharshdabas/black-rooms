@@ -25,5 +25,6 @@ export function useQueryRoomCourseById(id: string) {
   return useQuery({
     queryKey: ["roomCourse", id],
     queryFn: async () => await getRoomCourseByIdAction(id),
+    enabled: !!id,
   })
 }
