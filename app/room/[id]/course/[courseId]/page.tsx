@@ -1,10 +1,10 @@
 "use client"
 
 import { Spacer } from "@nextui-org/spacer"
-import { FolderIcon, PencilIcon, TrashIcon } from "lucide-react"
+import { FolderIcon, PencilIcon, TrashIcon, TvMinimalPlayIcon } from "lucide-react"
 import { Button } from "@nextui-org/button"
 
-import { AddRoomCourseFolder } from "@/components/form/room/course"
+import { AddRoomCourseFolder, AddRoomCourseVideo } from "@/components/form/room/course"
 import { useQueryRoomCourseById } from "@/hooks/room/query"
 import { subtitle } from "@/config"
 
@@ -21,19 +21,41 @@ export default function Page({ params }: Props) {
       <Spacer y={4} />
       <div>
         {data?.roomCourseFolders.map((folder) => (
-          <div key={folder.id} className="flex items-center gap-4">
-            <div className="flex flex-grow items-center gap-2 rounded-2xl bg-content1 px-4 py-2">
-              <FolderIcon />
-              <Spacer x={1} />
-              <h2 className={subtitle({ className: "flex-grow" })}>{folder.name}</h2>
-              <Button isIconOnly color="primary" variant="light">
-                <PencilIcon />
-              </Button>
-              <Button isIconOnly color="danger" variant="light">
-                <TrashIcon />
-              </Button>
+          <div key={folder.id}>
+            <div className="flex items-center gap-4">
+              <div className="flex flex-grow items-center gap-2 rounded-2xl bg-content1 px-4 py-2">
+                <FolderIcon />
+                <Spacer x={1} />
+                <h2 className={subtitle({ className: "flex-grow" })}>{folder.name}</h2>
+                <Button isIconOnly color="primary" variant="light">
+                  <PencilIcon />
+                </Button>
+                <Button isIconOnly color="danger" variant="light">
+                  <TrashIcon />
+                </Button>
+              </div>
+              <AddRoomCourseVideo
+                className="min-w-fit"
+                courseId={params.courseId}
+                folderId={folder.id}
+              />
             </div>
-            <Button>Add Video</Button>
+            {folder.roomCourseVideos.map((video) => (
+              <div
+                key={video.id}
+                className="flex flex-grow items-center gap-2 rounded-2xl px-4 py-2"
+              >
+                <TvMinimalPlayIcon />
+                <Spacer x={1} />
+                <h2 className={subtitle({ className: "flex-grow" })}>{video.name}</h2>
+                <Button isIconOnly color="primary" variant="light">
+                  <PencilIcon />
+                </Button>
+                <Button isIconOnly color="danger" variant="light">
+                  <TrashIcon />
+                </Button>
+              </div>
+            ))}
           </div>
         ))}
       </div>
