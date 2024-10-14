@@ -6,7 +6,7 @@ import { roomCourseFolders } from "./room_course_folders"
 export const roomCourseFolderVideos = pgTable("room_course_videos", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   folderId: uuid("folder_id")
-    .references(() => roomCourseFolders.id)
+    .references(() => roomCourseFolders.id, { onDelete: "cascade" })
     .notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   url: text("url").notNull(),
