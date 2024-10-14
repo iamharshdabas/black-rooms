@@ -24,10 +24,10 @@ export default function Page({ params }: Props) {
     <div>
       <PushRoomCourseFolder courseId={params.courseId} />
       <Spacer y={4} />
-      <div>
+      <div className="flex flex-col gap-4">
         {data?.roomCourseFolders.map((folder) => (
           <div key={folder.id}>
-            <div className="flex items-center gap-4">
+            <div className="flex flex-wrap items-center gap-4">
               <div className="flex flex-grow items-center gap-2 rounded-2xl bg-content1 px-4 py-2">
                 <FolderIcon />
                 <Spacer x={1} />
@@ -37,11 +37,7 @@ export default function Page({ params }: Props) {
                 </Button>
                 <DeleteRoomCourseFolder courseId={params.courseId} folder={folder} />
               </div>
-              <PushRoomCourseFolderVideo
-                className="min-w-fit"
-                courseId={params.courseId}
-                folderId={folder.id}
-              />
+              <PushRoomCourseFolderVideo courseId={params.courseId} folderId={folder.id} />
             </div>
             {folder.roomCourseVideos.map((video) => (
               <div
