@@ -2,9 +2,14 @@
 
 import { Button } from "@nextui-org/button"
 import { Spacer } from "@nextui-org/spacer"
-import { FolderIcon, PencilIcon, TrashIcon, TvMinimalPlayIcon } from "lucide-react"
+import { FolderIcon, PencilIcon, TvMinimalPlayIcon } from "lucide-react"
 
-import { AddRoomCourseFolder, AddRoomCourseVideo } from "@/components/form/room/course"
+import {
+  DeleteRoomCourseFolder,
+  DeleteRoomCourseFolderVideo,
+  PushRoomCourseFolder,
+  PushRoomCourseFolderVideo,
+} from "@/components/form/room/course"
 import { subtitle } from "@/config"
 import { useGetRoomCourse } from "@/hooks/room"
 
@@ -17,7 +22,7 @@ export default function Page({ params }: Props) {
 
   return (
     <div>
-      <AddRoomCourseFolder courseId={params.courseId} />
+      <PushRoomCourseFolder courseId={params.courseId} />
       <Spacer y={4} />
       <div>
         {data?.roomCourseFolders.map((folder) => (
@@ -30,11 +35,9 @@ export default function Page({ params }: Props) {
                 <Button isIconOnly color="primary" variant="light">
                   <PencilIcon />
                 </Button>
-                <Button isIconOnly color="danger" variant="light">
-                  <TrashIcon />
-                </Button>
+                <DeleteRoomCourseFolder courseId={params.courseId} folder={folder} />
               </div>
-              <AddRoomCourseVideo
+              <PushRoomCourseFolderVideo
                 className="min-w-fit"
                 courseId={params.courseId}
                 folderId={folder.id}
@@ -51,9 +54,7 @@ export default function Page({ params }: Props) {
                 <Button isIconOnly color="primary" variant="light">
                   <PencilIcon />
                 </Button>
-                <Button isIconOnly color="danger" variant="light">
-                  <TrashIcon />
-                </Button>
+                <DeleteRoomCourseFolderVideo courseId={params.courseId} video={video} />
               </div>
             ))}
           </div>

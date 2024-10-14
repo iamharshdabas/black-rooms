@@ -1,7 +1,7 @@
 import { relations } from "drizzle-orm"
 import { integer, pgTable, timestamp, uuid, varchar } from "drizzle-orm/pg-core"
 
-import { roomCourseVideos } from "./room_course_videos"
+import { roomCourseFolderVideos } from "./room_course_videos"
 import { roomCourses } from "./room_courses"
 
 export const roomCourseFolders = pgTable("room_course_folders", {
@@ -20,7 +20,7 @@ export const roomCourseFoldersRelation = relations(roomCourseFolders, ({ one, ma
     fields: [roomCourseFolders.courseId],
     references: [roomCourses.id],
   }),
-  roomCourseVideos: many(roomCourseVideos),
+  roomCourseVideos: many(roomCourseFolderVideos),
 }))
 
 export type RoomCourseFolders = typeof roomCourseFolders.$inferSelect

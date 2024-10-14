@@ -11,16 +11,15 @@ import {
   pushRoomCourseFolderVideo,
   pushRoomMember,
 } from "@/server/action/room"
-import { RoomCourseFoldersInsert, RoomCourseVideosInsert, RoomCoursesInsert } from "@/server/schema"
+import {
+  RoomCourseFoldersInsert,
+  RoomCourseFolderVideosInsert,
+  RoomCoursesInsert,
+} from "@/server/schema"
 
 export type CreateRoomData = {
   name: string
   subCategoryId: string
-}
-
-export type RoomCourseData = {
-  roomId: string
-  courseId: string
 }
 
 export const usePushRoom = (clerkId: string) => {
@@ -64,7 +63,7 @@ export const usePushRoomCourse = () => {
         courseId: roomCourse[0].id,
       }
     },
-    onSuccess: ({ roomId, courseId }: RoomCourseData) => {
+    onSuccess: ({ roomId, courseId }: { roomId: string; courseId: string }) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", courseId] })
       if (roomId && courseId) {
         router.push(url.room.course(roomId, courseId))
@@ -92,7 +91,7 @@ export const usePushRoomCourseFolderVideo = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn: async (data: RoomCourseVideosInsert & { courseId: string }) => {
+    mutationFn: async (data: RoomCourseFolderVideosInsert & { courseId: string }) => {
       await pushRoomCourseFolderVideo(data)
 
       return data.courseId

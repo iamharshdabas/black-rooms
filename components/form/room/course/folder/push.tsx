@@ -12,7 +12,7 @@ type Props = {
   courseId: string
 }
 
-export function AddRoomCourseFolder({ courseId, ...props }: Props & ButtonProps) {
+export function PushRoomCourseFolder({ courseId, ...props }: Props & ButtonProps) {
   const { mutate, isPending, isError, error } = usePushRoomCourseFolder()
   const {
     register,

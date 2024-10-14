@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 
 import { DisplayError } from "@/components/ui"
 import { usePushRoomCourseFolderVideo } from "@/hooks/room"
-import { RoomCourseVideosInsert } from "@/server/schema"
+import { RoomCourseFolderVideosInsert } from "@/server/schema"
 import { processUrl } from "@/utils/url"
 
 type Props = {
@@ -14,15 +14,15 @@ type Props = {
   folderId: string
 }
 
-export function AddRoomCourseVideo({ courseId, folderId, ...props }: Props & ButtonProps) {
+export function PushRoomCourseFolderVideo({ courseId, folderId, ...props }: Props & ButtonProps) {
   const { mutate, isPending, isError, error } = usePushRoomCourseFolderVideo()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RoomCourseVideosInsert>({ defaultValues: { folderId, order: 0 } })
+  } = useForm<RoomCourseFolderVideosInsert>({ defaultValues: { folderId, order: 0 } })
 
-  function onSubmit(data: RoomCourseVideosInsert) {
+  function onSubmit(data: RoomCourseFolderVideosInsert) {
     const url = processUrl(data.url)
 
     if (url) {

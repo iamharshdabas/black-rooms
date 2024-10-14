@@ -3,7 +3,7 @@ import { integer, pgTable, text, timestamp, uuid, varchar } from "drizzle-orm/pg
 
 import { roomCourseFolders } from "./room_course_folders"
 
-export const roomCourseVideos = pgTable("room_course_videos", {
+export const roomCourseFolderVideos = pgTable("room_course_videos", {
   id: uuid("id").primaryKey().defaultRandom().notNull(),
   folderId: uuid("folder_id")
     .references(() => roomCourseFolders.id)
@@ -15,12 +15,12 @@ export const roomCourseVideos = pgTable("room_course_videos", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 })
 
-export const roomCourseVideosRelation = relations(roomCourseVideos, ({ one }) => ({
+export const roomCourseVideosRelation = relations(roomCourseFolderVideos, ({ one }) => ({
   roomCourseFolders: one(roomCourseFolders, {
-    fields: [roomCourseVideos.folderId],
+    fields: [roomCourseFolderVideos.folderId],
     references: [roomCourseFolders.id],
   }),
 }))
 
-export type RoomCourseVideos = typeof roomCourseVideos.$inferSelect
-export type RoomCourseVideosInsert = typeof roomCourseVideos.$inferInsert
+export type RoomCourseFolderVideos = typeof roomCourseFolderVideos.$inferSelect
+export type RoomCourseFolderVideosInsert = typeof roomCourseFolderVideos.$inferInsert

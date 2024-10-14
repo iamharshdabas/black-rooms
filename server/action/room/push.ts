@@ -3,11 +3,11 @@
 import { db } from "@/server/db"
 import {
   RoomCourseFoldersInsert,
-  RoomCourseVideosInsert,
+  RoomCourseFolderVideosInsert,
   RoomCoursesInsert,
   RoomInsert,
   roomCourseFolders,
-  roomCourseVideos,
+  roomCourseFolderVideos,
   roomCourses,
   roomMembers,
   rooms,
@@ -34,6 +34,6 @@ export async function pushRoomCourseFolderVideo({
   name,
   url,
   order,
-}: RoomCourseVideosInsert) {
-  await db.insert(roomCourseVideos).values({ folderId, name, url, order }).execute()
+}: RoomCourseFolderVideosInsert) {
+  await db.insert(roomCourseFolderVideos).values({ folderId, name, url, order }).execute()
 }
