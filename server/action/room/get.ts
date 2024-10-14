@@ -5,14 +5,7 @@ import { eq } from "drizzle-orm"
 import { db } from "@/server/db"
 import { roomCourses, roomSubCategories, rooms } from "@/server/schema"
 
-export async function getRoomSubCategoriesAction() {
-  return await db.query.roomSubCategories.findMany({
-    orderBy: roomSubCategories.name,
-    with: { roomCategories: true },
-  })
-}
-
-export async function getRoomByIdAction(id: string) {
+export async function getRoom(id: string) {
   return await db.query.rooms.findFirst({
     where: eq(rooms.id, id),
     with: {
@@ -23,7 +16,14 @@ export async function getRoomByIdAction(id: string) {
   })
 }
 
-export async function getRoomCourseByIdAction(id: string) {
+export async function getRoomSubCategories() {
+  return await db.query.roomSubCategories.findMany({
+    orderBy: roomSubCategories.name,
+    with: { roomCategories: true },
+  })
+}
+
+export async function getRoomCourse(id: string) {
   return await db.query.roomCourses.findFirst({
     orderBy: roomCourses.name,
     where: eq(roomCourses.id, id),

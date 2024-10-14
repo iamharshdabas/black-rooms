@@ -11,8 +11,8 @@ import { useMemo } from "react"
 import { Editor } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title, url } from "@/config"
-import { useQueryRoomById } from "@/hooks/room/query"
-import { useQueryUserByClerkId } from "@/hooks/user/query"
+import { useGetRoom } from "@/hooks/room"
+import { useGetUser } from "@/hooks/user"
 
 type Props = {
   params: {
@@ -28,13 +28,13 @@ export default function Page({ params }: Props) {
     isLoading: isUserLoading,
     isError: isUserError,
     error: userError,
-  } = useQueryUserByClerkId(clerkId!)
+  } = useGetUser(clerkId!)
   const {
     data: room,
     isLoading: isRoomLoading,
     isError: isRoomError,
     error: roomError,
-  } = useQueryRoomById(params.id)
+  } = useGetRoom(params.id)
 
   const isLoading = isUserLoading || isRoomLoading
   const isError = isUserError || isRoomError

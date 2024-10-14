@@ -5,8 +5,8 @@ import { useCallback, useMemo } from "react"
 
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title } from "@/config"
-import { useQueryRoomSubCategories } from "@/hooks/room/query"
 import { RoomSubCategory } from "@/server/schema"
+import { useGetRoomSubCategories } from "@/hooks/room"
 
 type Props = {
   selected: string
@@ -14,17 +14,17 @@ type Props = {
 }
 
 export function RoomCategory({ selected, setSelected }: Props) {
-  const { data: categories, isLoading, isError, error } = useQueryRoomSubCategories()
+  const { data, isLoading, isError, error } = useGetRoomSubCategories()
 
-  const gernal = categories?.find((subcategory) => subcategory.name === "Gernal")
+  const gernal = data?.find((subcategory) => subcategory.name === "Gernal")
 
   const uniqueCategories = useMemo(() => {
-    const uniqueCategories = categories?.map((category) => category.roomCategories)
+    const uniqueCategories = data?.map((category) => category.roomCategories)
 
     return uniqueCategories?.filter(
       (category, index) => uniqueCategories.findIndex((item) => item.id === category.id) === index,
     )
-  }, [categories])
+  }, [data])
 
   const filteredCategories = useMemo(
     () => uniqueCategories?.filter((category) => category.name !== "Gernal"),
@@ -32,28 +32,28 @@ export function RoomCategory({ selected, setSelected }: Props) {
   )
 
   const selectedSubcategory = useMemo(
-    () => categories?.find((subcategory) => subcategory.id === selected),
-    [categories, selected],
+    () => data?.find((subcategory) => subcategory.id === selected),
+    [data, selected],
   )
 
   const filteredSubcategories = useCallback(
     (categoryId: string) => {
       return (
-        categories?.filter(
+        data?.filter(
           (subcategory) => subcategory.categoryId === categoryId && subcategory.name !== "Gernal",
         ) || []
       )
     },
-    [categories],
+    [data],
   )
 
   const handleValueChange = useCallback(
     (id: string) => {
-      const category = categories?.find((item) => item.id === id)
+      const category = data?.find((item) => item.id === id)
 
       if (category) setSelected(category.id)
     },
-    [categories, setSelected],
+    [data, setSelected],
   )
 
   if (isLoading) return <DisplayLoading />

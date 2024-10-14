@@ -6,14 +6,14 @@ import { FolderIcon, PencilIcon, TrashIcon, TvMinimalPlayIcon } from "lucide-rea
 
 import { AddRoomCourseFolder, AddRoomCourseVideo } from "@/components/form/room/course"
 import { subtitle } from "@/config"
-import { useQueryRoomCourseById } from "@/hooks/room/query"
+import { useGetRoomCourse } from "@/hooks/room"
 
 type Props = {
   params: { courseId: string }
 }
 
 export default function Page({ params }: Props) {
-  const { data } = useQueryRoomCourseById(params.courseId)
+  const { data } = useGetRoomCourse(params.courseId)
 
   return (
     <div>

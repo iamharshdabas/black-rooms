@@ -11,11 +11,11 @@ import { useForm } from "react-hook-form"
 import { RoomCategory } from "@/components/form/room"
 import { DisplayError, FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
-import { CreateRoomData, useMutationCreateRoom } from "@/hooks/room/mutate"
+import { CreateRoomData, usePushRoom } from "@/hooks/room"
 
 export default function Page() {
   const { userId: clerkId } = useAuth()
-  const { mutate, isPending, isError, error } = useMutationCreateRoom(clerkId!)
+  const { mutate, isPending, isError, error } = usePushRoom(clerkId!)
   const { register, handleSubmit, setValue, watch } = useForm<CreateRoomData>({
     defaultValues: {
       name: "",

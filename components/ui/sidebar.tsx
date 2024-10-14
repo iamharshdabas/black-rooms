@@ -12,8 +12,8 @@ import { Key, useCallback, useEffect, useMemo, useState } from "react"
 import { CreateRoomCourse } from "@/components/form/room"
 import { DisplayError, DisplayLoading, DoubleDivider } from "@/components/ui"
 import { subtitle, url } from "@/config"
-import { useQueryRoomById } from "@/hooks/room/query"
-import { useQueryUserByClerkId } from "@/hooks/user/query"
+import { useGetRoom } from "@/hooks/room"
+import { useGetUser } from "@/hooks/user"
 
 const isValidUUID = (uuid: string) => {
   const regex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
@@ -42,13 +42,13 @@ export function Sidebar({}: Props) {
     isLoading: isUserLoading,
     isError: isUserError,
     error: userError,
-  } = useQueryUserByClerkId(clerkId!)
+  } = useGetUser(clerkId!)
   const {
     data: room,
     isLoading: isRoomLoading,
     isError: isRoomError,
     error: roomError,
-  } = useQueryRoomById(roomIdFromPath ?? "")
+  } = useGetRoom(roomIdFromPath ?? "")
 
   useEffect(() => {
     setSelectedRoom(roomIdFromPath)

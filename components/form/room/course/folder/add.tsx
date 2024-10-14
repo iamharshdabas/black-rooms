@@ -1,19 +1,19 @@
 "use client"
 
 import { Button, ButtonProps } from "@nextui-org/button"
-import { useForm } from "react-hook-form"
 import { Input } from "@nextui-org/input"
+import { useForm } from "react-hook-form"
 
-import { useMutationCreateRoomCourseFolder } from "@/hooks/room/mutate"
-import { RoomCourseFoldersInsert } from "@/server/schema"
 import { DisplayError } from "@/components/ui"
+import { usePushRoomCourseFolder } from "@/hooks/room"
+import { RoomCourseFoldersInsert } from "@/server/schema"
 
 type Props = {
   courseId: string
 }
 
 export function AddRoomCourseFolder({ courseId, ...props }: Props & ButtonProps) {
-  const { mutate, isPending, isError, error } = useMutationCreateRoomCourseFolder()
+  const { mutate, isPending, isError, error } = usePushRoomCourseFolder()
   const {
     register,
     handleSubmit,

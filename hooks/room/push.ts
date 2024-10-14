@@ -1,23 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
 
-import { useQueryUserByClerkId } from "../user/query"
+import { useGetUser } from "../user"
 
 import { url } from "@/config"
 import {
-  createRoomAction,
-  createRoomCourseAction,
-  createRoomCourseFolderAction,
-  createRoomCourseFolderVideoAction,
-  createRoomMemberAction,
-  updateRoomAction,
+  pushRoom,
+  pushRoomCourse,
+  pushRoomCourseFolder,
+  pushRoomCourseFolderVideo,
+  pushRoomMember,
 } from "@/server/action/room"
-import {
-  Room,
-  RoomCourseFoldersInsert,
-  RoomCourseVideosInsert,
-  RoomCoursesInsert,
-} from "@/server/schema"
+import { RoomCourseFoldersInsert, RoomCourseVideosInsert, RoomCoursesInsert } from "@/server/schema"
 
 export type CreateRoomData = {
   name: string
@@ -29,22 +23,22 @@ export type RoomCourseData = {
   courseId: string
 }
 
-export const useMutationCreateRoom = (clerkId: string) => {
+export const usePushRoom = (clerkId: string) => {
   const router = useRouter()
-  const { data: user } = useQueryUserByClerkId(clerkId)
+  const { data: user } = useGetUser(clerkId)
 
   return useMutation({
     mutationFn: async (data: CreateRoomData) => {
       if (!user?.id) {
         throw new Error("User ID is not available")
       }
-      const room = await createRoomAction({
+      const room = await pushRoom({
         name: data.name,
         ownerId: user?.id,
         subCategoryId: data.subCategoryId,
       })
 
-      await createRoomMemberAction({ roomId: room[0].id, userId: user.id })
+      await pushRoomMember({ roomId: room[0].id, userId: user.id })
 
       return room[0].id
     },
@@ -57,28 +51,13 @@ export const useMutationCreateRoom = (clerkId: string) => {
   })
 }
 
-export const useMutationUpdateRoom = () => {
-  const queryClient = useQueryClient()
-
-  return useMutation({
-    mutationFn: async (data: Room) => {
-      await updateRoomAction(data)
-
-      return data.id
-    },
-    onSuccess: (id: string) => {
-      queryClient.invalidateQueries({ queryKey: ["room", id] })
-    },
-  })
-}
-
-export const useMutationCreateRoomCourse = () => {
+export const usePushRoomCourse = () => {
   const router = useRouter()
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (data: RoomCoursesInsert) => {
-      const roomCourse = await createRoomCourseAction(data)
+      const roomCourse = await pushRoomCourse(data)
 
       return {
         roomId: data.roomId,
@@ -94,12 +73,12 @@ export const useMutationCreateRoomCourse = () => {
   })
 }
 
-export const useMutationCreateRoomCourseFolder = () => {
+export const usePushRoomCourseFolder = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (data: RoomCourseFoldersInsert) => {
-      await createRoomCourseFolderAction(data)
+      await pushRoomCourseFolder(data)
 
       return data.courseId
     },
@@ -109,12 +88,12 @@ export const useMutationCreateRoomCourseFolder = () => {
   })
 }
 
-export const useMutationCreateRoomCourseFolderVideo = () => {
+export const usePushRoomCourseFolderVideo = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
     mutationFn: async (data: RoomCourseVideosInsert & { courseId: string }) => {
-      await createRoomCourseFolderVideoAction(data)
+      await pushRoomCourseFolderVideo(data)
 
       return data.courseId
     },

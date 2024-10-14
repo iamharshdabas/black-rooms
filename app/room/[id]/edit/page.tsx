@@ -12,9 +12,8 @@ import { useForm } from "react-hook-form"
 import { Editor, RoomCategory } from "@/components/form/room"
 import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title, url } from "@/config"
-import { useMutationUpdateRoom } from "@/hooks/room/mutate"
-import { useQueryRoomById } from "@/hooks/room/query"
-import { useQueryUserByClerkId } from "@/hooks/user/query"
+import { useGetRoom, usePatchRoom } from "@/hooks/room"
+import { useGetUser } from "@/hooks/user"
 import { Room } from "@/server/schema"
 import { processUrl } from "@/utils/url"
 
@@ -32,13 +31,13 @@ export default function Page({ params }: Props) {
     isLoading: isUserLoading,
     isError: isUserError,
     error: userError,
-  } = useQueryUserByClerkId(clerkId!)
+  } = useGetUser(clerkId!)
   const {
     data: room,
     isLoading: isRoomLoading,
     isError: isRoomError,
     error: roomError,
-  } = useQueryRoomById(params.id)
+  } = useGetRoom(params.id)
 
   const {
     register,
@@ -52,7 +51,7 @@ export default function Page({ params }: Props) {
     isPending: isMutationPending,
     isError: isMutationError,
     error: mutationError,
-  } = useMutationUpdateRoom()
+  } = usePatchRoom()
 
   const subcategory = watch("subCategoryId")
   const description = watch("description") || ""

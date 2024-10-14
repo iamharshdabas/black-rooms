@@ -12,8 +12,8 @@ import { PlusIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 
 import { DisplayError } from "@/components/ui"
-import { useMutationCreateRoomCourse } from "@/hooks/room/mutate"
 import { RoomCoursesInsert } from "@/server/schema"
+import { usePushRoomCourse } from "@/hooks/room"
 
 type Props = {
   roomId: string
@@ -21,7 +21,7 @@ type Props = {
 
 export function CreateRoomCourse({ roomId, ...props }: Props & ButtonProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending, isError, error } = useMutationCreateRoomCourse()
+  const { mutate, isPending, isError, error } = usePushRoomCourse()
   const {
     register,
     handleSubmit,

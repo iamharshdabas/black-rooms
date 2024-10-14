@@ -5,7 +5,7 @@ import { Input } from "@nextui-org/input"
 import { useForm } from "react-hook-form"
 
 import { DisplayError } from "@/components/ui"
-import { useMutationCreateRoomCourseFolderVideo } from "@/hooks/room/mutate"
+import { usePushRoomCourseFolderVideo } from "@/hooks/room"
 import { RoomCourseVideosInsert } from "@/server/schema"
 import { processUrl } from "@/utils/url"
 
@@ -15,7 +15,7 @@ type Props = {
 }
 
 export function AddRoomCourseVideo({ courseId, folderId, ...props }: Props & ButtonProps) {
-  const { mutate, isPending, isError, error } = useMutationCreateRoomCourseFolderVideo()
+  const { mutate, isPending, isError, error } = usePushRoomCourseFolderVideo()
   const {
     register,
     handleSubmit,

@@ -13,33 +13,23 @@ import {
   rooms,
 } from "@/server/schema"
 
-export async function createRoomAction({ name, ownerId, subCategoryId }: RoomInsert) {
+export async function pushRoom({ name, ownerId, subCategoryId }: RoomInsert) {
   return await db.insert(rooms).values({ name, ownerId, subCategoryId }).returning({ id: rooms.id })
 }
 
-export async function createRoomMemberAction({
-  roomId,
-  userId,
-}: {
-  roomId: string
-  userId: string
-}) {
+export async function pushRoomMember({ roomId, userId }: { roomId: string; userId: string }) {
   await db.insert(roomMembers).values({ roomId, userId }).execute()
 }
 
-export async function createRoomCourseAction({ roomId, name }: RoomCoursesInsert) {
+export async function pushRoomCourse({ roomId, name }: RoomCoursesInsert) {
   return await db.insert(roomCourses).values({ roomId, name }).returning({ id: roomCourses.id })
 }
 
-export async function createRoomCourseFolderAction({
-  courseId,
-  name,
-  order,
-}: RoomCourseFoldersInsert) {
+export async function pushRoomCourseFolder({ courseId, name, order }: RoomCourseFoldersInsert) {
   await db.insert(roomCourseFolders).values({ courseId, name, order }).execute()
 }
 
-export async function createRoomCourseFolderVideoAction({
+export async function pushRoomCourseFolderVideo({
   folderId,
   name,
   url,
