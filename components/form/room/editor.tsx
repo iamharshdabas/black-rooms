@@ -20,6 +20,8 @@ import {
 } from "lucide-react"
 import { useMemo } from "react"
 
+import { processUrl } from "@/utils/url"
+
 type Props = {
   content?: string
   onChange?: (content: string) => void
@@ -75,10 +77,12 @@ export function Editor({ content, onChange }: Props) {
         let url = prompt("Enter the URL")
 
         if (url) {
-          if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "https://" + url
-          }
-          editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run()
+          editor
+            .chain()
+            .focus()
+            .extendMarkRange("link")
+            .setLink({ href: processUrl(url) })
+            .run()
         }
       },
     },

@@ -1,12 +1,12 @@
 "use client"
 
+import { Button } from "@nextui-org/button"
 import { Spacer } from "@nextui-org/spacer"
 import { FolderIcon, PencilIcon, TrashIcon, TvMinimalPlayIcon } from "lucide-react"
-import { Button } from "@nextui-org/button"
 
 import { AddRoomCourseFolder, AddRoomCourseVideo } from "@/components/form/room/course"
-import { useQueryRoomCourseById } from "@/hooks/room/query"
 import { subtitle } from "@/config"
+import { useQueryRoomCourseById } from "@/hooks/room/query"
 
 type Props = {
   params: { courseId: string }

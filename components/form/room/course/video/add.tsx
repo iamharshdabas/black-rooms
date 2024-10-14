@@ -1,12 +1,13 @@
 "use client"
 
 import { Button, ButtonProps } from "@nextui-org/button"
-import { useForm } from "react-hook-form"
 import { Input } from "@nextui-org/input"
+import { useForm } from "react-hook-form"
 
+import { DisplayError } from "@/components/ui"
 import { useMutationCreateRoomCourseFolderVideo } from "@/hooks/room/mutate"
 import { RoomCourseVideosInsert } from "@/server/schema"
-import { DisplayError } from "@/components/ui"
+import { processUrl } from "@/utils/url"
 
 type Props = {
   courseId: string
@@ -22,7 +23,11 @@ export function AddRoomCourseVideo({ courseId, folderId, ...props }: Props & But
   } = useForm<RoomCourseVideosInsert>({ defaultValues: { folderId, order: 0 } })
 
   function onSubmit(data: RoomCourseVideosInsert) {
-    mutate({ courseId, ...data })
+    const url = processUrl(data.url)
+
+    if (url) {
+      mutate({ courseId, ...data, url })
+    }
   }
 
   if (isError) return <DisplayError error={error.message} />

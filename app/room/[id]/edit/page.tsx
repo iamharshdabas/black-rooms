@@ -16,6 +16,7 @@ import { useMutationUpdateRoom } from "@/hooks/room/mutate"
 import { useQueryRoomById } from "@/hooks/room/query"
 import { useQueryUserByClerkId } from "@/hooks/user/query"
 import { Room } from "@/server/schema"
+import { processUrl } from "@/utils/url"
 
 type Props = {
   params: {
@@ -60,7 +61,10 @@ export default function Page({ params }: Props) {
   const errorMessage = `${userError?.message ?? ""} ${roomError?.message ?? ""}`
   const isOwner = useMemo(() => room?.ownerId === user?.id, [room?.ownerId, user?.id])
 
-  const onSubmit = (data: Room) => mutate(data)
+  const onSubmit = (data: Room) => {
+    if (data.thumbnail) data.thumbnail = processUrl(data.thumbnail) || null
+    mutate(data)
+  }
   const handleSetSelected = useCallback(
     (subcategory: string) => setValue("subCategoryId", subcategory),
     [setValue],
