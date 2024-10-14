@@ -15,13 +15,18 @@ type Props = {
 export function PushRoomCourseFolder({ courseId, ...props }: Props & ButtonProps) {
   const { mutate, isPending, isError, error } = usePushRoomCourseFolder()
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RoomCourseFoldersInsert>({ defaultValues: { courseId, order: 0 } })
 
   function onSubmit(data: RoomCourseFoldersInsert) {
-    mutate(data)
+    mutate(data, {
+      onSuccess: () => {
+        reset()
+      },
+    })
   }
 
   if (isError) return <DisplayError error={error.message} />

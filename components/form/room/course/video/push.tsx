@@ -17,6 +17,7 @@ type Props = {
 export function PushRoomCourseFolderVideo({ courseId, folderId, ...props }: Props & ButtonProps) {
   const { mutate, isPending, isError, error } = usePushRoomCourseFolderVideo()
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
@@ -26,14 +27,21 @@ export function PushRoomCourseFolderVideo({ courseId, folderId, ...props }: Prop
     const url = processUrl(data.url)
 
     if (url) {
-      mutate({ courseId, ...data, url })
+      mutate(
+        { ...data, courseId, url },
+        {
+          onSuccess: () => {
+            reset()
+          },
+        },
+      )
     }
   }
 
   if (isError) return <DisplayError error={error.message} />
 
   return (
-    <form className="flex items-center gap-4" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex w-full items-center gap-4 lg:w-fit" onSubmit={handleSubmit(onSubmit)}>
       <Input
         errorMessage={errors.name?.message}
         isInvalid={!!errors.name}
@@ -46,7 +54,13 @@ export function PushRoomCourseFolderVideo({ courseId, folderId, ...props }: Prop
         label="Video Url"
         {...register("url", { required: true })}
       />
-      <Button disabled={isError} isLoading={isPending} type="submit" {...props}>
+      <Button
+        className="lg:min-w-fit"
+        disabled={isError}
+        isLoading={isPending}
+        type="submit"
+        {...props}
+      >
         Add Video
       </Button>
     </form>
