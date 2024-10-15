@@ -37,7 +37,9 @@ function AuthButtons({ pathname }: { pathname: string }) {
         {pathname !== url.signIn && pathname !== url.signUp && <SignInButton />}
       </SignedOut>
       <SignedIn>
-        <UserButton />
+        <div className="pt-2">
+          <UserButton />
+        </div>
       </SignedIn>
     </>
   )
@@ -91,7 +93,7 @@ export function Navbar({ isRoomRoute }: Props) {
         <NavbarItem>
           <ThemeSwitch isIconOnly />
         </NavbarItem>
-        <NavbarItem className="pt-2">
+        <NavbarItem>
           <AuthButtons pathname={pathname} />
         </NavbarItem>
       </NavbarContent>
