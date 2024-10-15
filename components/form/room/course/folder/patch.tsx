@@ -48,10 +48,10 @@ export function PatchRoomCourseFolder({ folder }: Props) {
             <ModalHeader>Edit {folder.name}</ModalHeader>
             <ModalBody>
               <Input
+                endContent={<FolderIcon />}
                 errorMessage={errors.name?.message}
                 isInvalid={!!errors.name}
                 label="Folder Name"
-                startContent={<FolderIcon />}
                 {...register("name")}
               />
             </ModalBody>

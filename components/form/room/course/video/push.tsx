@@ -3,6 +3,7 @@
 import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { useForm } from "react-hook-form"
+import { LinkIcon, TvMinimalPlayIcon } from "lucide-react"
 
 import { usePushRoomCourseFolderVideo } from "@/hooks/room"
 import { RoomCourseFolderVideosInsert, RoomCourseFolders } from "@/server/schema"
@@ -38,12 +39,14 @@ export function PushRoomCourseFolderVideo({ folder }: Props) {
   return (
     <form className="flex w-full items-center gap-4 lg:w-fit" onSubmit={handleSubmit(onSubmit)}>
       <Input
+        endContent={<TvMinimalPlayIcon />}
         errorMessage={errors.name?.message}
         isInvalid={!!errors.name}
         label="Video Name"
         {...register("name", { required: true })}
       />
       <Input
+        endContent={<LinkIcon />}
         errorMessage={errors.url?.message}
         isInvalid={!!errors.url}
         label="Video Url"
