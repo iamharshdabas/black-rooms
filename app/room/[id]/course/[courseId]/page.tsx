@@ -7,6 +7,7 @@ import { FolderIcon, PencilIcon, TvMinimalPlayIcon } from "lucide-react"
 import {
   DeleteRoomCourseFolder,
   DeleteRoomCourseFolderVideo,
+  PatchRoomCourseFolder,
   PushRoomCourseFolder,
   PushRoomCourseFolderVideo,
 } from "@/components/form/room/course"
@@ -32,9 +33,7 @@ export default function Page({ params }: Props) {
                 <FolderIcon />
                 <Spacer x={1} />
                 <h2 className={subtitle({ className: "flex-grow" })}>{folder.name}</h2>
-                <Button isIconOnly color="primary" variant="light">
-                  <PencilIcon />
-                </Button>
+                <PatchRoomCourseFolder folder={folder} />
                 <DeleteRoomCourseFolder courseId={params.courseId} folder={folder} />
               </div>
               <PushRoomCourseFolderVideo courseId={params.courseId} folderId={folder.id} />

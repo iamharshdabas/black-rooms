@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { Room } from "@/server/schema"
-import { patchRoom } from "@/server/action/room"
+import { Room, RoomCourseFolders } from "@/server/schema"
+import { patchRoom, patchRoomCourseFolder } from "@/server/action/room"
 
 export const usePatchRoom = () => {
   const queryClient = useQueryClient()
@@ -14,6 +14,21 @@ export const usePatchRoom = () => {
     },
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["room", id] })
+    },
+  })
+}
+
+export const usePatchRoomCourseFolder = () => {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (data: RoomCourseFolders) => {
+      await patchRoomCourseFolder(data)
+
+      return data.courseId
+    },
+    onSuccess: (id: string) => {
+      queryClient.invalidateQueries({ queryKey: ["roomCourse", id] })
     },
   })
 }
