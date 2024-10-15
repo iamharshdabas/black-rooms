@@ -1,38 +1,36 @@
 "use client"
 
-import { Button, ButtonProps } from "@nextui-org/button"
+import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { useForm } from "react-hook-form"
 
 import { DisplayError } from "@/components/ui"
 import { usePushRoomCourseFolderVideo } from "@/hooks/room"
-import { RoomCourseFolderVideosInsert } from "@/server/schema"
+import { RoomCourseFolderVideosInsert, RoomCourseFolders } from "@/server/schema"
 import { processUrl } from "@/utils/url"
 
 type Props = {
-  courseId: string
-  folderId: string
+  folder: RoomCourseFolders
 }
 
-export function PushRoomCourseFolderVideo({ courseId, folderId, ...props }: Props & ButtonProps) {
+export function PushRoomCourseFolderVideo({ folder }: Props) {
   const { mutate, isPending, isError, error } = usePushRoomCourseFolderVideo()
   const {
     reset,
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RoomCourseFolderVideosInsert>({ defaultValues: { folderId, order: 0 } })
+  } = useForm<RoomCourseFolderVideosInsert>({ defaultValues: { folderId: folder.id, order: 0 } })
 
   function onSubmit(data: RoomCourseFolderVideosInsert) {
     const url = processUrl(data.url)
+    const courseId = folder.courseId
 
     if (url) {
       mutate(
         { ...data, courseId, url },
         {
-          onSuccess: () => {
-            reset()
-          },
+          onSuccess: () => reset(),
         },
       )
     }
@@ -54,13 +52,7 @@ export function PushRoomCourseFolderVideo({ courseId, folderId, ...props }: Prop
         label="Video Url"
         {...register("url", { required: true })}
       />
-      <Button
-        className="lg:min-w-fit"
-        disabled={isError}
-        isLoading={isPending}
-        type="submit"
-        {...props}
-      >
+      <Button className="lg:min-w-fit" disabled={isError} isLoading={isPending} type="submit">
         Add Video
       </Button>
     </form>

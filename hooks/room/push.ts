@@ -12,8 +12,8 @@ import {
   pushRoomMember,
 } from "@/server/action/room"
 import {
-  RoomCourseFoldersInsert,
   RoomCourseFolderVideosInsert,
+  RoomCourseFoldersInsert,
   RoomCoursesInsert,
 } from "@/server/schema"
 
@@ -22,7 +22,7 @@ export type CreateRoomData = {
   subCategoryId: string
 }
 
-export const usePushRoom = (clerkId: string) => {
+export function usePushRoom(clerkId: string) {
   const router = useRouter()
   const { data: user } = useGetUser(clerkId)
 
@@ -50,7 +50,7 @@ export const usePushRoom = (clerkId: string) => {
   })
 }
 
-export const usePushRoomCourse = () => {
+export function usePushRoomCourse() {
   const router = useRouter()
   const queryClient = useQueryClient()
 
@@ -72,7 +72,7 @@ export const usePushRoomCourse = () => {
   })
 }
 
-export const usePushRoomCourseFolder = () => {
+export function usePushRoomCourseFolder() {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -87,7 +87,7 @@ export const usePushRoomCourseFolder = () => {
   })
 }
 
-export const usePushRoomCourseFolderVideo = () => {
+export function usePushRoomCourseFolderVideo() {
   const queryClient = useQueryClient()
 
   return useMutation({

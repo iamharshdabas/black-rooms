@@ -1,9 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 
-import { Room, RoomCourseFolders } from "@/server/schema"
 import { patchRoom, patchRoomCourseFolder } from "@/server/action/room"
+import { Room, RoomCourseFolders } from "@/server/schema"
 
-export const usePatchRoom = () => {
+export function usePatchRoom() {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -18,7 +18,7 @@ export const usePatchRoom = () => {
   })
 }
 
-export const usePatchRoomCourseFolder = () => {
+export function usePatchRoomCourseFolder() {
   const queryClient = useQueryClient()
 
   return useMutation({

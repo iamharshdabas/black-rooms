@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 import { deleteRoomCourseFolder, deleteRoomCourseFolderVideo } from "@/server/action/room"
 
-export const useDeleteRoomCourseFolder = () => {
+export function useDeleteRoomCourseFolder() {
   const queryClient = useQueryClient()
 
   return useMutation({
@@ -17,7 +17,7 @@ export const useDeleteRoomCourseFolder = () => {
   })
 }
 
-export const useDeleteRoomCourseFolderVideo = () => {
+export function useDeleteRoomCourseFolderVideo() {
   const queryClient = useQueryClient()
 
   return useMutation({

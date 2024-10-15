@@ -2,38 +2,36 @@
 
 import { db } from "@/server/db"
 import {
-  RoomCourseFoldersInsert,
   RoomCourseFolderVideosInsert,
+  RoomCourseFoldersInsert,
   RoomCoursesInsert,
   RoomInsert,
-  roomCourseFolders,
+  RoomMemberInsert,
   roomCourseFolderVideos,
+  roomCourseFolders,
   roomCourses,
   roomMembers,
   rooms,
 } from "@/server/schema"
 
-export async function pushRoom({ name, ownerId, subCategoryId }: RoomInsert) {
-  return await db.insert(rooms).values({ name, ownerId, subCategoryId }).returning({ id: rooms.id })
+export async function pushRoom(Room: RoomInsert) {
+  return await db.insert(rooms).values(Room).returning({ id: rooms.id })
 }
 
-export async function pushRoomMember({ roomId, userId }: { roomId: string; userId: string }) {
-  await db.insert(roomMembers).values({ roomId, userId }).execute()
+export async function pushRoomMember(roomMember: RoomMemberInsert) {
+  await db.insert(roomMembers).values(roomMember).execute()
 }
 
-export async function pushRoomCourse({ roomId, name }: RoomCoursesInsert) {
-  return await db.insert(roomCourses).values({ roomId, name }).returning({ id: roomCourses.id })
+export async function pushRoomCourse(roomCourse: RoomCoursesInsert) {
+  return await db.insert(roomCourses).values(roomCourse).returning({ id: roomCourses.id })
 }
 
-export async function pushRoomCourseFolder({ courseId, name, order }: RoomCourseFoldersInsert) {
-  await db.insert(roomCourseFolders).values({ courseId, name, order }).execute()
+export async function pushRoomCourseFolder(roomCourseFolder: RoomCourseFoldersInsert) {
+  await db.insert(roomCourseFolders).values(roomCourseFolder).execute()
 }
 
-export async function pushRoomCourseFolderVideo({
-  folderId,
-  name,
-  url,
-  order,
-}: RoomCourseFolderVideosInsert) {
-  await db.insert(roomCourseFolderVideos).values({ folderId, name, url, order }).execute()
+export async function pushRoomCourseFolderVideo(
+  roomCourseFolderVideo: RoomCourseFolderVideosInsert,
+) {
+  await db.insert(roomCourseFolderVideos).values(roomCourseFolderVideo).execute()
 }

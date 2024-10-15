@@ -1,6 +1,6 @@
 "use client"
 
-import { Button, ButtonProps } from "@nextui-org/button"
+import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { useForm } from "react-hook-form"
 
@@ -12,7 +12,7 @@ type Props = {
   courseId: string
 }
 
-export function PushRoomCourseFolder({ courseId, ...props }: Props & ButtonProps) {
+export function PushRoomCourseFolder({ courseId }: Props) {
   const { mutate, isPending, isError, error } = usePushRoomCourseFolder()
   const {
     reset,
@@ -23,9 +23,7 @@ export function PushRoomCourseFolder({ courseId, ...props }: Props & ButtonProps
 
   function onSubmit(data: RoomCourseFoldersInsert) {
     mutate(data, {
-      onSuccess: () => {
-        reset()
-      },
+      onSuccess: () => reset(),
     })
   }
 
@@ -39,7 +37,7 @@ export function PushRoomCourseFolder({ courseId, ...props }: Props & ButtonProps
         label="Folder Name"
         {...register("name", { required: true })}
       />
-      <Button disabled={isError} isLoading={isPending} type="submit" {...props}>
+      <Button disabled={isError} isLoading={isPending} type="submit">
         Add Folder
       </Button>
     </form>

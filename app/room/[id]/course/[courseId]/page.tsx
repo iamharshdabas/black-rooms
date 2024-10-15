@@ -34,9 +34,9 @@ export default function Page({ params }: Props) {
                 <Spacer x={1} />
                 <h2 className={subtitle({ className: "flex-grow" })}>{folder.name}</h2>
                 <PatchRoomCourseFolder folder={folder} />
-                <DeleteRoomCourseFolder courseId={params.courseId} folder={folder} />
+                <DeleteRoomCourseFolder folder={folder} />
               </div>
-              <PushRoomCourseFolderVideo courseId={params.courseId} folderId={folder.id} />
+              <PushRoomCourseFolderVideo folder={folder} />
             </div>
             {folder.roomCourseVideos.map((video) => (
               <div

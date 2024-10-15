@@ -1,19 +1,19 @@
 import { Button } from "@nextui-org/button"
+import { Input } from "@nextui-org/input"
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   useDisclosure,
 } from "@nextui-org/modal"
-import { PencilIcon } from "lucide-react"
+import { FolderIcon, PencilIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
-import { Input } from "@nextui-org/input"
 
 import { DisplayError } from "@/components/ui"
-import { RoomCourseFolders } from "@/server/schema"
 import { usePatchRoomCourseFolder } from "@/hooks/room"
+import { RoomCourseFolders } from "@/server/schema"
 
 type Props = {
   folder: RoomCourseFolders
@@ -23,13 +23,19 @@ export function PatchRoomCourseFolder({ folder }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const { mutate, isPending, isError, error } = usePatchRoomCourseFolder()
   const {
+    reset,
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<RoomCourseFolders>({ defaultValues: folder })
 
   function onSubmit(data: RoomCourseFolders) {
-    mutate(data, { onSuccess: onClose })
+    mutate(data, {
+      onSuccess: () => {
+        reset()
+        onClose()
+      },
+    })
   }
 
   if (isError) return <DisplayError error={error.message} />
@@ -48,6 +54,7 @@ export function PatchRoomCourseFolder({ folder }: Props) {
                 errorMessage={errors.name?.message}
                 isInvalid={!!errors.name}
                 label="Folder Name"
+                startContent={<FolderIcon />}
                 {...register("name")}
               />
             </ModalBody>

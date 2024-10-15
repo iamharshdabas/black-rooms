@@ -1,29 +1,28 @@
 import { Button } from "@nextui-org/button"
 import {
   Modal,
-  ModalContent,
-  ModalHeader,
   ModalBody,
+  ModalContent,
   ModalFooter,
+  ModalHeader,
   useDisclosure,
 } from "@nextui-org/modal"
 import { TrashIcon } from "lucide-react"
 
-import { useDeleteRoomCourseFolder } from "@/hooks/room"
 import { DisplayError } from "@/components/ui"
+import { useDeleteRoomCourseFolder } from "@/hooks/room"
 import { RoomCourseFolders } from "@/server/schema"
 
 type Props = {
   folder: RoomCourseFolders
-  courseId: string
 }
 
-export function DeleteRoomCourseFolder({ folder, courseId }: Props) {
+export function DeleteRoomCourseFolder({ folder }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
   const { mutate, isPending, isError, error } = useDeleteRoomCourseFolder()
 
   function deleteFolder() {
-    mutate({ id: folder.id, courseId })
+    mutate(folder, { onSuccess: onClose })
   }
 
   if (isError) return <DisplayError error={error.message} />
