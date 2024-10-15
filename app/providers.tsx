@@ -7,6 +7,8 @@ import { ThemeProviderProps } from "next-themes/dist/types"
 import { useRouter } from "next/navigation"
 import { ReactNode, useState } from "react"
 
+import { Toaster } from "@/components/ui"
+
 export interface Props {
   children: ReactNode
   themeProps?: ThemeProviderProps
@@ -20,7 +22,10 @@ export function Providers({ children, themeProps }: Props) {
     <ClerkProvider>
       <QueryClientProvider client={queryClient}>
         <NextUIProvider navigate={router.push}>
-          <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+          <NextThemesProvider {...themeProps}>
+            {children}
+            <Toaster />
+          </NextThemesProvider>
         </NextUIProvider>
       </QueryClientProvider>
     </ClerkProvider>

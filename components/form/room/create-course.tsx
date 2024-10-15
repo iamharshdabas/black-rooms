@@ -11,9 +11,8 @@ import {
 import { PlusIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 
-import { DisplayError } from "@/components/ui"
-import { RoomCoursesInsert } from "@/server/schema"
 import { usePushRoomCourse } from "@/hooks/room"
+import { RoomCoursesInsert } from "@/server/schema"
 
 type Props = {
   roomId: string
@@ -21,7 +20,7 @@ type Props = {
 
 export function CreateRoomCourse({ roomId, ...props }: Props & ButtonProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending, isError, error } = usePushRoomCourse()
+  const { mutate, isPending } = usePushRoomCourse()
   const {
     register,
     handleSubmit,
@@ -50,7 +49,6 @@ export function CreateRoomCourse({ roomId, ...props }: Props & ButtonProps) {
                 label="Course name"
                 {...register("name")}
               />
-              {isError && <DisplayError error={error?.message} />}
             </ModalBody>
             <ModalFooter>
               <Button color="danger" variant="light" onPress={onClose}>

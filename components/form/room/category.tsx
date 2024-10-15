@@ -3,10 +3,9 @@ import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
 import { useCallback, useMemo } from "react"
 
-import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title } from "@/config"
-import { RoomSubCategory } from "@/server/schema"
 import { useGetRoomSubCategories } from "@/hooks/room"
+import { RoomSubCategory } from "@/server/schema"
 
 type Props = {
   selected: string
@@ -14,7 +13,7 @@ type Props = {
 }
 
 export function RoomCategory({ selected, setSelected }: Props) {
-  const { data, isLoading, isError, error } = useGetRoomSubCategories()
+  const { data } = useGetRoomSubCategories()
 
   const gernal = data?.find((subcategory) => subcategory.name === "Gernal")
 
@@ -55,9 +54,6 @@ export function RoomCategory({ selected, setSelected }: Props) {
     },
     [data, setSelected],
   )
-
-  if (isLoading) return <DisplayLoading />
-  if (isError) return <DisplayError error={error.message} />
 
   return (
     <RadioGroup

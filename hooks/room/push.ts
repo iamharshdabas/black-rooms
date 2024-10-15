@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 import { useGetUser } from "../user"
 
@@ -41,12 +42,13 @@ export function usePushRoom(clerkId: string) {
 
       return room[0].id
     },
-
     onSuccess: (id: string) => {
       if (id) {
         router.push(url.room.room(id))
+        toast.success("Room created")
       }
     },
+    onError: (error) => toast.error(error.message),
   })
 }
 
@@ -65,10 +67,10 @@ export function usePushRoomCourse() {
     },
     onSuccess: ({ roomId, courseId }: { roomId: string; courseId: string }) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", courseId] })
-      if (roomId && courseId) {
-        router.push(url.room.course(roomId, courseId))
-      }
+      router.push(url.room.course(roomId, courseId))
+      toast.success("Course created")
     },
+    onError: (error) => toast.error(error.message),
   })
 }
 
@@ -83,7 +85,9 @@ export function usePushRoomCourseFolder() {
     },
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", id] })
+      toast.success("Folder created")
     },
+    onError: (error) => toast.error(error.message),
   })
 }
 
@@ -98,6 +102,8 @@ export function usePushRoomCourseFolderVideo() {
     },
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", id] })
+      toast.success("Video created")
     },
+    onError: (error) => toast.error(error.message),
   })
 }

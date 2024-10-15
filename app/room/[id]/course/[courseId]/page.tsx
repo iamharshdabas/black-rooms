@@ -49,7 +49,7 @@ export default function Page({ params }: Props) {
                 <Button isIconOnly color="primary" variant="light">
                   <PencilIcon />
                 </Button>
-                <DeleteRoomCourseFolderVideo courseId={params.courseId} video={video} />
+                <DeleteRoomCourseFolderVideo courseId={folder.courseId} video={video} />
               </div>
             ))}
           </div>

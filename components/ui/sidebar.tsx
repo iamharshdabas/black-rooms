@@ -9,8 +9,9 @@ import { HouseIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { Key, useCallback, useEffect, useMemo, useState } from "react"
 
+import { DoubleDivider } from "./double-divider"
+
 import { CreateRoomCourse } from "@/components/form/room"
-import { DisplayError, DisplayLoading, DoubleDivider } from "@/components/ui"
 import { subtitle, url } from "@/config"
 import { useGetRoom } from "@/hooks/room"
 import { useGetUser } from "@/hooks/user"
@@ -37,18 +38,8 @@ export function Sidebar({}: Props) {
 
   const [selectedRoom, setSelectedRoom] = useState<string | null>(roomIdFromPath)
 
-  const {
-    data: user,
-    isLoading: isUserLoading,
-    isError: isUserError,
-    error: userError,
-  } = useGetUser(clerkId!)
-  const {
-    data: room,
-    isLoading: isRoomLoading,
-    isError: isRoomError,
-    error: roomError,
-  } = useGetRoom(roomIdFromPath ?? "")
+  const { data: user } = useGetUser(clerkId!)
+  const { data: room } = useGetRoom(roomIdFromPath ?? "")
 
   useEffect(() => {
     setSelectedRoom(roomIdFromPath)
@@ -68,12 +59,6 @@ export function Sidebar({}: Props) {
 
   const roomsAvailable = !(user?.roomMembers.length === 0)
   const coursesAvailable = !(room?.roomCourses.length === 0)
-  const isLoading = isUserLoading || isRoomLoading
-  const isError = isUserError || isRoomError
-  const errorMessage = `${userError?.message ?? ""} ${roomError?.message ?? ""}`
-
-  if (isLoading) return <DisplayLoading />
-  if (isError) return <DisplayError error={errorMessage} />
 
   return (
     <div>

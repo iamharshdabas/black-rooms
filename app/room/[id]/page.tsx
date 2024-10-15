@@ -9,7 +9,6 @@ import { useRouter } from "next/navigation"
 import { useMemo } from "react"
 
 import { Editor } from "@/components/form/room"
-import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title, url } from "@/config"
 import { useGetRoom } from "@/hooks/room"
 import { useGetUser } from "@/hooks/user"
@@ -23,26 +22,10 @@ type Props = {
 export default function Page({ params }: Props) {
   const router = useRouter()
   const { userId: clerkId } = useAuth()
-  const {
-    data: user,
-    isLoading: isUserLoading,
-    isError: isUserError,
-    error: userError,
-  } = useGetUser(clerkId!)
-  const {
-    data: room,
-    isLoading: isRoomLoading,
-    isError: isRoomError,
-    error: roomError,
-  } = useGetRoom(params.id)
+  const { data: user } = useGetUser(clerkId!)
+  const { data: room } = useGetRoom(params.id)
 
-  const isLoading = isUserLoading || isRoomLoading
-  const isError = isUserError || isRoomError
-  const errorMessage = `${userError?.message ?? ""} ${roomError?.message ?? ""}`
   const isOwner = useMemo(() => room?.ownerId === user?.id, [room?.ownerId, user?.id])
-
-  if (isLoading) return <DisplayLoading />
-  if (isError) return <DisplayError error={errorMessage} />
 
   return (
     <div className="flex flex-col gap-4">

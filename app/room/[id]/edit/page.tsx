@@ -10,7 +10,6 @@ import { useCallback, useMemo } from "react"
 import { useForm } from "react-hook-form"
 
 import { Editor, RoomCategory } from "@/components/form/room"
-import { DisplayError, DisplayLoading } from "@/components/ui"
 import { title, url } from "@/config"
 import { useGetRoom, usePatchRoom } from "@/hooks/room"
 import { useGetUser } from "@/hooks/user"
@@ -26,18 +25,8 @@ type Props = {
 export default function Page({ params }: Props) {
   const router = useRouter()
   const { userId: clerkId } = useAuth()
-  const {
-    data: user,
-    isLoading: isUserLoading,
-    isError: isUserError,
-    error: userError,
-  } = useGetUser(clerkId!)
-  const {
-    data: room,
-    isLoading: isRoomLoading,
-    isError: isRoomError,
-    error: roomError,
-  } = useGetRoom(params.id)
+  const { data: user } = useGetUser(clerkId!)
+  const { data: room } = useGetRoom(params.id)
 
   const {
     register,
@@ -46,18 +35,10 @@ export default function Page({ params }: Props) {
     watch,
     formState: { errors },
   } = useForm<Room>({ defaultValues: room })
-  const {
-    mutate,
-    isPending: isMutationPending,
-    isError: isMutationError,
-    error: mutationError,
-  } = usePatchRoom()
+  const { mutate, isPending } = usePatchRoom()
 
   const subcategory = watch("subCategoryId")
   const description = watch("description") || ""
-  const isLoading = isUserLoading || isRoomLoading
-  const isError = isUserError || isRoomError
-  const errorMessage = `${userError?.message ?? ""} ${roomError?.message ?? ""}`
   const isOwner = useMemo(() => room?.ownerId === user?.id, [room?.ownerId, user?.id])
 
   const onSubmit = (data: Room) => {
@@ -72,9 +53,6 @@ export default function Page({ params }: Props) {
     (description: string) => setValue("description", description),
     [setValue],
   )
-
-  if (isLoading) return <DisplayLoading />
-  if (isError) return <DisplayError error={errorMessage} />
 
   if (!isOwner) {
     return (
@@ -111,12 +89,11 @@ export default function Page({ params }: Props) {
         <div className="w-full max-w-sm">
           <RoomCategory selected={subcategory} setSelected={handleSetSelected} />
           <Spacer y={4} />
-          {isMutationError && <DisplayError error={mutationError.message} />}
           <Button
             fullWidth
             color="primary"
-            disabled={isMutationPending}
-            isLoading={isMutationPending}
+            disabled={isPending}
+            isLoading={isPending}
             type="submit"
           >
             Submit

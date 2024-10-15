@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 import { patchRoom, patchRoomCourseFolder } from "@/server/action/room"
 import { Room, RoomCourseFolders } from "@/server/schema"
@@ -14,6 +15,10 @@ export function usePatchRoom() {
     },
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["room", id] })
+      toast.success("Room updated")
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 }
@@ -29,6 +34,10 @@ export function usePatchRoomCourseFolder() {
     },
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", id] })
+      toast.success("Folder updated")
+    },
+    onError: (error) => {
+      toast.error(error.message)
     },
   })
 }

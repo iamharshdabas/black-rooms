@@ -9,13 +9,13 @@ import { useCallback } from "react"
 import { useForm } from "react-hook-form"
 
 import { RoomCategory } from "@/components/form/room"
-import { DisplayError, FeatureCard } from "@/components/ui"
+import { FeatureCard } from "@/components/ui"
 import { createRoomFeatures } from "@/config"
 import { CreateRoomData, usePushRoom } from "@/hooks/room"
 
 export default function Page() {
   const { userId: clerkId } = useAuth()
-  const { mutate, isPending, isError, error } = usePushRoom(clerkId!)
+  const { mutate, isPending } = usePushRoom(clerkId!)
   const { register, handleSubmit, setValue, watch } = useForm<CreateRoomData>({
     defaultValues: {
       name: "",
@@ -48,7 +48,6 @@ export default function Page() {
             {...register("name", { required: true })}
           />
           <p className="lg:hidden">You can select room category from below.</p>
-          {isError && <DisplayError error={error.message} />}
           <Button
             fullWidth
             color="primary"

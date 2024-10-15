@@ -11,7 +11,6 @@ import {
 import { FolderIcon, PencilIcon } from "lucide-react"
 import { useForm } from "react-hook-form"
 
-import { DisplayError } from "@/components/ui"
 import { usePatchRoomCourseFolder } from "@/hooks/room"
 import { RoomCourseFolders } from "@/server/schema"
 
@@ -21,7 +20,7 @@ type Props = {
 
 export function PatchRoomCourseFolder({ folder }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending, isError, error } = usePatchRoomCourseFolder()
+  const { mutate, isPending } = usePatchRoomCourseFolder()
   const {
     reset,
     register,
@@ -37,8 +36,6 @@ export function PatchRoomCourseFolder({ folder }: Props) {
       },
     })
   }
-
-  if (isError) return <DisplayError error={error.message} />
 
   return (
     <>

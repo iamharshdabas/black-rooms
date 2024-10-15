@@ -9,7 +9,6 @@ import {
 } from "@nextui-org/modal"
 import { TrashIcon } from "lucide-react"
 
-import { DisplayError } from "@/components/ui"
 import { useDeleteRoomCourseFolder } from "@/hooks/room"
 import { RoomCourseFolders } from "@/server/schema"
 
@@ -19,13 +18,11 @@ type Props = {
 
 export function DeleteRoomCourseFolder({ folder }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending, isError, error } = useDeleteRoomCourseFolder()
+  const { mutate, isPending } = useDeleteRoomCourseFolder()
 
   function deleteFolder() {
     mutate(folder, { onSuccess: onClose })
   }
-
-  if (isError) return <DisplayError error={error.message} />
 
   return (
     <>

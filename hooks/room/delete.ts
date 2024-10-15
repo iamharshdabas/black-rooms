@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "sonner"
 
 import { deleteRoomCourseFolder, deleteRoomCourseFolderVideo } from "@/server/action/room"
 
@@ -13,7 +14,9 @@ export function useDeleteRoomCourseFolder() {
     },
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", id] })
+      toast.success("Folder deleted")
     },
+    onError: (error) => toast.error(error.message),
   })
 }
 
@@ -28,6 +31,8 @@ export function useDeleteRoomCourseFolderVideo() {
     },
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", id] })
+      toast.success("Video deleted")
     },
+    onError: (error) => toast.error(error.message),
   })
 }

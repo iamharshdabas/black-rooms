@@ -4,7 +4,6 @@ import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { useForm } from "react-hook-form"
 
-import { DisplayError } from "@/components/ui"
 import { usePushRoomCourseFolderVideo } from "@/hooks/room"
 import { RoomCourseFolderVideosInsert, RoomCourseFolders } from "@/server/schema"
 import { processUrl } from "@/utils/url"
@@ -14,7 +13,7 @@ type Props = {
 }
 
 export function PushRoomCourseFolderVideo({ folder }: Props) {
-  const { mutate, isPending, isError, error } = usePushRoomCourseFolderVideo()
+  const { mutate, isPending } = usePushRoomCourseFolderVideo()
   const {
     reset,
     register,
@@ -36,8 +35,6 @@ export function PushRoomCourseFolderVideo({ folder }: Props) {
     }
   }
 
-  if (isError) return <DisplayError error={error.message} />
-
   return (
     <form className="flex w-full items-center gap-4 lg:w-fit" onSubmit={handleSubmit(onSubmit)}>
       <Input
@@ -52,7 +49,7 @@ export function PushRoomCourseFolderVideo({ folder }: Props) {
         label="Video Url"
         {...register("url", { required: true })}
       />
-      <Button className="lg:min-w-fit" disabled={isError} isLoading={isPending} type="submit">
+      <Button className="lg:min-w-fit" disabled={isPending} isLoading={isPending} type="submit">
         Add Video
       </Button>
     </form>

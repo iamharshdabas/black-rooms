@@ -4,7 +4,6 @@ import { Button } from "@nextui-org/button"
 import { Input } from "@nextui-org/input"
 import { useForm } from "react-hook-form"
 
-import { DisplayError } from "@/components/ui"
 import { usePushRoomCourseFolder } from "@/hooks/room"
 import { RoomCourseFoldersInsert } from "@/server/schema"
 
@@ -13,7 +12,7 @@ type Props = {
 }
 
 export function PushRoomCourseFolder({ courseId }: Props) {
-  const { mutate, isPending, isError, error } = usePushRoomCourseFolder()
+  const { mutate, isPending } = usePushRoomCourseFolder()
   const {
     reset,
     register,
@@ -27,8 +26,6 @@ export function PushRoomCourseFolder({ courseId }: Props) {
     })
   }
 
-  if (isError) return <DisplayError error={error.message} />
-
   return (
     <form className="flex items-center gap-4" onSubmit={handleSubmit(onSubmit)}>
       <Input
@@ -37,7 +34,7 @@ export function PushRoomCourseFolder({ courseId }: Props) {
         label="Folder Name"
         {...register("name", { required: true })}
       />
-      <Button disabled={isError} isLoading={isPending} type="submit">
+      <Button disabled={isPending} isLoading={isPending} type="submit">
         Add Folder
       </Button>
     </form>
