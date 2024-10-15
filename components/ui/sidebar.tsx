@@ -119,7 +119,7 @@ export function Sidebar({}: Props) {
                 <h2 className={subtitle({ className: "flex-grow" })}>Courses</h2>
                 <CreateRoomCourse isIconOnly roomId={room.id} size="sm" variant="flat" />
               </div>
-              <Listbox>
+              <Listbox label="Courses">
                 {room.roomCourses.map((course) => (
                   <ListboxItem
                     key={course.id}
