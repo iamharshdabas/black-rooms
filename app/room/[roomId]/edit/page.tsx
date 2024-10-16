@@ -18,7 +18,7 @@ import { processUrl } from "@/utils/url"
 
 type Props = {
   params: {
-    id: string
+    roomId: string
   }
 }
 
@@ -26,7 +26,7 @@ export default function Page({ params }: Props) {
   const router = useRouter()
   const { userId: clerkId } = useAuth()
   const { data: user } = useGetUser(clerkId!)
-  const { data: room } = useGetRoom(params.id)
+  const { data: room } = useGetRoom(params.roomId)
 
   const {
     register,
@@ -99,7 +99,7 @@ export default function Page({ params }: Props) {
             Submit
           </Button>
           <Spacer y={2} />
-          <Button fullWidth onPress={() => router.push(url.room.room(params.id))}>
+          <Button fullWidth onPress={() => router.push(url.room.room(params.roomId))}>
             Back
           </Button>
         </div>

@@ -15,7 +15,7 @@ import { useGetUser } from "@/hooks/user"
 
 type Props = {
   params: {
-    id: string
+    roomId: string
   }
 }
 
@@ -23,7 +23,7 @@ export default function Page({ params }: Props) {
   const router = useRouter()
   const { userId: clerkId } = useAuth()
   const { data: user } = useGetUser(clerkId!)
-  const { data: room } = useGetRoom(params.id)
+  const { data: room } = useGetRoom(params.roomId)
 
   const isOwner = useMemo(() => room?.ownerId === user?.id, [room?.ownerId, user?.id])
 
@@ -37,7 +37,7 @@ export default function Page({ params }: Props) {
 
       <div className="flex flex-wrap items-center gap-4">
         {isOwner && (
-          <Button color="primary" onPress={() => router.push(url.room.edit(params.id))}>
+          <Button color="primary" onPress={() => router.push(url.room.edit(params.roomId))}>
             Edit
           </Button>
         )}
