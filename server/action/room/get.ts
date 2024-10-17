@@ -3,7 +3,7 @@
 import { eq } from "drizzle-orm"
 
 import { db } from "@/server/db"
-import { roomCourses, roomSubCategories, rooms } from "@/server/schema"
+import { roomCourseFolderVideos, roomCourses, roomSubCategories, rooms } from "@/server/schema"
 
 export async function getRoom(id: string) {
   return await db.query.rooms.findFirst({
@@ -34,5 +34,12 @@ export async function getRoomCourse(id: string) {
         },
       },
     },
+  })
+}
+
+export async function getRoomCourseVideo(id: string) {
+  return await db.query.roomCourseFolderVideos.findFirst({
+    where: eq(roomCourseFolderVideos.id, id),
+    // TODO: add comments
   })
 }

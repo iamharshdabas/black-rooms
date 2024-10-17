@@ -16,6 +16,8 @@ export const url = {
     room: (roomId: string) => `/room/${roomId}`,
     edit: (roomId: string) => `/room/${roomId}/edit`,
     course: (roomId: string, courseId: string) => `/room/${roomId}/course/${courseId}`,
+    video: (roomId: string, courseId: string, videoId: string) =>
+      `/room/${roomId}/course/${courseId}/video/${videoId}`,
   },
 }
 
