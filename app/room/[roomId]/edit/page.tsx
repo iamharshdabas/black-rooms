@@ -1,20 +1,21 @@
 "use client"
 
-import { useAuth } from "@clerk/nextjs"
 import { Button } from "@nextui-org/button"
 import { Image } from "@nextui-org/image"
 import { Input } from "@nextui-org/input"
 import { Spacer } from "@nextui-org/spacer"
-import { useRouter } from "next/navigation"
-import { useCallback, useMemo } from "react"
+import { useCallback, useEffect } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
+import { Spinner } from "@nextui-org/spinner"
 
 import { Editor, RoomCategory } from "@/components/form/room"
-import { title, url } from "@/config"
+import { url } from "@/config"
 import { useGetRoom, usePatchRoom } from "@/hooks/room"
-import { useGetUser } from "@/hooks/user"
 import { Room } from "@/server/schema"
 import { processUrl } from "@/utils/url"
+import { useValidateOwnership } from "@/hooks/validate/ownership"
 
 type Props = {
   params: {
@@ -24,26 +25,25 @@ type Props = {
 
 export default function Page({ params }: Props) {
   const router = useRouter()
-  const { userId: clerkId } = useAuth()
-  const { data: user } = useGetUser(clerkId!)
-  const { data: room } = useGetRoom(params.roomId)
+  const room = useGetRoom(params.roomId)
+  const owner = useValidateOwnership(params.roomId)
 
   const {
     register,
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
-  } = useForm<Room>({ defaultValues: room })
-  const { mutate, isPending } = usePatchRoom()
+  } = useForm<Room>({ defaultValues: room.data })
+  const patchRoom = usePatchRoom()
 
   const subcategory = watch("subCategoryId")
   const description = watch("description") || ""
-  const isOwner = useMemo(() => room?.ownerId === user?.id, [room?.ownerId, user?.id])
 
   const onSubmit = (data: Room) => {
     if (data.thumbnail) data.thumbnail = processUrl(data.thumbnail) || null
-    mutate(data)
+    patchRoom.mutate(data)
   }
   const handleSetSelected = useCallback(
     (subcategory: string) => setValue("subCategoryId", subcategory),
@@ -54,12 +54,29 @@ export default function Page({ params }: Props) {
     [setValue],
   )
 
-  if (!isOwner) {
+  useEffect(() => {
+    if (room.data) {
+      reset(room.data)
+    }
+  }, [room.data, reset])
+
+  if (room.isLoading || owner.isLoading) {
     return (
-      <div className="text-center">
-        <h1 className={title({ className: "text-danger" })}>You are not the owner of the room</h1>
+      <div className="flex justify-center">
+        <Spinner size="lg" />
       </div>
     )
+  }
+
+  if (!room.isLoading && room.isError) {
+    toast.error(room.error?.message ?? "An error occurred")
+
+    return null
+  }
+
+  if (!owner.isOwner && !owner.isLoading) {
+    toast.error("You are not the owner of the room")
+    router.push(url.room.room(params.roomId))
   }
 
   return (
@@ -69,7 +86,7 @@ export default function Page({ params }: Props) {
           <Image
             isZoomed
             alt="Room Thumbnail"
-            src={room?.thumbnail || "https://via.placeholder.com/800x400"}
+            src={room.data?.thumbnail || "https://via.placeholder.com/800x400"}
             width={1024}
           />
           <Input
@@ -92,8 +109,8 @@ export default function Page({ params }: Props) {
           <Button
             fullWidth
             color="primary"
-            disabled={isPending}
-            isLoading={isPending}
+            disabled={patchRoom.isPending}
+            isLoading={patchRoom.isPending}
             type="submit"
           >
             Submit

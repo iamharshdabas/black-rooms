@@ -18,10 +18,10 @@ type Props = {
 
 export function DeleteRoomCourseFolder({ folder }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending } = useDeleteRoomCourseFolder()
+  const deleteFolder = useDeleteRoomCourseFolder()
 
-  function deleteFolder() {
-    mutate(folder, { onSuccess: onClose })
+  function handleDeleteFolder() {
+    deleteFolder.mutate(folder, { onSuccess: onClose })
   }
 
   return (
@@ -43,10 +43,10 @@ export function DeleteRoomCourseFolder({ folder }: Props) {
             </Button>
             <Button
               color="danger"
-              isDisabled={isPending}
-              isLoading={isPending}
+              isDisabled={deleteFolder.isPending}
+              isLoading={deleteFolder.isPending}
               startContent={<TrashIcon />}
-              onPress={deleteFolder}
+              onPress={handleDeleteFolder}
             >
               Delete
             </Button>

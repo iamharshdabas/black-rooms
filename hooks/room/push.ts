@@ -25,20 +25,20 @@ export type CreateRoomData = {
 
 export function usePushRoom(clerkId: string) {
   const router = useRouter()
-  const { data: user } = useGetUser(clerkId)
+  const user = useGetUser(clerkId)
 
   return useMutation({
     mutationFn: async (data: CreateRoomData) => {
-      if (!user?.id) {
+      if (!user.data?.id) {
         throw new Error("User ID is not available")
       }
       const room = await pushRoom({
         name: data.name,
-        ownerId: user?.id,
+        ownerId: user.data?.id,
         subCategoryId: data.subCategoryId,
       })
 
-      await pushRoomMember({ roomId: room[0].id, userId: user.id })
+      await pushRoomMember({ roomId: room[0].id, userId: user.data.id })
 
       return room[0].id
     },

@@ -13,7 +13,7 @@ type Props = {
 }
 
 export function PushRoomCourseFolder({ courseId }: Props) {
-  const { mutate, isPending } = usePushRoomCourseFolder()
+  const pushFolder = usePushRoomCourseFolder()
   const {
     reset,
     register,
@@ -22,7 +22,7 @@ export function PushRoomCourseFolder({ courseId }: Props) {
   } = useForm<RoomCourseFoldersInsert>({ defaultValues: { courseId, order: 0 } })
 
   function onSubmit(data: RoomCourseFoldersInsert) {
-    mutate(data, {
+    pushFolder.mutate(data, {
       onSuccess: () => reset(),
     })
   }
@@ -36,7 +36,7 @@ export function PushRoomCourseFolder({ courseId }: Props) {
         label="Folder Name"
         {...register("name", { required: true })}
       />
-      <Button disabled={isPending} isLoading={isPending} type="submit">
+      <Button disabled={pushFolder.isPending} isLoading={pushFolder.isPending} type="submit">
         Add Folder
       </Button>
     </form>

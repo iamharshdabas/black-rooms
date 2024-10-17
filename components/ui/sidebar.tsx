@@ -9,6 +9,8 @@ import { cn } from "@nextui-org/theme"
 import { HouseIcon } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import { Key, useCallback, useEffect, useMemo, useState } from "react"
+import { Spinner } from "@nextui-org/spinner"
+import { toast } from "sonner"
 
 import { DoubleDivider } from "./double-divider"
 
@@ -39,8 +41,8 @@ export function Sidebar({}: Props) {
 
   const [selectedRoom, setSelectedRoom] = useState<string | null>(roomIdFromPath)
 
-  const { data: user } = useGetUser(clerkId!)
-  const { data: room } = useGetRoom(roomIdFromPath ?? "")
+  const user = useGetUser(clerkId!)
+  const room = useGetRoom(roomIdFromPath ?? "")
 
   useEffect(() => {
     setSelectedRoom(roomIdFromPath)
@@ -58,8 +60,27 @@ export function Sidebar({}: Props) {
     [router],
   )
 
-  const roomsAvailable = !(user?.roomMembers.length === 0)
-  const coursesAvailable = !(room?.roomCourses.length === 0)
+  const roomsAvailable = !(user.data?.roomMembers.length === 0)
+  const coursesAvailable = !(room.data?.roomCourses.length === 0)
+
+  if (user.isLoading || room.isLoading) {
+    return (
+      <div className="flex justify-center">
+        <Spinner size="lg" />
+      </div>
+    )
+  }
+
+  if (user.isError || room.isError) {
+    if (user.isError) {
+      toast.error(user.error?.message ?? "An error occurred")
+    }
+    if (room.isError) {
+      toast.error(room.error?.message ?? "An error occurred")
+    }
+
+    return null
+  }
 
   return (
     <div className="flex flex-col gap-4">
@@ -69,7 +90,7 @@ export function Sidebar({}: Props) {
             Looks like you don&apos;t have any room
           </h2>
         ) : (
-          user && (
+          user.data && (
             <Autocomplete
               label="Select room"
               labelPlacement="outside"
@@ -79,7 +100,7 @@ export function Sidebar({}: Props) {
               variant="bordered"
               onSelectionChange={handleSelectionChange}
             >
-              {user.roomMembers.map(({ rooms }) => (
+              {user.data.roomMembers.map(({ rooms }) => (
                 <AutocompleteItem key={rooms.id} value={rooms.id}>
                   {rooms.name}
                 </AutocompleteItem>
@@ -102,15 +123,15 @@ export function Sidebar({}: Props) {
       <Divider />
 
       <div className="flex-grow">
-        {room &&
+        {room.data &&
           (coursesAvailable ? (
             <>
               <div className="flex w-full items-center justify-end">
                 <h2 className={subtitle({ className: "flex-grow" })}>Courses</h2>
-                <CreateRoomCourse isIconOnly roomId={room.id} size="sm" variant="flat" />
+                <CreateRoomCourse isIconOnly roomId={room.data.id} size="sm" variant="flat" />
               </div>
               <Listbox label="Courses">
-                {room.roomCourses.map((course) => (
+                {room.data.roomCourses.map((course) => (
                   <ListboxItem
                     key={course.id}
                     classNames={{ title: subtitle() }}
@@ -122,7 +143,7 @@ export function Sidebar({}: Props) {
               </Listbox>
             </>
           ) : (
-            <CreateRoomCourse roomId={room.id} />
+            <CreateRoomCourse roomId={room.data.id} />
           ))}
       </div>
     </div>

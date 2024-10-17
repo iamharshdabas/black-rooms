@@ -29,6 +29,7 @@ export function Toaster({ ...props }: Props) {
           closeButton: "bg-inherit",
         },
       }}
+      visibleToasts={8}
       {...props}
     />
   )

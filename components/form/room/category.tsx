@@ -2,6 +2,8 @@ import { Accordion, AccordionItem } from "@nextui-org/accordion"
 import { Radio as NextUIRadio, RadioGroup } from "@nextui-org/radio"
 import { cn } from "@nextui-org/theme"
 import { useCallback, useMemo } from "react"
+import { Spinner } from "@nextui-org/spinner"
+import { toast } from "sonner"
 
 import { title } from "@/config"
 import { useGetRoomSubCategories } from "@/hooks/room"
@@ -13,17 +15,17 @@ type Props = {
 }
 
 export function RoomCategory({ selected, setSelected }: Props) {
-  const { data } = useGetRoomSubCategories()
+  const subcategories = useGetRoomSubCategories()
 
-  const gernal = data?.find((subcategory) => subcategory.name === "Gernal")
+  const gernal = subcategories.data?.find((subcategory) => subcategory.name === "Gernal")
 
   const uniqueCategories = useMemo(() => {
-    const uniqueCategories = data?.map((category) => category.roomCategories)
+    const uniqueCategories = subcategories.data?.map((category) => category.roomCategories)
 
     return uniqueCategories?.filter(
       (category, index) => uniqueCategories.findIndex((item) => item.id === category.id) === index,
     )
-  }, [data])
+  }, [subcategories.data])
 
   const filteredCategories = useMemo(
     () => uniqueCategories?.filter((category) => category.name !== "Gernal"),
@@ -31,29 +33,43 @@ export function RoomCategory({ selected, setSelected }: Props) {
   )
 
   const selectedSubcategory = useMemo(
-    () => data?.find((subcategory) => subcategory.id === selected),
-    [data, selected],
+    () => subcategories.data?.find((subcategory) => subcategory.id === selected),
+    [subcategories.data, selected],
   )
 
   const filteredSubcategories = useCallback(
     (categoryId: string) => {
       return (
-        data?.filter(
+        subcategories.data?.filter(
           (subcategory) => subcategory.categoryId === categoryId && subcategory.name !== "Gernal",
         ) || []
       )
     },
-    [data],
+    [subcategories.data],
   )
 
   const handleValueChange = useCallback(
     (id: string) => {
-      const category = data?.find((item) => item.id === id)
+      const category = subcategories.data?.find((item) => item.id === id)
 
       if (category) setSelected(category.id)
     },
-    [data, setSelected],
+    [subcategories.data, setSelected],
   )
+
+  if (subcategories.isLoading) {
+    return (
+      <div className="flex justify-center">
+        <Spinner size="lg" />
+      </div>
+    )
+  }
+
+  if (!subcategories.isLoading && subcategories.isError) {
+    toast.error(subcategories.error?.message ?? "An error occurred")
+
+    return null
+  }
 
   return (
     <RadioGroup

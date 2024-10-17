@@ -1,4 +1,4 @@
 # TODO
 
-- Handle errors gracefully. You can do better, you know that.
 - Maybe a skeleton loader ? Page transition ?
+- why multiple same error messages ?

@@ -20,7 +20,7 @@ type Props = {
 
 export function CreateRoomCourse({ roomId, ...props }: Props & ButtonProps) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending } = usePushRoomCourse()
+  const pushCourse = usePushRoomCourse()
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ export function CreateRoomCourse({ roomId, ...props }: Props & ButtonProps) {
   })
 
   const onSubmit = (data: RoomCoursesInsert) => {
-    mutate(data)
+    pushCourse.mutate(data)
   }
 
   return (
@@ -54,7 +54,12 @@ export function CreateRoomCourse({ roomId, ...props }: Props & ButtonProps) {
               <Button color="danger" variant="light" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" isDisabled={isPending} isLoading={isPending} type="submit">
+              <Button
+                color="primary"
+                isDisabled={pushCourse.isPending}
+                isLoading={pushCourse.isPending}
+                type="submit"
+              >
                 Action
               </Button>
             </ModalFooter>

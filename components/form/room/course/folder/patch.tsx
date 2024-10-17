@@ -20,7 +20,7 @@ type Props = {
 
 export function PatchRoomCourseFolder({ folder }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending } = usePatchRoomCourseFolder()
+  const patchFolder = usePatchRoomCourseFolder()
   const {
     reset,
     register,
@@ -29,7 +29,7 @@ export function PatchRoomCourseFolder({ folder }: Props) {
   } = useForm<RoomCourseFolders>({ defaultValues: folder })
 
   function onSubmit(data: RoomCourseFolders) {
-    mutate(data, {
+    patchFolder.mutate(data, {
       onSuccess: () => {
         reset()
         onClose()
@@ -59,7 +59,12 @@ export function PatchRoomCourseFolder({ folder }: Props) {
               <Button variant="light" onPress={onClose}>
                 Close
               </Button>
-              <Button color="primary" isDisabled={isPending} isLoading={isPending} type="submit">
+              <Button
+                color="primary"
+                isDisabled={patchFolder.isPending}
+                isLoading={patchFolder.isPending}
+                type="submit"
+              >
                 Submit
               </Button>
             </ModalFooter>

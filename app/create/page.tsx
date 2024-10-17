@@ -7,6 +7,7 @@ import { Spacer } from "@nextui-org/spacer"
 import { HouseIcon } from "lucide-react"
 import { useCallback } from "react"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
 import { RoomCategory } from "@/components/form/room"
 import { FeatureCard } from "@/components/ui"
@@ -15,7 +16,7 @@ import { CreateRoomData, usePushRoom } from "@/hooks/room"
 
 export default function Page() {
   const { userId: clerkId } = useAuth()
-  const { mutate, isPending } = usePushRoom(clerkId!)
+  const pushRoom = usePushRoom(clerkId!)
   const { register, handleSubmit, setValue, watch } = useForm<CreateRoomData>({
     defaultValues: {
       name: "",
@@ -25,7 +26,14 @@ export default function Page() {
 
   const selected = watch("subCategoryId")
 
-  const onSubmit = (data: CreateRoomData) => mutate(data)
+  const onSubmit = (data: CreateRoomData) => {
+    if (!data.subCategoryId) {
+      toast.error("Please select a room category.")
+
+      return null
+    }
+    pushRoom.mutate(data)
+  }
   const handleSetSelected = useCallback(
     (subcategory: string) => setValue("subCategoryId", subcategory),
     [setValue],
@@ -51,8 +59,8 @@ export default function Page() {
           <Button
             fullWidth
             color="primary"
-            disabled={isPending}
-            isLoading={isPending}
+            disabled={pushRoom.isPending}
+            isLoading={pushRoom.isPending}
             type="submit"
           >
             Create

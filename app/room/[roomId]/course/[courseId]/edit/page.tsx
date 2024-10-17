@@ -2,7 +2,9 @@
 
 import { Button } from "@nextui-org/button"
 import { Spacer } from "@nextui-org/spacer"
+import { Spinner } from "@nextui-org/spinner"
 import { FolderIcon, PencilIcon, TvMinimalPlayIcon } from "lucide-react"
+import { toast } from "sonner"
 
 import {
   DeleteRoomCourseFolder,
@@ -21,14 +23,28 @@ type Props = {
 }
 
 export default function Page({ params }: Props) {
-  const { data } = useGetRoomCourse(params.courseId)
+  const course = useGetRoomCourse(params.courseId)
+
+  if (course.isLoading) {
+    return (
+      <div className="flex justify-center">
+        <Spinner size="lg" />
+      </div>
+    )
+  }
+
+  if (!course.isLoading && course.isError) {
+    toast.error(course.error?.message ?? "An error occurred")
+
+    return null
+  }
 
   return (
     <div>
       <PushRoomCourseFolder courseId={params.courseId} />
       <Spacer y={4} />
       <div className="flex flex-col gap-4">
-        {data?.roomCourseFolders.map((folder) => (
+        {course.data?.roomCourseFolders.map((folder) => (
           <div key={folder.id}>
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex flex-grow items-center gap-2 rounded-2xl bg-content1 px-4 py-2">

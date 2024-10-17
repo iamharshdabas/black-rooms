@@ -19,10 +19,10 @@ type Props = {
 
 export function DeleteRoomCourseFolderVideo({ video, courseId }: Props) {
   const { isOpen, onOpen, onClose, onOpenChange } = useDisclosure()
-  const { mutate, isPending } = useDeleteRoomCourseFolderVideo()
+  const deleteVideo = useDeleteRoomCourseFolderVideo()
 
-  function deleteVideo() {
-    mutate({ ...video, courseId }, { onSuccess: onClose })
+  function handleDeleteVideo() {
+    deleteVideo.mutate({ ...video, courseId }, { onSuccess: onClose })
   }
 
   return (
@@ -44,10 +44,10 @@ export function DeleteRoomCourseFolderVideo({ video, courseId }: Props) {
             </Button>
             <Button
               color="danger"
-              isDisabled={isPending}
-              isLoading={isPending}
+              isDisabled={deleteVideo.isPending}
+              isLoading={deleteVideo.isPending}
               startContent={<TrashIcon />}
-              onPress={deleteVideo}
+              onPress={handleDeleteVideo}
             >
               Delete
             </Button>

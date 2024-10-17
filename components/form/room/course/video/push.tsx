@@ -14,7 +14,7 @@ type Props = {
 }
 
 export function PushRoomCourseFolderVideo({ folder }: Props) {
-  const { mutate, isPending } = usePushRoomCourseFolderVideo()
+  const pushVideo = usePushRoomCourseFolderVideo()
   const {
     reset,
     register,
@@ -27,7 +27,7 @@ export function PushRoomCourseFolderVideo({ folder }: Props) {
     const courseId = folder.courseId
 
     if (url) {
-      mutate(
+      pushVideo.mutate(
         { ...data, courseId, url },
         {
           onSuccess: () => reset(),
@@ -52,7 +52,12 @@ export function PushRoomCourseFolderVideo({ folder }: Props) {
         label="Video Url"
         {...register("url", { required: true })}
       />
-      <Button className="min-w-fit" disabled={isPending} isLoading={isPending} type="submit">
+      <Button
+        className="min-w-fit"
+        disabled={pushVideo.isPending}
+        isLoading={pushVideo.isPending}
+        type="submit"
+      >
         Add Video
       </Button>
     </form>
