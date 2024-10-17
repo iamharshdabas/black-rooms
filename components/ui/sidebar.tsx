@@ -54,7 +54,7 @@ export function Sidebar({}: Props) {
         const roomId = key as string
 
         setSelectedRoom(roomId)
-        router.push(url.room.room(roomId))
+        router.push(url.room.page(roomId))
       }
     },
     [router],
@@ -135,7 +135,7 @@ export function Sidebar({}: Props) {
                   <ListboxItem
                     key={course.id}
                     classNames={{ title: subtitle() }}
-                    onPress={() => router.push(url.room.course(roomIdFromPath!, course.id))}
+                    onPress={() => router.push(url.room.course.page(roomIdFromPath!, course.id))}
                   >
                     {course.name}
                   </ListboxItem>

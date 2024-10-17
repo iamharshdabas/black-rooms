@@ -44,7 +44,10 @@ export default function Page({ params }: Props) {
     <div className="flex flex-col gap-4">
       {isOwner && (
         <div>
-          <Link className={button({ color: "primary" })} href={url.room.edit(params.roomId)}>
+          <Link
+            className={button({ color: "primary" })}
+            href={url.room.course.edit(params.roomId, params.courseId)}
+          >
             Edit
           </Link>
         </div>
@@ -59,7 +62,7 @@ export default function Page({ params }: Props) {
                     <ListboxItem
                       key={video.id}
                       classNames={{ title: subtitle(), base: "gap-4" }}
-                      href={url.room.video(params.roomId, params.courseId, video.id)}
+                      href={url.room.course.video.page(params.roomId, params.courseId, video.id)}
                       startContent={<TvMinimalPlayIcon />}
                     >
                       {video.name}

@@ -44,7 +44,7 @@ export function usePushRoom(clerkId: string) {
     },
     onSuccess: (id: string) => {
       if (id) {
-        router.push(url.room.room(id))
+        router.push(url.room.page(id))
         toast.success("Room created")
       }
     },
@@ -67,7 +67,7 @@ export function usePushRoomCourse() {
     },
     onSuccess: ({ roomId, courseId }: { roomId: string; courseId: string }) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", courseId] })
-      router.push(url.room.course(roomId, courseId))
+      router.push(url.room.course.page(roomId, courseId))
       toast.success("Course created")
     },
     onError: (error) => toast.error(error.message),

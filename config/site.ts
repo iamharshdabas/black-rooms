@@ -13,11 +13,16 @@ export const url = {
   explore: "/explore",
 
   room: {
-    room: (roomId: string) => `/room/${roomId}`,
+    page: (roomId: string) => `/room/${roomId}`,
     edit: (roomId: string) => `/room/${roomId}/edit`,
-    course: (roomId: string, courseId: string) => `/room/${roomId}/course/${courseId}`,
-    video: (roomId: string, courseId: string, videoId: string) =>
-      `/room/${roomId}/course/${courseId}/video/${videoId}`,
+    course: {
+      page: (roomId: string, courseId: string) => `/room/${roomId}/course/${courseId}`,
+      edit: (roomId: string, courseId: string) => `/room/${roomId}/course/${courseId}/edit`,
+      video: {
+        page: (roomId: string, courseId: string, videoId: string) =>
+          `/room/${roomId}/course/${courseId}/video/${videoId}`,
+      },
+    },
   },
 }
 

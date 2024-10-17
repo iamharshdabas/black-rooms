@@ -76,7 +76,7 @@ export default function Page({ params }: Props) {
 
   if (!owner.isOwner && !owner.isLoading) {
     toast.error("You are not the owner of the room")
-    router.push(url.room.room(params.roomId))
+    router.push(url.room.page(params.roomId))
   }
 
   return (
@@ -116,7 +116,7 @@ export default function Page({ params }: Props) {
             Submit
           </Button>
           <Spacer y={2} />
-          <Button fullWidth onPress={() => router.push(url.room.room(params.roomId))}>
+          <Button fullWidth onPress={() => router.push(url.room.page(params.roomId))}>
             Back
           </Button>
         </div>
