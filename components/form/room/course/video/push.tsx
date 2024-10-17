@@ -37,7 +37,7 @@ export function PushRoomCourseFolderVideo({ folder }: Props) {
   }
 
   return (
-    <form className="flex w-full items-center gap-4 lg:w-fit" onSubmit={handleSubmit(onSubmit)}>
+    <form className="flex w-full items-center gap-4" onSubmit={handleSubmit(onSubmit)}>
       <Input
         endContent={<TvMinimalPlayIcon />}
         errorMessage={errors.name?.message}
@@ -52,7 +52,7 @@ export function PushRoomCourseFolderVideo({ folder }: Props) {
         label="Video Url"
         {...register("url", { required: true })}
       />
-      <Button className="lg:min-w-fit" disabled={isPending} isLoading={isPending} type="submit">
+      <Button className="min-w-fit" disabled={isPending} isLoading={isPending} type="submit">
         Add Video
       </Button>
     </form>

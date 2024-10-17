@@ -3,6 +3,7 @@
 import { useAuth } from "@clerk/nextjs"
 import { Autocomplete, AutocompleteItem } from "@nextui-org/autocomplete"
 import { Button } from "@nextui-org/button"
+import { Divider } from "@nextui-org/divider"
 import { Listbox, ListboxItem } from "@nextui-org/listbox"
 import { cn } from "@nextui-org/theme"
 import { HouseIcon } from "lucide-react"
@@ -61,40 +62,44 @@ export function Sidebar({}: Props) {
   const coursesAvailable = !(room?.roomCourses.length === 0)
 
   return (
-    <div>
-      {!roomsAvailable ? (
-        <h2 className={subtitle({ className: "lg:text-lg" })}>
-          Looks like you don&apos;t have any room
-        </h2>
-      ) : (
-        user && (
-          <Autocomplete
-            label="Select room"
-            labelPlacement="outside"
-            selectedKey={selectedRoom}
-            size="lg"
-            startContent={<HouseIcon />}
-            variant="bordered"
-            onSelectionChange={handleSelectionChange}
-          >
-            {user.roomMembers.map(({ rooms }) => (
-              <AutocompleteItem key={rooms.id} value={rooms.id}>
-                {rooms.name}
-              </AutocompleteItem>
-            ))}
-          </Autocomplete>
-        )
-      )}
+    <div className="flex flex-col gap-4">
+      <div>
+        {!roomsAvailable ? (
+          <h2 className={subtitle({ className: "lg:text-lg" })}>
+            Looks like you don&apos;t have any room
+          </h2>
+        ) : (
+          user && (
+            <Autocomplete
+              label="Select room"
+              labelPlacement="outside"
+              selectedKey={selectedRoom}
+              size="lg"
+              startContent={<HouseIcon />}
+              variant="bordered"
+              onSelectionChange={handleSelectionChange}
+            >
+              {user.roomMembers.map(({ rooms }) => (
+                <AutocompleteItem key={rooms.id} value={rooms.id}>
+                  {rooms.name}
+                </AutocompleteItem>
+              ))}
+            </Autocomplete>
+          )
+        )}
 
-      <div className={cn("flex gap-1 py-2", !roomsAvailable && "flex-col")}>
-        <Button fullWidth variant="ghost" onPress={() => router.push(url.create)}>
-          Create {!roomsAvailable && "your first room"}
-        </Button>
-        {!roomsAvailable && <DoubleDivider />}
-        <Button fullWidth variant="ghost" onPress={() => router.push(url.explore)}>
-          Join {!roomsAvailable && "your first room"}
-        </Button>
+        <div className={cn("flex gap-1 py-2", !roomsAvailable && "flex-col")}>
+          <Button fullWidth variant="ghost" onPress={() => router.push(url.create)}>
+            Create {!roomsAvailable && "your first room"}
+          </Button>
+          {!roomsAvailable && <DoubleDivider />}
+          <Button fullWidth variant="ghost" onPress={() => router.push(url.explore)}>
+            Join {!roomsAvailable && "your first room"}
+          </Button>
+        </div>
       </div>
+
+      <Divider />
 
       <div className="flex-grow">
         {room &&

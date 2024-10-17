@@ -75,7 +75,7 @@ export function RoomCategory({ selected, setSelected }: Props) {
         </div>
       )}
 
-      <Accordion itemClasses={{ content: "flex flex-col gap-4" }} variant="splitted">
+      <Accordion variant="splitted">
         {(filteredCategories || []).map((category) => (
           <AccordionItem key={category.id} title={category.name}>
             {filteredSubcategories(category.id).map((subcategory) => (

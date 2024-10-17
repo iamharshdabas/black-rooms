@@ -15,20 +15,20 @@ export default function BaseLayout({ children }: Props) {
   const isRoomRoute = /^\/room\/.+/.test(currentRoute)
 
   return (
-    <div className="relative flex flex-col">
+    <div className="relative flex h-screen flex-col">
       <Navbar isRoomRoute={isRoomRoute} />
-      <div className="flex gap-4 p-6">
-        {isRoomRoute ? (
-          <>
-            <div className="hidden max-w-xs border-r-divider lg:block">
-              <Sidebar />
-            </div>
-            <div className="flex-grow overflow-y-scroll">{children}</div>
-          </>
-        ) : (
+      {isRoomRoute ? (
+        <div className="flex flex-grow overflow-hidden">
+          <div className="hidden max-w-xs overflow-y-scroll p-6 lg:block">
+            <Sidebar />
+          </div>
+          <div className="flex-grow overflow-y-scroll p-6">{children}</div>
+        </div>
+      ) : (
+        <div className="flex gap-4 p-6">
           <div className="flex-grow">{children}</div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
