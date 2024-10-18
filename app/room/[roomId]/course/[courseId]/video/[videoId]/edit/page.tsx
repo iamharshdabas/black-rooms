@@ -13,6 +13,7 @@ import { url } from "@/config"
 import { useGetRoomCourseVideo, usePatchRoomCourseFolderVideo } from "@/hooks/room"
 import { useValidateOwnership } from "@/hooks/validate/ownership"
 import { RoomCourseFolderVideos } from "@/server/schema"
+import { processUrl } from "@/utils/url"
 
 type Props = {
   params: {
@@ -40,6 +41,9 @@ export default function Page({ params }: Props) {
   const description = watch("description") || ""
 
   const onSubmit = (data: RoomCourseFolderVideos) => {
+    if (data.url) {
+      data.url = processUrl(data.url) || ""
+    }
     patchVideo.mutate(data)
   }
   const handleSetDescription = useCallback(
