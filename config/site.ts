@@ -21,6 +21,8 @@ export const url = {
       video: {
         page: (roomId: string, courseId: string, videoId: string) =>
           `/room/${roomId}/course/${courseId}/video/${videoId}`,
+        edit: (roomId: string, courseId: string, videoId: string) =>
+          `/room/${roomId}/course/${courseId}/video/${videoId}/edit`,
       },
     },
   },

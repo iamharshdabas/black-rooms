@@ -1,8 +1,9 @@
 "use client"
 
-import { Button } from "@nextui-org/button"
+import { Link } from "@nextui-org/link"
 import { Spacer } from "@nextui-org/spacer"
 import { Spinner } from "@nextui-org/spinner"
+import { button } from "@nextui-org/theme"
 import { FolderIcon, PencilIcon, TvMinimalPlayIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -13,11 +14,12 @@ import {
   PushRoomCourseFolder,
   PushRoomCourseFolderVideo,
 } from "@/components/form/room/course"
-import { subtitle } from "@/config"
+import { subtitle, url } from "@/config"
 import { useGetRoomCourse } from "@/hooks/room"
 
 type Props = {
   params: {
+    roomId: string
     courseId: string
   }
 }
@@ -64,9 +66,12 @@ export default function Page({ params }: Props) {
                 <TvMinimalPlayIcon />
                 <Spacer x={1} />
                 <h2 className={subtitle({ className: "flex-grow" })}>{video.name}</h2>
-                <Button isIconOnly color="primary" variant="light">
+                <Link
+                  className={button({ isIconOnly: true, color: "primary", variant: "light" })}
+                  href={url.room.course.video.edit(params.roomId, params.courseId, video.id)}
+                >
                   <PencilIcon />
-                </Button>
+                </Link>
                 <DeleteRoomCourseFolderVideo courseId={folder.courseId} video={video} />
               </div>
             ))}

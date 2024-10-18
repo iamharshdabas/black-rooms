@@ -5,6 +5,7 @@ import { toast } from "sonner"
 
 import { title } from "@/config"
 import { useGetRoomCourseVideo } from "@/hooks/room"
+import { Editor } from "@/components/form/room"
 
 type Props = {
   params: {
@@ -32,6 +33,7 @@ export default function Page({ params }: Props) {
   return (
     <div>
       <h1 className={title()}>{video.data?.name}</h1>
+      {video.data?.description && <Editor content={video.data?.description} />}
     </div>
   )
 }

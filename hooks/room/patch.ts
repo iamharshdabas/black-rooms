@@ -1,8 +1,8 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { toast } from "sonner"
 
-import { patchRoom, patchRoomCourseFolder } from "@/server/action/room"
-import { Room, RoomCourseFolders } from "@/server/schema"
+import { patchRoom, patchRoomCourseFolder, patchRoomCourseFolderVideo } from "@/server/action/room"
+import { Room, RoomCourseFolderVideos, RoomCourseFolders } from "@/server/schema"
 
 export function usePatchRoom() {
   const queryClient = useQueryClient()
@@ -35,6 +35,25 @@ export function usePatchRoomCourseFolder() {
     onSuccess: (id: string) => {
       queryClient.invalidateQueries({ queryKey: ["roomCourse", id] })
       toast.success("Folder updated")
+    },
+    onError: (error) => {
+      toast.error(error.message)
+    },
+  })
+}
+
+export function usePatchRoomCourseFolderVideo() {
+  const queryClient = useQueryClient()
+
+  return useMutation({
+    mutationFn: async (data: RoomCourseFolderVideos) => {
+      await patchRoomCourseFolderVideo(data)
+
+      return data.id
+    },
+    onSuccess: (id: string) => {
+      queryClient.invalidateQueries({ queryKey: ["roomCourseVideo", id] })
+      toast.success("Video updated")
     },
     onError: (error) => {
       toast.error(error.message)

@@ -10,6 +10,7 @@ export const roomCourseFolderVideos = pgTable("room_course_videos", {
     .notNull(),
   name: varchar("name", { length: 255 }).notNull(),
   url: text("url").notNull(),
+  description: text("description"),
   order: integer("order").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
